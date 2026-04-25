@@ -1,16 +1,11 @@
 import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button'; // Re-importamos PrimeNG
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ButtonModule], // Lo añadimos aquí
-  templateUrl: './app.html', 
+  imports: [RouterOutlet],
+  templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class AppComponent {
-  toggleDarkMode() {
-    const element = document.querySelector('html');
-    element?.classList.toggle('my-app-dark');
-  }
-}
+export class AppComponent { }

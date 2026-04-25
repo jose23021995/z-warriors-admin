@@ -1,0 +1,21 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--surface-ground); // Usa colores de PrimeNG
+}
+
+/* Ajustes para que los inputs ocupen todo el ancho del p-card */
+.w-full {
+    width: 100% !important;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.gap-4 {
+    gap: 1.5rem;
+}
