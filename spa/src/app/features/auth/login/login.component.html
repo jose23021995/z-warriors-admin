@@ -1,4 +1,21 @@
 <div class="login-container">
+  <div style="position: absolute; top: 20px; right: 20px;">
+    <button 
+      (click)="toggleDarkMode()" 
+      type="button"
+      [ngStyle]="{
+        'padding': '8px 12px',
+        'background': isDarkMode ? '#fff' : '#333',
+        'color': isDarkMode ? '#333' : '#fff',
+        'border': 'none',
+        'border-radius': '4px',
+        'cursor': 'pointer'
+      }">
+      <span *ngIf="!isDarkMode">🌙 Modo Oscuro</span>
+      <span *ngIf="isDarkMode">☀️ Modo Claro</span>
+    </button>
+  </div>
+
   <p-card header="Z-Warriors Admin" subheader="Bienvenido al panel de control" [style]="{ width: '360px' }">
     
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="flex flex-column gap-4">

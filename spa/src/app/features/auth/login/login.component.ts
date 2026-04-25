@@ -30,6 +30,7 @@ import { AuthService } from '../../../core/services/auth.service';
 export class LoginComponent {
   // 1. Declaramos la propiedad que el HTML busca
   loginForm: FormGroup;
+  isDarkMode = false;
 
   constructor(
     private fb: FormBuilder,
@@ -54,5 +55,12 @@ export class LoginComponent {
         alert('Credenciales incorrectas');
       }
     }
+  }
+
+  // 4. Toggle para modo oscuro
+  toggleDarkMode() {
+    const html = document.documentElement;
+    html.classList.toggle('my-app-dark');
+    this.isDarkMode = !this.isDarkMode;
   }
 }
