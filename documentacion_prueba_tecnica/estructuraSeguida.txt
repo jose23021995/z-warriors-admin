@@ -18,3 +18,57 @@ src/app/
 ├── app.config.ts       # Configuración global (PrimeNG, Rutas)
 ├── app.routes.ts       # Definición de rutas
 └── app.ts              # Componente raíz
+
+
+para imprimir resultados en consola y en un txt 
+function Show-Tree($path, $prefix = "") {
+    $result = @()
+    $items = Get-ChildItem $path | Sort-Object PSIsContainer -Descending, Name
+    $count = $items.Count
+
+    for ($i = 0; $i -lt $count; $i++) {
+        $item = $items[$i]
+        $isLast = ($i -eq $count - 1)
+
+        $connector = if ($isLast) { "└── " } else { "├── " }
+        $line = "$prefix$connector$($item.Name)"
+
+        $result += $line
+
+        if ($item.PSIsContainer) {
+            $newPrefix = if ($isLast) { "$prefix    " } else { "$prefix│   " }
+            $result += Show-Tree $item.FullName $newPrefix
+        }
+    }
+
+    return $result
+}
+
+$output = @()
+
+# raíz
+$output += "spa/"
+
+# archivos raíz
+$rootFiles = Get-ChildItem -File | Sort-Object Name
+foreach ($file in $rootFiles) {
+    $output += "├── $($file.Name)"
+}
+
+# public
+if (Test-Path "public") {
+    $output += "├── public"
+    $output += Show-Tree "public" "│   "
+}
+
+# src
+if (Test-Path "src") {
+    $output += "└── src"
+    $output += Show-Tree "src" "    "
+}
+
+# guardar
+$output | Out-File estructura.txt -Encoding utf8
+
+# mostrar
+$output
