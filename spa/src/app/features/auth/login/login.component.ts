@@ -11,6 +11,11 @@ import { PasswordModule } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
 
 import { AuthService } from '../../../core/services/auth.service';
+import { DarkModeComponent } from '../../../shared/components/dark-mode/dark-mode.component'
+
+//datos
+import loginData  from '../../../shared/interfaces/text/login-texts.json';
+const {auth:{title,buttonText,passLabel,subtitle,userLabel}} =loginData;
 
 @Component({
   selector: 'app-login',
@@ -22,16 +27,21 @@ import { AuthService } from '../../../core/services/auth.service';
     ButtonModule,        // Vital para p-button
     InputTextModule,
     PasswordModule,      // Vital para p-password
-    FloatLabelModule     // Vital para p-floatLabel
+    FloatLabelModule,     // Vital para p-floatLabel
+    DarkModeComponent     //componente darck mode
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  title = title;
+  subtitle = subtitle;
+  userLabel = userLabel;
+  passLabel = passLabel;
+  buttonText = buttonText;
   // 1. Declaramos la propiedad que el HTML busca
   loginForm: FormGroup;
-  isDarkMode = false;
-
+  
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -57,10 +67,4 @@ export class LoginComponent {
     }
   }
 
-  // 4. Toggle para modo oscuro
-  toggleDarkMode() {
-    const html = document.documentElement;
-    html.classList.toggle('my-app-dark');
-    this.isDarkMode = !this.isDarkMode;
-  }
 }

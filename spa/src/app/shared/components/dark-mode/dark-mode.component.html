@@ -1,0 +1,9 @@
+  <div style="position: absolute; top: 20px; right: 20px;">
+    <button 
+      (click)="toggleDarkMode()" 
+      type="button"
+      [class.dark-mode-active]="isDarkMode" class="theme-button">
+      <span *ngIf="!isDarkMode">{{ dark }}</span>
+      <span *ngIf="isDarkMode">{{ light }}</span>
+    </button>
+  </div>
