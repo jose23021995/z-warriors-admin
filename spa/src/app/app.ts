@@ -1,12 +1,16 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { ButtonModule } from 'primeng/button'; // Re-importamos PrimeNG
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
+  standalone: true,
+  imports: [ButtonModule], // Lo añadimos aquí
+  templateUrl: './app.html', 
   styleUrl: './app.scss'
 })
-export class App {
-  protected readonly title = signal('z-warriors-admin');
+export class AppComponent {
+  toggleDarkMode() {
+    const element = document.querySelector('html');
+    element?.classList.toggle('my-app-dark');
+  }
 }

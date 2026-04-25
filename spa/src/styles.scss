@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+/* Estilos globales */
+@import "primeicons/primeicons.css";
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* El selector que definimos en app.config.ts para el modo oscuro */
+.my-app-dark {
+    background: #121212;
+    color: #ffffff;
+}

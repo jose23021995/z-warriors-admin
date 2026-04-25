@@ -1,6 +1,8 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { App } from './app/app';
+import { AppComponent } from './app/app';
 
-bootstrapApplication(App, appConfig)
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent)
+  .catch(err => {
+    // Esto imprimirá el error real en la consola (F12) si falla
+    console.error('Error crítico de arranque:', err);
+  });
