@@ -1,0 +1,41 @@
+﻿spa/
+├── .editorconfig
+├── .gitignore
+├── .prettierrc
+├── angular.json
+├── estructura.txt
+├── package.json
+├── package-lock.json
+├── README.md
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.spec.json
+├── public
+│   ├── img
+│   │   ├── auth
+│   │   ├── characters
+│   │   └── dashboard
+│   └── favicon.ico
+└── src
+    ├── app
+    │   ├── core
+    │   │   ├── guards
+    │   │   ├── interceptors
+    │   │   └── services
+    │   ├── features
+    │   │   ├── auth
+    │   │   ├── characters
+    │   │   └── dashboard
+    │   ├── shared
+    │   │   ├── components
+    │   │   ├── interfaces
+    │   │   └── pipes
+    │   ├── app.config.ts
+    │   ├── app.html
+    │   ├── app.routes.ts
+    │   ├── app.scss
+    │   ├── app.spec.ts
+    │   └── app.ts
+    ├── index.html
+    ├── main.ts
+    └── styles.scss
