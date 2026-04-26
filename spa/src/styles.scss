@@ -16,6 +16,8 @@
         rgba(235, 235, 235, 0.5),
         rgba(209, 209, 209, 0.5)
     );
+    --select-button-bg:#FF9200;
+    --select-button:#4A36C2;
 }
 
 /* Colores para el Modo Oscuro */
@@ -34,6 +36,8 @@
         rgba(71, 71, 71, 0.5),
         rgba(71, 71, 71, 0.5)
     );
+    --select-button-bg:#071F94;
+    --select-button:#AB1C0A;
 }
 
 /* Estilos globales */
@@ -64,3 +68,22 @@ html, body {
     opacity: 0.8;
 }
 
+#dark-mode-select{
+    p-togglebutton:nth-child(1){
+        border-radius: 25px 0 0 25px !important;
+    }
+    p-togglebutton:nth-child(2){
+        border-radius: 0 25px 25px 0 !important;
+    }
+    p-togglebutton{
+        background-color: var(--select-button-bg);
+        border:1px var(--select-button-bg) solid ;
+        
+    }
+    p-togglebutton.p-togglebutton-checked{
+        .p-togglebutton-content{
+            background-color: var(--select-button);
+            border-radius: 25px !important;
+        }
+    } 
+}

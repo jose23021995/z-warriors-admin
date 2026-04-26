@@ -71,3 +71,4 @@ export class LoginComponent {
   // 4. Toggle para modo oscuro
 
 }
+

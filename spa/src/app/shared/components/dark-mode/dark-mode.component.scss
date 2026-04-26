@@ -25,3 +25,20 @@
         opacity: 0.8;
     }
 }
+
+.p-togglebutton.p-togglebutton-checked{
+    border-radius: 25px 0px 0px 25px !important;
+}
+
+#sm-Dark-mode{
+    display: none !important;
+    @media (max-width: 768px) {
+        display: block !important;
+    }
+}
+#md-Dark-mode{
+    display: block !important;
+    @media (max-width: 768px) {
+        display: none !important;
+    }
+}

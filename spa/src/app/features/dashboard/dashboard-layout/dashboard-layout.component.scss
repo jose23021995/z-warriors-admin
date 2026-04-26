@@ -1,0 +1,27 @@
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--p-content-background); // Variable de PrimeNG v21
+  transition: background-color 0.3s ease;
+
+  .main-menu {
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid var(--p-content-border-color);
+    padding: 0.5rem 1rem;
+  }
+
+  .content-container {
+    flex: 1;
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+// Estilo para el texto del logo
+.font-bold {
+  color: var(--p-primary-color);
+}

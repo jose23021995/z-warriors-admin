@@ -1,1 +1,32 @@
-<p>dashboard-layout works!</p>
+<div class="layout-wrapper">
+  <!-- Barra Superior -->
+  <p-menubar [model]="items" class="main-menu">
+    <ng-template #start>
+      <div class="flex align-items-center gap-2 px-2">
+        <img src="img/shared/esfera.png" height="35" alt="Logo Z">
+        <span class="font-bold text-xl uppercase tracking-wider">Z-Warriors</span>
+      </div>
+    </ng-template>
+
+    <ng-template #end>
+      <div class="flex align-items-center gap-3">
+        <!-- Componente de Modo Oscuro -->
+        <app-dark-mode></app-dark-mode>
+        
+        <p-divider layout="vertical"></p-divider>
+
+        <p-button 
+          label="Salir" 
+          icon="pi pi-sign-out" 
+          severity="danger" 
+          [text]="true" 
+          (onClick)="logout()" />
+      </div>
+    </ng-template>
+  </p-menubar>
+
+  <!-- Contenedor del contenido (Aquí cargarán los Personajes) -->
+  <main class="content-container">
+    <router-outlet></router-outlet>
+  </main>
+</div>

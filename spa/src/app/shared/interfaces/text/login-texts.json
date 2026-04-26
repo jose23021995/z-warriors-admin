@@ -6,8 +6,12 @@
     "passLabel": "Contraseña",
     "buttonText": "Acceder"
   },
-  "theme": {
+  "theme-md": {
     "dark": "🌙 Modo Oscuro",
     "light": "☀️ Modo Claro"
+  },
+  "theme-sm": {
+    "dark": "🌙",
+    "light": "☀️"
   }
 }

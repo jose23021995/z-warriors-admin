@@ -8,13 +8,17 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    canActivate: [authGuard], // Protegido por el guard que ya creamos
-    loadComponent: () => import('./features/dashboard/dashboard-layout/dashboard-layout.component').then(m => m.DashboardLayoutComponent),
+    canActivate: [authGuard],
+    // CORRECCIÓN AQUÍ: m.DashboardLayoutComponent
+    loadComponent: () => import('./features/dashboard/dashboard-layout/dashboard-layout.component')
+      .then(m => m.DashboardLayoutComponent),
     children: [
       {
         path: 'characters',
-        loadComponent: () => import('./features/characters/character-list/character-list.component').then(m => m.CharacterListComponent)
+        loadComponent: () => import('./features/characters/character-list/character-list.component')
+          .then(m => m.CharacterListComponent)
       },
+      // Puedes agregar aquí la ruta de estadísticas después
       { path: '', redirectTo: 'characters', pathMatch: 'full' }
     ]
   },

@@ -1,9 +1,18 @@
-  <div style="position: absolute; top: 20px; right: 20px;">
-    <button 
-      (click)="toggleDarkMode()" 
-      type="button"
-      [class.dark-mode-active]="isDarkMode" class="theme-button">
-      <span *ngIf="!isDarkMode">{{ dark }}</span>
-      <span *ngIf="isDarkMode">{{ light }}</span>
-    </button>
-  </div>
+<div id="md-Dark-mode">
+  <button 
+    (click)="toggleDarkMode()" 
+    type="button"
+    [class.dark-mode-active]="isDarkMode()" 
+    class="theme-button">
+    
+    <!-- En Angular 21 con Signals, leemos con () -->
+    <span *ngIf="!isDarkMode()">{{ dark }}</span>
+    <span *ngIf="isDarkMode()">{{ light }}</span>
+  </button>
+</div>
+
+<div id="sm-Dark-mode">
+        <div class="card flex justify-center flex-wrap gap-4" id="dark-mode-select">
+            <p-selectbutton (click)="toggleDarkMode()"  [options]="stateOptions" [(ngModel)]="value1" optionLabel="label" optionValue="value" />
+        </div>
+</div>
