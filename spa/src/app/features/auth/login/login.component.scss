@@ -19,3 +19,167 @@
 .gap-4 {
     gap: 1.5rem;
 }
+
+.login-container{
+    display: flex;
+    flex-direction: column !important;
+    
+    
+    .section-login
+    {
+        width: 50% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        .login-header-dbz{
+           
+
+            width: 100% !important;
+            height: 100px; // Altura fija para que la imagen se vea bien
+            background-image: url("/img/shared/person_header_information/header_goku.png");
+            background-size: 100% 100%;    /* Hace que la imagen ocupe exactamente 100% del ancho y alto */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            background-position: center;  /* La centra en el div */
+            position: relative !important;
+            top: 32px !important;
+             @media screen and (max-width: 500px) {
+                height: 60px;
+                top: 24px !important;
+            }
+        }
+        #card{
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            background-color: var(--primary-card) !important;
+            .p-card-body{
+                width: 100% !important;
+            }
+            .boton{
+                height: 70px;
+                display: flex;
+                flex-direction: row !important;
+                align-items: center !important;
+                border-left: none !important;
+                .img,.submit{
+                    width: 60px;
+                    height: 60px;
+                }
+                .img{
+                    position: relative !important;
+                    left: 10px;
+                    background-image: var(--esfera-button);
+                    background-size: 100% 100% !important;
+                    
+                }
+                .submit{
+                    justify-content: center;
+                    align-items: center;
+                    display: flex;
+                    flex-direction: row;
+                    p-button{
+                        .p-button{
+                        
+                        
+                         border: 3px solid var(--border-buton) !important;
+                         border-color: var(--border-buton) !important;
+
+                        background-color: var(--button-bg) !important;
+                            color: var(--button-text) !important;
+                            .p-button-label{
+                                color: var(--button-text) !important;
+                                color:--button-text !important;
+                            }
+                        }
+                        
+                    }
+                    
+                }
+               
+            }
+        }
+        p-card{
+            .p-card-body{
+                width: 100% !important;
+            }
+        }
+
+    }
+}
+
+label{
+    color: var(--button-text) !important;
+}
+
+.login-container {
+    background: var(--difuminado-fondo), 
+    var(--fondo-login-bg);
+    background-size: cover;
+
+}
+
+.p-inputtext{
+    width: 100% !important;
+}
+.boton{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.p-button.custom-button{
+    border-left: none !important;
+}
+#submitLogin{
+     border-color: var(--border-buton) !important;
+}
+.color-boton-login{
+    border-left: 1px red solid !important;
+}
+
+@media screen and (max-width: 768px) {
+    .login-container .section-login {
+        width: 95% !important;
+    }
+    
+    .login-container .section-login #card .p-card-body {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+    
+    .login-container .section-login #card .p-card-body .field {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    
+    .login-container .section-login #card .p-card-body .field p-floatLabel {
+        width: 100% !important;
+        max-width: 300px !important;
+    }
+    
+    .login-container .section-login #card .p-card-body .boton {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important
+        
+    }
+}
+@media screen and (max-width: 350px) {
+    .p-card-subtitle{
+        display: none !important;
+    }
+    .p-card-title{
+        text-align: center !important;
+    }
+    .login-header-dbz{
+            height: 60px !important;
+            top: 24px !important;
+    }
+    .p-card-body{
+        width: 100% !important;
+    }
+    
+}

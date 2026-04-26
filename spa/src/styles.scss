@@ -1,4 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Variables CSS globales para colores */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --card-bg: #f8f9fa;
+    --primary-color: #007bff;
+    --primary-card: #E9810E;
+    --border-buton:#FFF1DA;
+    --button-bg: #FF9200;
+    --button-text: #AB1C0A;
+    --esfera-button:url("/img/shared/esfera.png") !important;
+    --fondo-login-bg:url("/img/shared/header/fondo.png") !important;
+    --difuminado-fondo: linear-gradient(
+        rgba(235, 235, 235, 0.5),
+        rgba(209, 209, 209, 0.5)
+    );
+}
+
+/* Colores para el Modo Oscuro */
+.my-app-dark {
+    --bg-color: #1a1a1a;
+    --text-color: #f1f1f1;
+    --card-bg: #2d2d2d;
+    --primary-color: #3b82f6;
+    --primary-card: #071F94;
+    --border-buton: #FFF1DA;
+    --button-bg: #4A36C2;
+    --button-text: #fff;
+    --esfera-button:url("/img/shared/esfera_dark.png") !important;
+    --fondo-login-bg:url("/img/shared/header/fondo_dark.png") !important;
+    --difuminado-fondo: linear-gradient(
+        rgba(71, 71, 71, 0.5),
+        rgba(71, 71, 71, 0.5)
+    );
+}
+
 /* Estilos globales */
 @import "primeicons/primeicons.css";
 
@@ -13,3 +50,17 @@ html, body {
     background: #121212;
     color: #ffffff;
 }
+
+/* Estilos personalizados para botones PrimeNG */
+.p-button.color-boton-login {
+    border: var(--border-buton) 1px solid !important;
+    border-left: none !important;
+    background-color: var(--button-bg) !important;
+    color: var(--button-text) !important;
+}
+
+.p-button.color-boton-login:hover {
+    background-color: var(--button-bg) !important;
+    opacity: 0.8;
+}
+

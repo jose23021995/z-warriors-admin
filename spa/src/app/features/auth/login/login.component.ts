@@ -39,6 +39,7 @@ export class LoginComponent {
   userLabel = userLabel;
   passLabel = passLabel;
   buttonText = buttonText;
+  
   // 1. Declaramos la propiedad que el HTML busca
   loginForm: FormGroup;
   
@@ -66,5 +67,7 @@ export class LoginComponent {
       }
     }
   }
+
+  // 4. Toggle para modo oscuro
 
 }

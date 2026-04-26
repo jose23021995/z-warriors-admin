@@ -1,39 +1,50 @@
 <div class="login-container">
-  <app-dark-mode></app-dark-mode> 
-<p-card [header]="title" [subheader]="subtitle" [style]="{ width: '360px' }">
-    <br><br>
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="flex flex-column gap-4">
-      
-      <!-- Campo Usuario -->
-      <div class="field">
-        <p-floatLabel>
-            <input pInputText id="username" formControlName="username" />
-            <label for="username">{{ userLabel }}</label>
-        </p-floatLabel>
-      </div>
-      <!-- Campo Contraseña -->
-      <div class="field">
-        <p-floatLabel>
-          <p-password 
-            id="password" 
-            formControlName="password" 
-            [toggleMask]="true" 
-            [feedback]="false" 
-            styleClass="w-full" 
-            inputStyleClass="w-full">
-          </p-password>
-          <label for="password">{{passLabel}}</label>
-        </p-floatLabel>
-      </div>
-      <!-- Botón de Acción -->
-      <div class="mt-2">
-        <p-button 
-          [label]="buttonText"
-          type="submit" 
-          styleClass="w-full" 
-          [disabled]="loginForm.invalid">
-        </p-button>
-      </div>
-    </form>
-  </p-card>
+    <section class="section-login">
+        <div class="login-header-dbz">
+            
+        </div>
+        <p-card [header]="title" [subheader]="subtitle" id="card">
+            
+            <br><br>
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="flex flex-column gap-4">
+            
+            <!-- Campo Usuario -->
+            <div class="field">
+                <p-floatLabel>
+                    <input pInputText id="username" formControlName="username" />
+                    <label for="username">{{ userLabel }}</label>
+                </p-floatLabel>
+            </div>
+            <!-- Campo Contraseña -->
+            <div class="field">
+                <p-floatLabel>
+                <p-password 
+                    id="password" 
+                    formControlName="password" 
+                    [toggleMask]="true" 
+                    [feedback]="false" 
+                    styleClass="w-full" 
+                    inputStyleClass="w-full">
+                </p-password>
+                <label for="password">{{passLabel}}</label>
+                </p-floatLabel>
+            </div>
+            <!-- Botón de Acción -->
+            <div class="boton">
+                
+            <div class="img"></div>
+            <div class="submit">
+                <p-button 
+                id="submitLogin"
+                [label]="buttonText"
+                type="submit" 
+                styleClass="w-full custom-button color-boton-login" 
+                [disabled]="loginForm.invalid">
+                </p-button>
+            </div>
+            </div>
+            </form>
+        </p-card>
+    </section>
 </div>
+<app-dark-mode></app-dark-mode> 
