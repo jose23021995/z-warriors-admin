@@ -1,56 +1,131 @@
 <div class="card">
+    <!-- Buscador Superior -->
+    <div class="flex justify-content-between mb-4 gap-2">
+        <p-iconField iconPosition="left" class="w-full shadow-1">
+            <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
+            <input 
+                pInputText 
+                type="text" 
+                [(ngModel)]="searchQuery" 
+                (keyup.enter)="triggerSearch()"
+                placeholder="Buscar guerrero por nombre o raza..." 
+                class="w-full" />
+        </p-iconField>
+        <p-button 
+            label="Buscar" 
+            icon="pi pi-search" 
+            severity="primary"
+            (click)="triggerSearch()">
+        </p-button>
+    </div>
+
+    <!-- Tabla Principal -->
     <p-table 
-        #dt1 
-        [value]="data().length > 0 ? data() : mockData" 
-        [rows]="10" 
+        [value]="displayData()" 
+        [lazy]="true" 
+        (onLazyLoad)="loadCharactersLazy($event)"
         [paginator]="true" 
-        styleClass="p-datatable-gridlines"
-        [globalFilterFields]="['name', 'race']">
+        [rows]="rows()" 
+        [totalRecords]="displayTotal()" 
+        [loading]="loading()" 
+        [rowsPerPageOptions]="[5, 10, 25, 50]"
+        styleClass="p-datatable-gridlines p-datatable-striped">
         
         <ng-template pTemplate="header">
             <tr>
-                <th>Avatar</th>
-                <th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon></th>
-                <th>Raza</th>
-                <th>Género</th>
-                <th pSortableColumn="ki">Ki Máximo <p-sortIcon field="ki"></p-sortIcon></th>
-                <th>Acciones</th>
+                <th style="width: 10%">Avatar</th>
+                <th style="width: 25%">Nombre</th>
+                <th style="width: 15%">Raza</th>
+                <th style="width: 10%" class="text-center">Género</th>
+                <th style="width: 20%">Ki Máximo</th>
+                <th style="width: 20%">Acciones</th>
             </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-char>
             <tr>
                 <td>
-                    <!-- p-image con previsualización -->
                     <p-image 
                         [src]="char.image" 
-                        alt="Avatar" 
+                        [alt]="char.name" 
                         width="50" 
-                        [preview]="true">
+                        [preview]="true"
+                        class="shadow-2 border-round">
                     </p-image>
                 </td>
                 <td>
-                    <span class="font-bold text-primary">{{ char.name }}</span>
+                    <span class="font-bold text-900">{{ char.name }}</span>
                 </td>
                 <td>
-                    <p-tag [value]="char.race" [severity]="getRaceSeverity(char.race)"></p-tag>
+                    <p-tag 
+                        [value]="char.race" 
+                        [severity]="getRaceSeverity(char.race)">
+                    </p-tag>
                 </td>
                 <td class="text-center">
                     <i class="pi" 
-                       [ngClass]="{'pi-mars text-blue-500': char.gender === 'male', 'pi-venus text-pink-500': char.gender === 'female'}" 
-                       style="font-size: 1.2rem"></i>
+                       [ngClass]="{
+                           'pi-mars text-blue-500': char.gender.toLowerCase() === 'male', 
+                           'pi-venus text-pink-500': char.gender.toLowerCase() === 'female'
+                       }" 
+                       style="font-size: 1.5rem"
+                       [pTooltip]="char.gender">
+                    </i>
                 </td>
                 <td>
-                    <div class="flex flex-column">
-                        <span class="mb-1 text-xs">{{ char.ki | number }} / 10,000</span>
-                        <p-progressBar [value]="(char.ki / 10000) * 100" [showValue]="false" [style]="{'height': '6px'}"></p-progressBar>
+                    <div class="flex flex-column gap-1">
+                        <span class="text-sm font-medium">{{ char.ki | number }} / 10,000</span>
+                        <p-progressbar 
+                            [value]="(char.ki / 10000) * 100" 
+                            [showValue]="false" 
+                            [style]="{'height': '8px'}"
+                            severity="warning">
+                        </p-progressbar>
                     </div>
                 </td>
                 <td>
                     <div class="flex gap-2">
-                        <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text" pTooltip="Editar"></button>
-                        <button pButton icon="pi pi-search" class="p-button-rounded p-button-info p-button-text" pTooltip="Ver Detalle"></button>
+                        <p-button 
+                            icon="pi pi-pencil" 
+                            [rounded]="true" 
+                            [text]="true" 
+                            severity="secondary" 
+                            pTooltip="Editar Guerrero">
+                        </p-button>
+                        <p-button 
+                            icon="pi pi-eye" 
+                            [rounded]="true" 
+                            [text]="true" 
+                            severity="info" 
+                            pTooltip="Ver Detalles">
+                        </p-button>
                     </div>
+                </td>
+            </tr>
+        </ng-template>
+
+        <!-- Estado de Carga (Skeleton) -->
+        <ng-template pTemplate="loadingbody">
+            <tr *ngFor="let i of [1,2,3,4,5]">
+                <td><p-skeleton shape="circle" size="3rem"></p-skeleton></td>
+                <td><p-skeleton width="80%"></p-skeleton></td>
+                <td><p-skeleton width="60%"></p-skeleton></td>
+                <td><p-skeleton width="2rem" class="mx-auto"></p-skeleton></td>
+                <td><p-skeleton width="100%" height="8px"></p-skeleton></td>
+                <td>
+                    <div class="flex gap-2">
+                        <p-skeleton shape="circle" size="2rem"></p-skeleton>
+                        <p-skeleton shape="circle" size="2rem"></p-skeleton>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+
+        <!-- Mensaje cuando no hay datos -->
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6" class="text-center p-4">
+                    No se encontraron guerreros que coincidan con la búsqueda.
                 </td>
             </tr>
         </ng-template>
