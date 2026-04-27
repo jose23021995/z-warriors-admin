@@ -12,6 +12,8 @@ import { SliderModule } from 'primeng/slider';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
+import { ImageModule } from 'primeng/image'; // <--- Falta este
+import { ProgressBarModule } from 'primeng/progressbar'; // <--- Falta este
 
 @Component({
   selector: 'app-table',
@@ -19,7 +21,7 @@ import { InputTextModule } from 'primeng/inputtext';
   imports: [
     CommonModule, FormsModule, TableModule, ButtonModule, SelectModule, 
     IconFieldModule, InputIconModule, MultiSelectModule, SliderModule, 
-    TagModule, InputTextModule
+    TagModule, InputTextModule,ImageModule,ProgressBarModule
   ],
   templateUrl: './table.html',
 })
@@ -27,14 +29,22 @@ export class TableComponent implements OnInit {
   // Recibimos los datos desde el padre usando Signals (Angular 17.2+)
   data = input<any[]>([]); 
   loading = input<boolean>(false);
-  mockData = [
-  { id: 1, name: 'James Butt', country: { name: 'Algeria', code: 'dz' }, status: 'unqualified', activity: 17 },
-  { id: 2, name: 'Josephine Darakjy', country: { name: 'Egypt', code: 'eg' }, status: 'proposal', activity: 45 },
-  { id: 3, name: 'Art Venere', country: { name: 'Panama', code: 'pa' }, status: 'qualified', activity: 88 },
-  { id: 4, name: 'Lenna Paprocki', country: { name: 'Slovenia', code: 'si' }, status: 'new', activity: 25 },
-  { id: 5, name: 'Donette Foller', country: { name: 'South Africa', code: 'za' }, status: 'negotiation', activity: 61 }
+ getRaceSeverity(race: string): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" | undefined {
+    switch (race.toLowerCase()) {
+      case 'saiyan': return 'warn';   
+      case 'human': return 'info';    
+      case 'namekian': return 'success'; 
+      case 'frieza race': return 'danger'; // Cambiado a danger para evitar problemas de tipos si 'help' no existe en tu versión
+      default: return 'secondary';
+    }
+  }
+
+mockData = [
+  { id: 1, name: 'Goku', race: 'Saiyan', image: 'https://primefaces.org', ki: 9001, gender: 'male', status: 'qualified' },
+  { id: 2, name: 'Bulma', race: 'Human', image: 'https://primefaces.org', ki: 50, gender: 'female', status: 'new' },
+  { id: 3, name: 'Piccolo', race: 'Namekian', image: 'https://primefaces.org', ki: 5000, gender: 'male', status: 'negotiation' },
+  { id: 4, name: 'Frieza', race: 'Frieza Race', image: 'https://primefaces.org', ki: 8500, gender: 'male', status: 'unqualified' }
 ];
-  
   // Signals locales para filtros
   representatives = signal<any[]>([]);
   statuses = signal<any[]>([]);
