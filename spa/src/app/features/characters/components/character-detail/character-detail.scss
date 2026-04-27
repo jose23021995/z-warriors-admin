@@ -1,0 +1,47 @@
+.information{
+                width: 100% !important;
+                display: flex !important;
+                .primariInformation,.secundaryInformation{
+                    @media (max-width: 768px) {width: 100% !important;}
+                }
+                .primariInformation{
+                    width: 25% !important;
+                    @media (max-width: 1231px) {width: 30% !important;}
+                    @media (max-width: 1031px) {width: 35% !important;}
+                    @media (max-width: 891px) {width: 40% !important;}
+                    @media (max-width: 800px) {width: 45% !important;}
+                    p-card{
+                        .p-card-body{
+                            padding: 1.1rem !important;
+                            border-radius: 0px !important;
+                        }
+                    }
+                    .p-card-body{
+                            padding: 05rem !important;
+                            border-radius: 0px !important;
+                        }
+                }
+                .secundaryInformation{
+                    width: 75% !important;
+                    @media (max-width: 1231px) {width: 70% !important;}
+                    @media (max-width: 1031px) {width: 65% !important;}
+                    @media (max-width: 891px) {width: 60% !important;}
+                    @media (max-width: 800px) {width: 55% !important;}
+                    .imagenDescripcion{
+                        display: flex !important;
+                        flex-direction: row !important;
+                        justify-content: center;
+                        #imagenVista{
+                            
+                            width: 150px !important;
+                            @media (max-width: 768px) {width: 100% !important;}
+                        }
+                    }
+                    
+                }
+}
+#imagenVista{width: 150px !important; height: 230px;}
+.card-modal .p-card-body{
+    padding: 0px !important;
+}
+

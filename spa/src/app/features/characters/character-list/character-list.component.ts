@@ -13,6 +13,8 @@ import { CharacterTable } from '../components/character-table/character-table';
 //servicio para peticiones http 
 import { CharacterService } from '../../../core/services/character.service';
 import { Character, ModalCharacter } from '../../../shared/interfaces/models/character.model'
+import { ProgressBarModule } from 'primeng/progressbar';
+// Agrégalo al array de 'imports' de tu @Component
 
 @Component({
   selector: 'app-character-list',
@@ -23,7 +25,8 @@ import { Character, ModalCharacter } from '../../../shared/interfaces/models/cha
     CardModule,
     CharacterTable,
     ProgressSpinnerModule,
-    DynamicDialogModule
+    DynamicDialogModule,
+    ProgressBarModule 
   ],
   providers: [
     DialogService
@@ -101,18 +104,15 @@ export class CharacterListComponent implements OnInit {
 
  // En character-list.component.ts
   handleCharacterUpdate(data: ModalCharacter) {
-    console.log("datos del padre",data);
-   const payload: ModalCharacter = data;
-   console.log("paylod",payload);
-   const { data:datamodal}=payload;
-   const {name} =datamodal;
+  // Desestructuramos del objeto 'data' (que es ModalCharacter) para sacar al guerrero
+  const { data:modal } = data; 
+  
   this.ref = this.dialogService.open(CharacterDetailComponent, {
-    header: `Editar a ${name}`,
+    header: `Editar a ${modal.name}`, // Usamos el nombre para el título
     width: '50%',
-    data: payload
+    data: data // Pasamos el ModalCharacter completo al hijo
   });
 }
-
 }
 
 

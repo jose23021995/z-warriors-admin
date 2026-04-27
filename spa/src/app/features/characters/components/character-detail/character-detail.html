@@ -1,74 +1,94 @@
 <form [formGroup]="characterForm" class="p-fluid">
   <!-- IMAGEN -->
-  <div class="flex justify-content-center mb-4">
-    <img [src]="image" style="width: 150px; border-radius: 10px; border: 1px solid #ccc;">
-  </div>
+  
 
   @if (!isEditable) {
     <section id="vista" class="grid">
-        <div class="col-12"><strong>Nombre:</strong> {{ characterForm.get('name')?.value }}</div>
-        <div class="col-6"><strong>Ki:</strong> {{ characterForm.get('ki')?.value }}</div>
-        <div class="col-6"><strong>Max Ki:</strong> {{ characterForm.get('maxKi')?.value }}</div>
-        <div class="col-6"><strong>Raza:</strong> {{ characterForm.get('race')?.value }}</div>
-        <div class="col-6">
-          <strong>Género:</strong> 
-          <i [class]="characterForm.get('gender')?.value === 'Male' ? 'pi pi-mars text-blue-500' : 'pi pi-venus text-pink-500'"></i>
+
+        <div class="information">
+          <div class="primariInformation">
+            <p-card header="Personaje:" class="card-modal">
+                <div class="col-12"><strong>Nombre:</strong> {{ characterForm.get('name')?.value }}</div>
+                <div class="col-6"><strong>Raza:</strong> {{ characterForm.get('race')?.value }}</div>
+                
+                <div class="col-6">
+                  <strong>Género:</strong> 
+                  <i [class]="characterForm.get('gender')?.value === 'Male' ? 'pi pi-mars text-blue-500' : 'pi pi-venus text-pink-500'"></i>
+                </div>
+            </p-card>
+            <p-card header="Nivel de KI:" class="card-modal">
+                <div class="col-6"><strong>Ki:</strong> {{ characterForm.get('ki')?.value }}</div>
+                <div class="col-6"><strong>Max Ki:</strong> {{ characterForm.get('maxKi')?.value }}</div>
+            </p-card>
+                
         </div>
-        <div class="col-12"><strong>Descripción:</strong> <p>{{ characterForm.get('description')?.value }}</p></div>
+        <div class="secundaryInformation">
+            <div class=" mb-4 imagenDescripcion">
+              <img [src]="image" id="imagenVista">
+            </div>
+        </div>
+        </div>
+        <div class="footerInformation">
+          <p-card header="Descripcion:" class="card-modal">
+              <p>{{ characterForm.get('description')?.value }}</p>
+          </p-card>
+                      
+        </div>
       </section>
   }
 
   @if (isEditable) {
-    <section id="edicion" class="grid">
-      <!-- NOMBRE -->
-      <div class="field col-12">
-        <label>Nombre</label>
-        <input pInputText formControlName="name" />
-      </div>
+    <section id="edicion" class="card-modal"> <!-- Quitamos grid de aquí para controlarlo mejor -->
+    <div class="grid p-fluid"> <!-- Añadimos el grid aquí -->
+      
+      <!-- COLUMNA IZQUIERDA (7 de 12) -->
+      <div class="col-12 md:col-7">
+        <div class="field">
+          <label class="texto-etiqueta"><i class="pi pi-user"></i> Nombre</label>
+          <input pInputText formControlName="name" class="input-custom" />
+        </div>
 
-      <!-- KI Y MAX KI (En la misma fila) -->
-      <div class="field col-6">
-        <label>Ki</label>
-        <input pInputText formControlName="ki" />
-      </div>
-      <div class="field col-6">
-        <label>Max Ki</label>
-        <input pInputText formControlName="maxKi" />
-      </div>
+        <div class="field">
+          <label class="texto-etiqueta"><i class="pi pi-bolt"></i> Ki</label>
+          <input pInputText formControlName="ki" class="input-custom" />
+        </div>
 
-      <!-- RAZA -->
-      <div class="field col-12">
-        <label>Raza</label>
-        <p-select [options]="races" formControlName="race" placeholder="Selecciona Raza"></p-select>
-      </div>
+        <div class="field">
+          <label class="texto-etiqueta"><i class="pi pi-chart-line"></i> Max Ki</label>
+          <input pInputText formControlName="maxKi" class="input-custom" />
+        </div>
 
-      <!-- GÉNERO -->
-      <div class="field col-12">
-        <label class="block mb-2">Género</label>
-        <div class="flex gap-4">
-          <div class="flex align-items-center">
-            <p-radioButton name="gender" value="Male" formControlName="gender" inputId="m"></p-radioButton>
-            <label for="m" class="ml-2">Masculino</label>
-          </div>
-          <div class="flex align-items-center">
-            <p-radioButton name="gender" value="Female" formControlName="gender" inputId="f"></p-radioButton>
-            <label for="f" class="ml-2">Femenino</label>
-          </div>
+        <div class="field">
+          <label class="texto-etiqueta"><i class="pi pi-tags"></i> Raza</label>
+          <p-select [options]="races" formControlName="race" placeholder="Selecciona Raza" styleClass="input-custom"></p-select>
         </div>
       </div>
 
-      <!-- DESCRIPCIÓN -->
-      <div class="field col-12">
-        <label>Descripción</label>
-        <textarea pTextarea formControlName="description" rows="3"></textarea>
+      <!-- COLUMNA DERECHA (5 de 12) -->
+      <div class="col-12 md:col-5 flex flex-column gap-3">
+        <!-- CUADRO DE PREVIEW -->
+        <div class="preview-foto">
+          <img [src]="image" id="imagenVista" *ngIf="image" class="img-render">
+          <i class="pi pi-user text-6xl opacity-20" *ngIf="!image"></i>
+        </div>
+
+        <!-- DESCRIPCIÓN -->
+        <div class="field">
+          <textarea pTextarea formControlName="description" rows="4" class="input-custom" placeholder="Descripción..."></textarea>
+        </div>
+
+        <!-- BOTONES -->
+        <p-fileUpload mode="basic" chooseLabel="Seleccionar Foto" 
+                      accept="image/*" styleClass="btn-cian" 
+                      chooseIcon="pi pi-camera">
+        </p-fileUpload>
+        
+        <button pButton label="Editar Personaje" icon="pi pi-check" class="btn-verde" (click)="onSave()"></button>
       </div>
 
-      <!-- FOTO -->
-      <div class="field col-12">
-        <label>Actualizar Foto</label>
-        <p-fileUpload mode="basic" chooseLabel="Seleccionar Foto" accept="image/*" styleClass="w-full" (onSelect)="onFileSelect($event)" ></p-fileUpload>
-      </div>
-    </section>
+    </div>
+  </section>
+
   }
 
   <div class="flex justify-content-end gap-2 mt-4">

@@ -10,8 +10,10 @@ import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { FileUploadModule } from 'primeng/fileupload';
-
+import { ProgressBarModule } from 'primeng/progressbar';
 import { ModalCharacter } from '../../../../shared/interfaces/models/character.model';
+import { CardModule } from 'primeng/card';
+
 
 @Component({
   selector: 'app-character-detail',
@@ -24,9 +26,10 @@ import { ModalCharacter } from '../../../../shared/interfaces/models/character.m
     TextareaModule, 
     SelectModule, 
     RadioButtonModule, 
-    FileUploadModule
+    FileUploadModule,ProgressBarModule,CardModule
   ],
-  templateUrl: './character-detail.html'
+  templateUrl: './character-detail.html',
+  styleUrl: './character-detail.scss',
 })
 export class CharacterDetailComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -90,7 +93,21 @@ onFileSelect(event: any) {
     reader.readAsDataURL(file);
   }
 }
+getKiPercentage(): number {
+  const kiValue = this.characterForm.get('ki')?.value;
+  const maxKiValue = this.characterForm.get('maxKi')?.value;
 
+  if (!kiValue || !maxKiValue) return 0;
+
+  // Limpiamos los puntos y convertimos a número
+  const ki = parseFloat(kiValue.toString().replace(/\./g, ''));
+  const maxKi = parseFloat(maxKiValue.toString().replace(/\./g, ''));
+
+  if (isNaN(ki) || isNaN(maxKi)) return 0;
+
+  const percentage = (ki / maxKi) * 100;
+  return percentage > 100 ? 100 : percentage;
+}
 
   onCancel() {
     this.ref.close();
