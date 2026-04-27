@@ -1,19 +1,30 @@
-
 <app-headers title="PERSONAJES"></app-headers>
 <section class="card-body">
-      <div class="header-border"></div>
-      <div class="mb-4 p-8">
-            <p-card>
-                <!-- PASO DE PROPS AL HIJO -->
-                <app-table 
-                    [characters]="characters()" 
-                    [totalRecords]="totalCount()" 
-                    [loading]="isLoading()"
-                    (onLoadData)="handleLoadData($event)">
-                </app-table>
-            </p-card>
-        </div>
+  <div class="header-border"></div>
+  <div class="mb-4 p-8">
+    <p-card>
+      <!-- BOTÓN PARA ABRIR MODAL -->
+      <div class="flex justify-content-end mb-3">
+        <button 
+          pButton 
+          label="Nuevo Guerrero" 
+          icon="pi pi-plus" 
+          (click)="abrirEdicion({id: 0, name: 'Nuevo'})">
+        </button>
+      </div>
+
+      <app-table 
+        [characters]="characters()" 
+        [totalRecords]="totalCount()" 
+        [loading]="isLoading()" 
+        (onLoadData)="handleLoadData($event)">
+      </app-table>
+    </p-card>
+  </div>
 </section>
+
+<!--aqui quiero que el boton detone la funcion de modal-->
+
 
 <!-- Spinner mientras carga -->
 @if (isLoading()) {
