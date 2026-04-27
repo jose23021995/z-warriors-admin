@@ -25,3 +25,30 @@
 .font-bold {
   color: var(--p-primary-color);
 }
+
+.align-items-center{
+          img{
+            height: 80px !important;
+          }
+}
+#toolbar {
+    display: flex !important;
+    flex-direction: row !important;
+  }
+.main-menu{
+  background-color: var(--primary-card) !important;
+}
+
+#main-panel{
+  padding: 0px !important;
+  max-width: 100% !important;
+  display: flex !important;
+}
+
+@media screen and (max-width: 400px) {
+  #toolbar {
+    display: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}

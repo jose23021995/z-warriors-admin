@@ -47,6 +47,9 @@
             }
         }
         #card{
+             img{
+                height: 80px;
+            }
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
@@ -135,6 +138,7 @@ label{
     border-left: 1px red solid !important;
 }
 
+
 @media screen and (max-width: 768px) {
     .login-container .section-login {
         width: 95% !important;
@@ -186,3 +190,4 @@ label{
 .dark_mode_position{
   position: absolute; top: 20px; right: 20px;
 }
+

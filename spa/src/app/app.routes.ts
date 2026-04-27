@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { DashboardLayoutComponent } from './features/dashboard/dashboard-layout/dashboard-layout.component';
 
 export const routes: Routes = [
   {
@@ -8,18 +9,24 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
+    component: DashboardLayoutComponent, // Este es el padre que tiene el <router-outlet>
     canActivate: [authGuard],
-    // CORRECCIÓN AQUÍ: m.DashboardLayoutComponent
-    loadComponent: () => import('./features/dashboard/dashboard-layout/dashboard-layout.component')
-      .then(m => m.DashboardLayoutComponent),
     children: [
       {
-        path: 'characters',
+        path: 'characters', // Se accede como /dashboard/characters
         loadComponent: () => import('./features/characters/character-list/character-list.component')
           .then(m => m.CharacterListComponent)
       },
-      // Puedes agregar aquí la ruta de estadísticas después
-      { path: '', redirectTo: 'characters', pathMatch: 'full' }
+      {
+        path: 'stats', // Se accede como /dashboard/stats
+        loadComponent: () => import('./features/stats/stats') // Ajusta la ruta a tu componente de stats
+          .then(m => m.Stats)
+      },
+      {
+        path: '', 
+        redirectTo: 'characters', 
+        pathMatch: 'full' 
+      }
     ]
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' },

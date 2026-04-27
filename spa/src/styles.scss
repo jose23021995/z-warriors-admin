@@ -16,8 +16,11 @@
         rgba(235, 235, 235, 0.5),
         rgba(209, 209, 209, 0.5)
     );
+    --difuminado-fondo-panel: linear-gradient(rgb(8 8 8 / 30%), rgb(188 188 188 / 79%)) !important;
+    
     --select-button-bg:#FF9200;
     --select-button:#4A36C2;
+    --personajes-icon:url("/img/shared/person_header_information/h2_charactor.png") !important;
 }
 
 /* Colores para el Modo Oscuro */
@@ -36,8 +39,14 @@
         rgba(71, 71, 71, 0.5),
         rgba(71, 71, 71, 0.5)
     );
+    --difuminado-fondo-panel: linear-gradient(
+        rgba(71, 71, 71, 0.5),
+        rgba(71, 71, 71, 0.5)
+    );
     --select-button-bg:#071F94;
     --select-button:#AB1C0A;
+    --personajes-icon:url("/img/shared/person_header_information/h2_charactor_dark.png") !important;
+
 }
 
 /* Estilos globales */
@@ -86,4 +95,10 @@ html, body {
             border-radius: 25px !important;
         }
     } 
+}span.p-togglebutton-content{
+        border-radius: 25px solid !important;
+}
+app-character-list{
+    width: 100% !important;
+
 }

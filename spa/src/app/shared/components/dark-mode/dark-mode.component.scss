@@ -31,14 +31,10 @@
 }
 
 #sm-Dark-mode{
-    display: none !important;
-    @media (max-width: 768px) {
-        display: block !important;
-    }
+    display: block !important;
+
 }
 #md-Dark-mode{
-    display: block !important;
-    @media (max-width: 768px) {
-        display: none !important;
-    }
+    display: none !important;
+
 }
