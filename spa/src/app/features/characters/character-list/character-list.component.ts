@@ -26,19 +26,36 @@ export class CharacterListComponent implements OnInit { // Implementa la interfa
     this.handleLoadData({ page: 2, limit: 10 });
   }
 
-  async handleLoadData(event: { page: number; limit: number; search?: string }) {
+async handleLoadData(event: { page: number; limit: number; search?: string }) {
   try {
     this.isLoading.set(true);
-    const response = await this.charService.getCharacters(event.page, event.limit);
-    this.characters.set(response.items || []);
-    this.totalCount.set(response.meta?.totalItems || 0);
+    const response = await this.charService.getCharacters(event.page, event.limit, event.search);
+    
+    // Normalizamos la respuesta a un Array
+    let rawData: any[] = response.items || (Array.isArray(response) ? response : [response]);
 
-    // AQUÍ es donde debes hacer el log para ver los resultados:
-    console.log('Personajes cargados:', this.characters()); 
+    if (event.search) {
+      const query = event.search.toLowerCase();
+      
+      // FILTRO HÍBRIDO: Busca en Nombre O en Raza
+      const filtered = rawData.filter(char => 
+        char.name.toLowerCase().includes(query) || 
+        char.race.toLowerCase().includes(query)
+      );
+
+      this.characters.set(filtered);
+      this.totalCount.set(filtered.length);
+    } else {
+      // Carga normal paginada
+      this.characters.set(rawData);
+      this.totalCount.set(response.meta?.totalItems || rawData.length);
+    }
   } catch (error) {
-    console.error(error);
+    this.characters.set([]);
+    this.totalCount.set(0);
   } finally {
     this.isLoading.set(false);
   }
 }
+
 }

@@ -1,26 +1,23 @@
 
 <app-headers title="PERSONAJES"></app-headers>
-
-@if (isLoading()) {
-    <div class="flex justify-content-center mt-4">
-        <p-progressSpinner 
-            strokeWidth="8" 
-            fill="transparent" 
-            animationDuration=".5s" 
-            [style]="{ width: '50px', height: '50px' }">
-        </p-progressSpinner>
-    </div>
-} @else {
-    <!-- Datos crudos (solo visibles cuando termina de cargar) -->
-    <!--
-    <pre class="p-4 bg-faded border-round">{{ characters() | json }}</pre>
-    -->
-    <section class="card-body">
+<section class="card-body">
       <div class="header-border"></div>
       <div class="mb-4 p-8">
             <p-card header="Lista de personajes">
-                <app-table></app-table>
+                <!-- PASO DE PROPS AL HIJO -->
+                <app-table 
+                    [characters]="characters()" 
+                    [totalRecords]="totalCount()" 
+                    [loading]="isLoading()"
+                    (onLoadData)="handleLoadData($event)">
+                </app-table>
             </p-card>
         </div>
 </section>
+
+<!-- Spinner mientras carga -->
+@if (isLoading()) {
+    <div class="flex justify-content-center p-4">
+        <p-progressSpinner strokeWidth="4" [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
+    </div>
 }
