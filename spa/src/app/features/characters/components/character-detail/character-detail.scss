@@ -45,3 +45,56 @@
     padding: 0px !important;
 }
 
+#edicion{
+    background: rgba(255, 255, 255, 0.1) !important;
+
+    /* 2. El efecto de desenfoque (Lo que da el toque de "vidrio") */
+    backdrop-filter: blur(15px) saturate(150%);
+    -webkit-backdrop-filter: blur(15px) saturate(150%); /* Soporte para Safari */
+
+    /* 3. Borde sutil para definir la forma */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    /* Opcional: Sombra para dar profundidad */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+}
+.text-area{
+    margin-top: 20px;
+    width: 100% !important;
+    textarea{
+        width: 100% !important;
+    }
+}
+.grid.editar{
+    
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    
+    .field{
+        display: flex !important;
+        flex-direction: column !important;
+        border-bottom: 10px;
+        .texto-etiqueta {
+    display: block;          /* Asegura que ocupe su propia línea */
+    margin-bottom: 8px;      /* Espacio con el input */
+    color: #d8dbdd;          /* Azul cian brillante (puedes usar #00d2ff) */
+    font-weight: 800;        /* Muy negrita */
+    font-size: 0.85rem;      /* Tamaño un poco más pequeño para estilo Pro */
+    text-transform: uppercase; /* Todo en mayúsculas */
+    letter-spacing: 1px;     /* Espaciado entre letras tipo videojuego */
+    
+    /* TRUCO: Borde negro sutil para que sea legible en cualquier fondo */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Para el icono que pusiste dentro del label */
+.texto-etiqueta i {
+    margin-right: 6px;       /* Separa el icono del texto "Nombre" */
+    color: #ffffff;          /* El icono queda mejor en blanco */
+    font-size: 0.9rem;
+}
+    }
+
+}

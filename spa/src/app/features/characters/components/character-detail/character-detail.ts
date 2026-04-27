@@ -78,21 +78,22 @@ export class CharacterDetailComponent implements OnInit {
 // En character-detail.ts
 
 onFileSelect(event: any) {
-  // PrimeNG entrega los archivos seleccionados en la propiedad 'files'
-  const file = event.files[0]; 
+  // PrimeNG 18 suele usar event.currentFiles o event.files
+  const file = event.files ? event.files[0] : event.currentFiles[0];
 
   if (file) {
     const reader = new FileReader();
-
+    
     reader.onload = (e: any) => {
-      // 1. Aquí actualizamos la variable global 'this.image'
-      // 2. Al cambiar, el [src] del HTML reacciona automáticamente
+      // Esto actualizará [src]="image" de tu img.img-render automáticamente
       this.image = e.target.result;
+      console.log("Imagen actualizada correctamente");
     };
 
     reader.readAsDataURL(file);
   }
 }
+
 getKiPercentage(): number {
   const kiValue = this.characterForm.get('ki')?.value;
   const maxKiValue = this.characterForm.get('maxKi')?.value;

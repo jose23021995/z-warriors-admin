@@ -39,55 +39,56 @@
 
   @if (isEditable) {
     <section id="edicion" class="card-modal"> <!-- Quitamos grid de aquí para controlarlo mejor -->
-    <div class="grid p-fluid"> <!-- Añadimos el grid aquí -->
-      
-      <!-- COLUMNA IZQUIERDA (7 de 12) -->
-      <div class="col-12 md:col-7">
-        <div class="field">
-          <label class="texto-etiqueta"><i class="pi pi-user"></i> Nombre</label>
-          <input pInputText formControlName="name" class="input-custom" />
-        </div>
-
-        <div class="field">
-          <label class="texto-etiqueta"><i class="pi pi-bolt"></i> Ki</label>
-          <input pInputText formControlName="ki" class="input-custom" />
-        </div>
-
-        <div class="field">
-          <label class="texto-etiqueta"><i class="pi pi-chart-line"></i> Max Ki</label>
-          <input pInputText formControlName="maxKi" class="input-custom" />
-        </div>
-
-        <div class="field">
-          <label class="texto-etiqueta"><i class="pi pi-tags"></i> Raza</label>
-          <p-select [options]="races" formControlName="race" placeholder="Selecciona Raza" styleClass="input-custom"></p-select>
-        </div>
-      </div>
-
-      <!-- COLUMNA DERECHA (5 de 12) -->
-      <div class="col-12 md:col-5 flex flex-column gap-3">
-        <!-- CUADRO DE PREVIEW -->
-        <div class="preview-foto">
-          <img [src]="image" id="imagenVista" *ngIf="image" class="img-render">
-          <i class="pi pi-user text-6xl opacity-20" *ngIf="!image"></i>
-        </div>
-
-        <!-- DESCRIPCIÓN -->
-        <div class="field">
-          <textarea pTextarea formControlName="description" rows="4" class="input-custom" placeholder="Descripción..."></textarea>
-        </div>
-
-        <!-- BOTONES -->
-        <p-fileUpload mode="basic" chooseLabel="Seleccionar Foto" 
-                      accept="image/*" styleClass="btn-cian" 
-                      chooseIcon="pi pi-camera">
-        </p-fileUpload>
+      <div class="grid p-fluid editar"> <!-- Añadimos el grid aquí -->
         
-        <button pButton label="Editar Personaje" icon="pi pi-check" class="btn-verde" (click)="onSave()"></button>
-      </div>
+        <!-- COLUMNA IZQUIERDA (7 de 12) -->
+        <div class="col-12 md:col-7 izquierda">
+          <div class="field">
+            <label class="texto-etiqueta"><i class="pi pi-user"></i> Nombre</label>
+            <input pInputText formControlName="name" class="input-custom" />
+          </div>
 
-    </div>
-  </section>
+          <div class="field">
+            <label class="texto-etiqueta"><i class="pi pi-bolt"></i> Ki</label>
+            <input pInputText formControlName="ki" class="input-custom" />
+          </div>
+
+          <div class="field">
+            <label class="texto-etiqueta"><i class="pi pi-chart-line"></i> Max Ki</label>
+            <input pInputText formControlName="maxKi" class="input-custom" />
+          </div>
+
+          <div class="field">
+            <label class="texto-etiqueta"><i class="pi pi-tags"></i> Raza</label>
+            <p-select [options]="races" formControlName="race" placeholder="Selecciona Raza" styleClass="input-custom"></p-select>
+          </div>
+        </div>
+
+        <!-- COLUMNA DERECHA (5 de 12) -->
+        <div class="col-12 md:col-5 flex flex-column gap-3 derecha">
+          <!-- CUADRO DE PREVIEW -->
+          <div class="preview-foto">
+            <img [src]="image" id="imagenVista" *ngIf="image" class="img-render">
+            <i class="pi pi-user text-6xl opacity-20" *ngIf="!image"></i>
+          </div>
+
+          <!-- DESCRIPCIÓN -->
+          
+
+          <!-- BOTONES -->
+          <p-fileUpload mode="basic" chooseLabel="Seleccionar Foto" 
+                        accept="image/*" styleClass="btn-cian" 
+                        chooseIcon="pi pi-camera" (onSelect)="onFileSelect($event)">
+          </p-fileUpload>
+          
+        </div>
+        
+
+      </div>
+      <div class="field text-area">
+            <textarea pTextarea formControlName="description" rows="4" class="input-custom" placeholder="Descripción..."></textarea>
+          </div>
+    </section>
 
   }
 
