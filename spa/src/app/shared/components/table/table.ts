@@ -70,6 +70,16 @@ triggerSearch() {
   });
 }
 
+getKiPercentage(ki: string, maxKi: string): number {
+  // Limpiamos los puntos y convertimos a número
+  const current = parseFloat(ki.replace(/\./g, ''));
+  const max = parseFloat(maxKi.replace(/\./g, ''));
+
+  // Si no son números válidos (como "Unknown" o "Septillion"), devolvemos 0 o 100
+  if (isNaN(current) || isNaN(max)) return 100; 
+  
+  return (current / max) * 100;
+}
 
   getRaceSeverity(race: string): "success" | "info" | "warn" | "danger" | "secondary" | undefined {
     const r = race?.toLowerCase();
