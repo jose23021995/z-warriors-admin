@@ -1,6 +1,7 @@
 <div class="card shadow-2 border-round">
     <!-- Buscador Superior -->
-    <div class="flex justify-content-between p-3 gap-2 bg-gray-50 border-bottom-1 border-gray-200">
+    <div class=" p-3 gap-2 bg-gray-50 border-bottom-1 border-gray-200"
+    id="filtro">
         <p-iconField iconPosition="left" class="w-full">
             <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
             <input 
@@ -8,7 +9,7 @@
                 type="text" 
                 [(ngModel)]="searchQuery" 
                 (keyup.enter)="triggerSearch()"
-                placeholder="Buscar por nombre o raza (ej. Saiyan, Namekian...)" 
+                placeholder="Buscar por nombre o raza" 
                 class="w-full border-round-lg" />
         </p-iconField>
         <p-button 
@@ -51,6 +52,7 @@
                         [src]="char.image" 
                         [alt]="char.name" 
                         width="50" 
+                        height="130"
                         [preview]="true"
                         styleClass="border-round shadow-1">
                     </p-image>
