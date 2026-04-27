@@ -1,1 +1,92 @@
-<p>table works!</p>
+
+    <p-table 
+        #dt1 
+        [value]="data().length > 0 ? data() : mockData" 
+        dataKey="id" 
+        [rows]="10" 
+        [rowsPerPageOptions]="[10, 25, 50]" 
+        [loading]="loading()" 
+        [paginator]="true" 
+        [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']" 
+        responsiveLayout="stack"
+        [breakpoint]="'960px'"
+        styleClass="p-datatable-gridlines">
+        
+        <ng-template pTemplate="caption">
+            <div class="flex justify-content-between flex-column sm:flex-row">
+                <button pButton label="Limpiar" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                <p-iconField iconPosition="left" class="ml-auto">
+                    <p-inputIcon>
+                        <i class="pi pi-search"></i>
+                    </p-inputIcon>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt1, $event)" placeholder="Buscar palabra clave" class="w-full sm:w-auto" />
+                </p-iconField>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="min-width:12rem">
+                    <div class="flex justify-content-between align-items-center">
+                        Nombre
+                        <p-columnFilter type="text" field="name" display="menu" placeholder="Buscar por nombre"></p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width:12rem">
+                    <div class="flex justify-content-between align-items-center">
+                        País
+                        <p-columnFilter type="text" field="country.name" display="menu" placeholder="Buscar por país"></p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width:10rem">
+                    <div class="flex justify-content-between align-items-center">
+                        Estatus
+                        <p-columnFilter field="status" matchMode="equals" display="menu">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-select [ngModel]="value" [options]="statuses()" (onChange)="filter($event.value)" placeholder="Seleccionar" [editable]="true">
+                                    <ng-template let-option pTemplate="item">
+                                        <p-tag [value]="option.label" [severity]="getSeverity(option.value)"></p-tag>
+                                    </ng-template>
+                                </p-select>
+                            </ng-template>
+                        </p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width:8rem">
+                    <div class="flex justify-content-between align-items-center">
+                        Actividad
+                        <p-columnFilter field="activity" matchMode="between" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-slider [ngModel]="value" [range]="true" (onSlideEnd)="filter($event.values)" styleClass="m-3"></p-slider>
+                                <div class="flex align-items-center justify-content-between px-2">
+                                    <span>{{value ? value[0] : 0}}</span>
+                                    <span>{{value ? value[1] : 100}}</span>
+                                </div>
+                            </ng-template>
+                        </p-columnFilter>
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-customer>
+            <tr>
+                <td>{{customer.name}}</td>
+                <td>
+                    <span class="ml-1 vertical-align-middle">{{customer.country.name}}</span>
+                </td>
+                <td>
+                    <p-tag [value]="customer.status" [severity]="getSeverity(customer.status)"></p-tag>
+                </td>
+                <td>
+                    <span [class]="'customer-badge activity-' + customer.activity">{{customer.activity}}%</span>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No se encontraron resultados.</td>
+            </tr>
+        </ng-template>
+    </p-table>

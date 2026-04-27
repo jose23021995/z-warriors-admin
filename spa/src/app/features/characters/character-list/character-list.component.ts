@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal  } from '@angular/core';
 import { HeadersComponent } from '../../../shared/components/headers/headers'; // Importa la ruta correcta
 import { CardModule } from 'primeng/card';
-import {Table as TableComponent} from '../../../shared/components/table/table';
+import {TableComponent} from '../../../shared/components/table/table';
 
 @Component({
   selector: 'app-character-list',
