@@ -1,17 +1,17 @@
 export interface Character {
-  id:          number;
-  name:        string;
-  ki:          string;
-  maxKi:       string;
-  race:        string;
-  gender:      string;
+  id: number;
+  name: string;
+  ki: string;
+  maxKi: string;
+  race: string;
+  gender: string;
   description: string;
-  image:       string;
+  image: string;
   affiliation: string;
-  deletedAt:   null | string | Date;
+  deletedAt: null | string | Date;
 }
 
-export interface ModalCharacter{
-  type:boolean,
-  Character:Character
+export interface ModalCharacter {
+  type: boolean;
+  data: Character; // Sugerencia: usa minúscula para evitar confusiones
 }

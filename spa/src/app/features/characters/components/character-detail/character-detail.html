@@ -1,8 +1,80 @@
-<div style="padding: 20px;">
-      <h3>Editando: {{ nombre }}</h3>
-      <p>ID del Guerrero: {{ id }}</p>
-      
-      <button pButton label="Guardar Cambios (Enviar JSON)" 
-              (click)="enviarDatos()" class="p-button-success">
-      </button>
-    </div>
+<form [formGroup]="characterForm" class="p-fluid">
+  <!-- IMAGEN -->
+  <div class="flex justify-content-center mb-4">
+    <img [src]="image" style="width: 150px; border-radius: 10px; border: 1px solid #ccc;">
+  </div>
+
+  @if (!isEditable) {
+    <section id="vista" class="grid">
+        <div class="col-12"><strong>Nombre:</strong> {{ characterForm.get('name')?.value }}</div>
+        <div class="col-6"><strong>Ki:</strong> {{ characterForm.get('ki')?.value }}</div>
+        <div class="col-6"><strong>Max Ki:</strong> {{ characterForm.get('maxKi')?.value }}</div>
+        <div class="col-6"><strong>Raza:</strong> {{ characterForm.get('race')?.value }}</div>
+        <div class="col-6">
+          <strong>Género:</strong> 
+          <i [class]="characterForm.get('gender')?.value === 'Male' ? 'pi pi-mars text-blue-500' : 'pi pi-venus text-pink-500'"></i>
+        </div>
+        <div class="col-12"><strong>Descripción:</strong> <p>{{ characterForm.get('description')?.value }}</p></div>
+      </section>
+  }
+
+  @if (isEditable) {
+    <section id="edicion" class="grid">
+      <!-- NOMBRE -->
+      <div class="field col-12">
+        <label>Nombre</label>
+        <input pInputText formControlName="name" />
+      </div>
+
+      <!-- KI Y MAX KI (En la misma fila) -->
+      <div class="field col-6">
+        <label>Ki</label>
+        <input pInputText formControlName="ki" />
+      </div>
+      <div class="field col-6">
+        <label>Max Ki</label>
+        <input pInputText formControlName="maxKi" />
+      </div>
+
+      <!-- RAZA -->
+      <div class="field col-12">
+        <label>Raza</label>
+        <p-select [options]="races" formControlName="race" placeholder="Selecciona Raza"></p-select>
+      </div>
+
+      <!-- GÉNERO -->
+      <div class="field col-12">
+        <label class="block mb-2">Género</label>
+        <div class="flex gap-4">
+          <div class="flex align-items-center">
+            <p-radioButton name="gender" value="Male" formControlName="gender" inputId="m"></p-radioButton>
+            <label for="m" class="ml-2">Masculino</label>
+          </div>
+          <div class="flex align-items-center">
+            <p-radioButton name="gender" value="Female" formControlName="gender" inputId="f"></p-radioButton>
+            <label for="f" class="ml-2">Femenino</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESCRIPCIÓN -->
+      <div class="field col-12">
+        <label>Descripción</label>
+        <textarea pTextarea formControlName="description" rows="3"></textarea>
+      </div>
+
+      <!-- FOTO -->
+      <div class="field col-12">
+        <label>Actualizar Foto</label>
+        <p-fileUpload mode="basic" chooseLabel="Seleccionar Foto" accept="image/*" styleClass="w-full" (onSelect)="onFileSelect($event)" ></p-fileUpload>
+      </div>
+    </section>
+  }
+
+  <div class="flex justify-content-end gap-2 mt-4">
+    <button pButton label="Regreso" class="p-button-text p-button-secondary" (click)="onCancel()"></button>
+    @if (isEditable) {
+      <button pButton label="Editar Personaje" [disabled]="characterForm.invalid" (click)="onSave()"></button>
+    }
+  </div>
+</form>

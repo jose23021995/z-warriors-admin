@@ -48,7 +48,7 @@ export class CharacterTable {
   displayData = computed(() => this.characters());
   displayTotal = computed(() => this.totalRecords());
   
-  @Output() onCharacterSelected = new EventEmitter<ModalCharacter>();
+  @Output() onCharacterSelected = new EventEmitter<any>();
 
 
   loadCharactersLazy(event: TableLazyLoadEvent) {
@@ -95,9 +95,10 @@ getKiPercentage(ki: string, maxKi: string): number {
   }
 
   returnInformationModal(character: Character,type: any) { 
-    const modal: ModalCharacter = { 
+    console.log("tabla",character);
+    const modal = { 
       type: !!type, 
-      Character: character 
+      data: character 
     };
     this.onCharacterSelected.emit(modal);
   }

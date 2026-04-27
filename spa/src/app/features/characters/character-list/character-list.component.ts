@@ -12,7 +12,7 @@ import { CharacterDetailComponent } from '../components/character-detail/charact
 import { CharacterTable } from '../components/character-table/character-table';
 //servicio para peticiones http 
 import { CharacterService } from '../../../core/services/character.service';
-import { Character } from '../../../shared/interfaces/models/character.model'
+import { Character, ModalCharacter } from '../../../shared/interfaces/models/character.model'
 
 @Component({
   selector: 'app-character-list',
@@ -47,6 +47,7 @@ export class CharacterListComponent implements OnInit {
   }
 
   abrirEdicion(guerrero: any) {
+    console.log("guerrero",guerrero);
     // Usamos el componente real aquí
     this.ref = this.dialogService.open(CharacterDetailComponent, {
       header: `Editar a ${guerrero.name}`,
@@ -98,21 +99,20 @@ export class CharacterListComponent implements OnInit {
   }
   // ... dentro de tu clase CharacterListComponent
 
- handleCharacterUpdate(character: Character) {
-  console.log("Padre enviando objeto completo al modal:", character);
-
+ // En character-list.component.ts
+  handleCharacterUpdate(data: ModalCharacter) {
+    console.log("datos del padre",data);
+   const payload: ModalCharacter = data;
+   console.log("paylod",payload);
+   const { data:datamodal}=payload;
+   const {name} =datamodal;
   this.ref = this.dialogService.open(CharacterDetailComponent, {
-    header: `Perfil de Guerrero: ${character.name}`,
-    width: '60%', // Un poco más ancho para ver bien el objeto
-    data: character // <--- Aquí va el objeto completo {id, name, ki, etc...}
+    header: `Editar a ${name}`,
+    width: '50%',
+    data: payload
   });
-
-  if (this.ref) {
-    this.ref.onClose.subscribe((res) => {
-      if (res) console.log('El modal retornó:', res);
-    });
-  }
 }
+
 }
 
 
