@@ -96,9 +96,23 @@ export class CharacterListComponent implements OnInit {
       this.isLoading.set(false);
     }
   }
-  handleCharacterUpdate(character: Character) {
-    console.log("Padre recibió el objeto:", character);
+  // ... dentro de tu clase CharacterListComponent
+
+ handleCharacterUpdate(character: Character) {
+  console.log("Padre enviando objeto completo al modal:", character);
+
+  this.ref = this.dialogService.open(CharacterDetailComponent, {
+    header: `Perfil de Guerrero: ${character.name}`,
+    width: '60%', // Un poco más ancho para ver bien el objeto
+    data: character // <--- Aquí va el objeto completo {id, name, ki, etc...}
+  });
+
+  if (this.ref) {
+    this.ref.onClose.subscribe((res) => {
+      if (res) console.log('El modal retornó:', res);
+    });
   }
+}
 }
 
 

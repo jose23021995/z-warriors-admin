@@ -10,3 +10,8 @@ export interface Character {
   affiliation: string;
   deletedAt:   null | string | Date;
 }
+
+export interface ModalCharacter{
+  type:boolean,
+  Character:Character
+}

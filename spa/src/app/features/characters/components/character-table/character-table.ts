@@ -14,7 +14,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { Character } from '../../../../shared/interfaces/models/character.model'
+import { Character,ModalCharacter } from '../../../../shared/interfaces/models/character.model'
 @Component({
   selector: 'app-character-table',
   standalone: true,
@@ -48,7 +48,7 @@ export class CharacterTable {
   displayData = computed(() => this.characters());
   displayTotal = computed(() => this.totalRecords());
   
-  @Output() onCharacterSelected = new EventEmitter<Character>();
+  @Output() onCharacterSelected = new EventEmitter<ModalCharacter>();
 
 
   loadCharactersLazy(event: TableLazyLoadEvent) {
@@ -94,8 +94,12 @@ getKiPercentage(ki: string, maxKi: string): number {
     return 'secondary';
   }
 
-  returnInformationModal(character: Character) { 
-    this.onCharacterSelected.emit(character);
+  returnInformationModal(character: Character,type: any) { 
+    const modal: ModalCharacter = { 
+      type: !!type, 
+      Character: character 
+    };
+    this.onCharacterSelected.emit(modal);
   }
 }
 
