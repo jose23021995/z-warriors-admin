@@ -13,12 +13,13 @@
         </button>
       </div>
 
-      <app-table 
+      <app-character-table
         [characters]="characters()" 
         [totalRecords]="totalCount()" 
         [loading]="isLoading()" 
-        (onLoadData)="handleLoadData($event)">
-      </app-table>
+        (onLoadData)="handleLoadData($event)"
+        (onCharacterSelected)="handleCharacterUpdate($event)">
+      </app-character-table>
     </p-card>
   </div>
 </section>

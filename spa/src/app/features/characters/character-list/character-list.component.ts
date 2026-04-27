@@ -7,12 +7,12 @@ import { DialogService, DynamicDialogRef, DynamicDialogModule } from 'primeng/dy
 
 // Tus componentes
 import { HeadersComponent } from '../../../shared/components/headers/headers';
-import { TableComponent } from '../../../shared/components/table/table';
+//componentes propios del componente padre
+import { CharacterDetailComponent } from '../components/character-detail/character-detail'; 
+import { CharacterTable } from '../components/character-table/character-table';
+//servicio para peticiones http 
 import { CharacterService } from '../../../core/services/character.service';
-
-// IMPORTANTE: Sustituye esto por la ruta real de tu componente modal
-// Si aún no lo creas, puedes crear uno rápido con 'ng g c features/characters/character-detail'
-import { CharacterDetailComponent } from '../character-detail/character-detail'; 
+import { Character } from '../../../shared/interfaces/models/character.model'
 
 @Component({
   selector: 'app-character-list',
@@ -21,12 +21,12 @@ import { CharacterDetailComponent } from '../character-detail/character-detail';
     CommonModule,
     HeadersComponent,
     CardModule,
-    TableComponent,
+    CharacterTable,
     ProgressSpinnerModule,
-    DynamicDialogModule // <--- EL MÓDULO VA AQUÍ
+    DynamicDialogModule
   ],
   providers: [
-    DialogService // <--- EL SERVICIO VA AQUÍ
+    DialogService
   ],
   templateUrl: './character-list.component.html',
   styleUrl: './character-list.component.scss',
@@ -95,6 +95,9 @@ export class CharacterListComponent implements OnInit {
     } finally {
       this.isLoading.set(false);
     }
+  }
+  handleCharacterUpdate(character: Character) {
+    console.log("Padre recibió el objeto:", character);
   }
 }
 

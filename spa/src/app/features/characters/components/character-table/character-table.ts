@@ -1,4 +1,5 @@
-import { Component, input, signal, output, computed } from '@angular/core';
+
+import { Component, input, signal, output,Output,Input,EventEmitter, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -13,9 +14,9 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressBarModule } from 'primeng/progressbar';
-
+import { Character } from '../../../../shared/interfaces/models/character.model'
 @Component({
-  selector: 'app-table',
+  selector: 'app-character-table',
   standalone: true,
   imports: [
     CommonModule, 
@@ -31,11 +32,11 @@ import { ProgressBarModule } from 'primeng/progressbar';
     InputIconModule, 
     SkeletonModule
   ],
-  templateUrl: './table.html',
+  templateUrl: './character-table.html',
+  styleUrl: './character-table.scss',
 })
-// ... (imports iguales)
 
-export class TableComponent {
+export class CharacterTable {
   characters = input<any[]>([]); 
   totalRecords = input<number>(0); 
   loading = input<boolean>(false);
@@ -46,6 +47,9 @@ export class TableComponent {
 
   displayData = computed(() => this.characters());
   displayTotal = computed(() => this.totalRecords());
+  
+  @Output() onCharacterSelected = new EventEmitter<Character>();
+
 
   loadCharactersLazy(event: TableLazyLoadEvent) {
     if (typeof event.rows === 'number') {
@@ -89,4 +93,9 @@ getKiPercentage(ki: string, maxKi: string): number {
     if (r === 'frieza race') return 'danger';
     return 'secondary';
   }
+
+  returnInformationModal(character: Character) { 
+    this.onCharacterSelected.emit(character);
+  }
 }
+
