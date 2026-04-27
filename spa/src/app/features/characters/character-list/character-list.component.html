@@ -1,6 +1,21 @@
 
 <app-headers title="PERSONAJES"></app-headers>
-<section class="card-body">
+
+@if (isLoading()) {
+    <div class="flex justify-content-center mt-4">
+        <p-progressSpinner 
+            strokeWidth="8" 
+            fill="transparent" 
+            animationDuration=".5s" 
+            [style]="{ width: '50px', height: '50px' }">
+        </p-progressSpinner>
+    </div>
+} @else {
+    <!-- Datos crudos (solo visibles cuando termina de cargar) -->
+    <!--
+    <pre class="p-4 bg-faded border-round">{{ characters() | json }}</pre>
+    -->
+    <section class="card-body">
       <div class="header-border"></div>
       <div class="mb-4 p-8">
             <p-card header="Lista de personajes">
@@ -8,3 +23,4 @@
             </p-card>
         </div>
 </section>
+}
