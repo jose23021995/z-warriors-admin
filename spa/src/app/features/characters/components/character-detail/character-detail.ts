@@ -70,15 +70,19 @@ export class CharacterDetailComponent implements OnInit {
 
   ngOnInit() {
     // Desestructuramos del objeto recibido (ModalCharacter)
-    console.log("holi holi",this.config.data);
-    const { type, response:character } = this.config.data;
+    const { type, response:character,transformations:transformation } = this.config.data;
     this.characterResponse=character;
     console.log("informacion que llega del padre",this.config.data);
     const {
       name, description, gender, id, image, ki, maxKi, race, 
       affiliation, deletedAt, originPlanet, transformations 
     } = this.characterResponse;
-
+    let namaTr: string = '';
+    let imageTr: string = '';
+    if (transformation) {
+        ({ name: namaTr, image: imageTr } = transformation);
+    }
+        console.log(imageTr);
     // 2. Desestructuración del planeta
     const {
       id: idPl, deletedAt: delPl, description: descPl, 
@@ -86,18 +90,17 @@ export class CharacterDetailComponent implements OnInit {
     } = originPlanet;
 
     // 3. Asignación a variables públicas
-    this.name = name;
+    this.name = transformation?namaTr:name;
     this.description = description;
     this.gender = gender;
     this.id = id;
-    this.image = image;
+    this.image = transformation?imageTr:image;
     this.ki = ki;
     this.maxKi = maxKi;
     this.race = race;
     this.affiliation = affiliation;
     this.deletedAt = deletedAt;
     this.transformations = transformations || [];
-
     // Asignación de variables del planeta
     this.idPlanet = idPl;
     this.deletedAtPlanet = delPl;
@@ -105,10 +108,7 @@ export class CharacterDetailComponent implements OnInit {
     this.imagePlanet = imgPl;
     this.isDestroyed = isDest;
     this.namePlanet = namePl;
-    
     this.isEditable = type;
-    this.image = character.image;
-
     this.characterForm = this.fb.group({
       name: [character.name, [Validators.required, Validators.maxLength(50)]],
       ki: [character.ki, [Validators.required]],

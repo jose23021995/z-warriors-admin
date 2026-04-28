@@ -46,15 +46,10 @@
         style="flex-shrink: 0; width: 150px; height: 150px; border-radius: 50%; overflow: hidden; border: 3px solid #ff9100; ">
         <!-- <img [src]="image" id="imagenVista" alt="Goku"
           style="width: 100%; height: 100%; object-fit: contain; background: #252525;"> -->
-        <p-image 
-                        [src]="image" 
-                        [alt]="image" 
-                        width="50" 
-                        height="130"
-                        [preview]="true"
-                        styleClass="border-round shadow-1" style="width: 100%; height: 100%; object-fit: contain; background: #252525;">>
-                        
-                    </p-image>
+        <p-image [src]="image" [alt]="image" width="50" height="130" [preview]="true" styleClass="border-round shadow-1"
+          style="width: 100%; height: 100%; object-fit: contain; background: #252525;">>
+
+        </p-image>
       </div>
 
       <!-- profile-info: Apila nombre, tags y planeta -->
@@ -73,14 +68,11 @@
             style="background: #ff9100; color: black; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; ">{{affiliation}}</span>
         </div>
 
-        <p (click)="abrirZoom(imgPlanet)" style="margin: 0; color: #888; font-size: 0.9rem; cursor:zoom-in;">Origen: <span style="color: #ff5555;">{{namePlanet}}
+        <p (click)="abrirZoom(imgPlanet)" style="margin: 0; color: #888; font-size: 0.9rem; cursor:zoom-in;">Origen:
+          <span style="color: #ff5555;">{{namePlanet}}
             ({{isDestroyed?"💥 Destruido":"🌎 Vigente"}})</span></p>
-          <p-image #imgPlanet
-                      [src]="imagePlanet" 
-                      [preview]="true" 
-                      appendTo="body"
-                      styleClass="hidden-preview">
-              </p-image>
+        <p-image #imgPlanet [src]="imagePlanet" [preview]="true" appendTo="body" styleClass="hidden-preview">
+        </p-image>
       </div>
     </header>
 
@@ -129,19 +121,15 @@
 
         </div> -->
         @for (trans of transformations; track trans.name) {
-          <div class="card-transformation" (click)="abrirZoom(img)" 
-          style="display: flex; flex-direction: column; background: #333; padding: 10px 15px; border-radius: 8px; min-width: 120px; border: 1px solid #444; cursor:zoom-in;"> 
-              <span class="name">{{ trans.name }}</span>
-              <span class="ki">Ki: {{ trans.ki }}</span>
+        <div class="card-transformation" (click)="abrirZoom(img)"
+          style="display: flex; flex-direction: column; background: #333; padding: 10px 15px; border-radius: 8px; min-width: 120px; border: 1px solid #444; cursor:zoom-in;">
+          <span class="name">{{ trans.name }}</span>
+          <span class="ki">Ki: {{ trans.ki }}</span>
 
-              <!-- El componente p-image oculto -->
-              <p-image #img 
-                      [src]="trans.image" 
-                      [preview]="true" 
-                      appendTo="body"
-                      styleClass="hidden-preview">
-              </p-image>
-          </div>
+          <!-- El componente p-image oculto -->
+          <p-image #img [src]="trans.image" [preview]="true" appendTo="body" styleClass="hidden-preview">
+          </p-image>
+        </div>
         }
 
         <!-- Mensaje opcional si no hay transformaciones -->
@@ -214,7 +202,7 @@
   }
 
   <div class="flex justify-content-end gap-2 mt-4">
-    <button pButton label="Regreso" class="p-button-text p-button-secondary" (click)="onCancel()"></button>
+    <button pButton label="Regreso" class="p-button-text p-button-secondary Regreso" id="Regreso" (click)="onCancel()"></button>
     @if (isEditable) {
     <button pButton label="Editar Personaje" [disabled]="characterForm.invalid" (click)="onSave()"></button>
     }

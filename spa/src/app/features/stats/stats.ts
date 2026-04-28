@@ -187,7 +187,6 @@ async onChartClick(event: any) {
             type:false, 
             transformations:personajeSeleccionado, 
             response:res};
-        console.log("this.modalSelected",this.modalSelected);
         this.ref = this.dialogService.open(CharacterDetailComponent, {
           header: `Editar a ${response.name}`, // Usamos el nombre para el título
           width: '50%',
