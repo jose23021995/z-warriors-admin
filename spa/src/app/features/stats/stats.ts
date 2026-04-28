@@ -1,10 +1,12 @@
 import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser,CommonModule  } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
+import { HeadersComponent } from '../../shared/components/headers/headers';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-stats',
-  imports: [CommonModule, ChartModule],
+  imports: [CommonModule, ChartModule, HeadersComponent,CardModule],
   templateUrl: './stats.html',
   styleUrl: './stats.scss',
 })

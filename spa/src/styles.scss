@@ -49,6 +49,7 @@
     --select-button-bg:#071F94;
     --select-button:#AB1C0A;
     --personajes-icon:url("/img/shared/person_header_information/h2_charactor_dark.png") !important;
+    --estadisticas-icon:url("/img/shared/person_header_information/estadisticas.png") !important;
     --card-fondo-icon:url("/img/shared/fondo/detail/dark.jpg") !important;
 
 }
@@ -143,4 +144,7 @@ p-dynamicdialog{
 
 .card-modal .p-card-body{
     padding: .5rem !important;
+}
+app-stats{
+    width: 100% !important;
 }
