@@ -1,77 +1,75 @@
-<form [formGroup]="characterForm" class="p-fluid">
+<div class="character-view-container">
   <div id="vista" class="profile-card">
-    <header class="profile-header"
-      style="display: flex; align-items: center; gap: 30px; border-bottom: 1px solid #333; padding-bottom: 20px;">
-      <div class="avatar-wrapper"
-        style="flex-shrink: 0; width: 150px; height: 150px; border-radius: 50%; overflow: hidden; border: 3px solid #ff9100; ">
-        <p-image [src]="image" [alt]="image" width="50" height="130" [preview]="true" styleClass="border-round shadow-1"
-          style="width: 100%; height: 100%; object-fit: contain; background: #252525;">>
+    
+    <!-- Header: Imagen y Datos -->
+    <header class="profile-header">
+      <div class="avatar-wrapper">
+        <p-image [src]="image" [alt]="name" [preview]="true" 
+                 styleClass="avatar-image" imageClass="avatar-img-content">
         </p-image>
       </div>
-      <div class="profile-info" style="display: flex; flex-direction: column; gap: 10px;">
-        <h1 class="character-name" style="margin: 0; font-size: 2.5rem; text-transform: uppercase;">{{ name }}</h1>
-        <div class="meta-tags" style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <span style="background: #333; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">{{race}}</span>
-          <span style="background: #333; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">
+
+      <div class="profile-info">
+        <h1 class="character-name">{{ name }}</h1>
+        
+        <div class="meta-tags">
+          <span class="tag-base">{{race}}</span>
+          <span class="tag-base tag-icon">
             <i [class]="gender === 'Male' ? 'pi pi-mars' : 'pi pi-venus'"
-              [style.color]="gender === 'Male' ? '#3b82f6' : '#ec4899'">
+               [ngStyle]="{'color': gender === 'Male' ? '#3b82f6' : '#ec4899'}">
             </i>
           </span>
-          <span
-            style="background: #ff9100; color: black; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; ">{{affiliation}}</span>
+          <span class="tag-affiliation">{{affiliation}}</span>
         </div>
 
-        <p (click)="abrirZoom(imgPlanet)" style="margin: 0; color: #888; font-size: 0.9rem; cursor:zoom-in;">Origen:
-          <span style="color: #ff5555;">{{namePlanet}}
-            ({{isDestroyed?"💥 Destruido":"🌎 Vigente"}})</span></p>
+        <p class="origin-text" (click)="abrirZoom(imgPlanet)">
+          Origen: <span class="planet-name">{{namePlanet}} ({{isDestroyed ? "💥 Destruido" : "🌎 Vigente"}})</span>
+        </p>
+        
         <p-image #imgPlanet [src]="imagePlanet" [preview]="true" appendTo="body" styleClass="hidden-preview">
         </p-image>
       </div>
     </header>
-    <section class="power-metrics" style="display: flex; gap: 15px;">
-      <div class="stat-card"
-        style="flex: 1; background: #252525; padding: 15px; border-radius: 10px; text-align: center; border-left: 4px solid #ff9100;">
-        <span
-          style="display: block; font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 1px;">Base
-          Ki ✨</span>
-        <strong style="font-size: 1.2rem; font-family: monospace;">{{ki}}</strong>
-      </div>
-      <div class="stat-card"
-        style="flex: 1; background: #252525; padding: 15px; border-radius: 10px; text-align: center; border-left: 4px solid #ffcc00;">
-        <span
-          style="display: block; font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 1px;">Max
-          Ki ✨✨</span>
-        <strong style="font-size: 1.2rem; font-family: monospace; color: #ffcc00;">{{maxKi}}</strong>
-      </div>
-    </section>
-    <article class="biography-section" style="background: #252525; padding: 20px; border-radius: 10px;">
-      <h3 style="margin-top: 0; color: #ff9100; font-size: 0.9rem; text-transform: uppercase;">DESCRIPCIÓN 📜</h3>
-      <p class="bio-text" style="margin: 0; line-height: 1.6; color: #ccc; font-style: italic;">
-        "{{description}}"
-      </p>
-    </article>
-    <section class="evolution-list">
-      <h3 style="color: #ff9100; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 15px;">TRANSFORMACIONES 🧬
-      </h3>
-      <div class="transformations-grid" style="display: flex; flex-wrap: wrap; gap: 10px;">
-        @for (trans of transformations; track trans.name) {
-        <div class="card-transformation" (click)="abrirZoom(img)"
-          style="display: flex; flex-direction: column; background: #333; padding: 10px 15px; border-radius: 8px; min-width: 120px; border: 1px solid #444; cursor:zoom-in;">
-          <span class="name">{{ trans.name }}</span>
-          <span class="ki">Ki: {{ trans.ki }}</span>
-          <p-image #img [src]="trans.image" [preview]="true" appendTo="body" styleClass="hidden-preview">
-          </p-image>
-        </div>
-        }
-        <p *ngIf="transformations.length === 0" style="color: #666; font-style: italic; font-size: 0.8rem;">
-          Este personaje no posee transformaciones registradas.
-        </p>
 
+    <!-- Métricas de Poder -->
+    <section class="power-metrics">
+      <div class="stat-card base-ki">
+        <span class="stat-label">Base Ki ✨</span>
+        <strong class="stat-value">{{ki}}</strong>
+      </div>
+      <div class="stat-card max-ki">
+        <span class="stat-label">Max Ki ✨✨</span>
+        <strong class="stat-value">{{maxKi}}</strong>
+      </div>
+    </section>
+
+    <!-- Biografía -->
+    <article class="biography-section">
+      <h3 class="section-title">DESCRIPCIÓN 📜</h3>
+      <p class="bio-text">"{{description}}"</p>
+    </article>
+
+    <!-- Transformaciones -->
+    <section class="evolution-list">
+      <h3 class="section-title">TRANSFORMACIONES 🧬</h3>
+      <div class="transformations-grid">
+        @for (trans of transformations; track trans.name) {
+          <div class="card-transformation" (click)="abrirZoom(img)">
+            <span class="name">{{ trans.name }}</span>
+            <span class="ki">Ki: {{ trans.ki }}</span>
+            <p-image #img [src]="trans.image" [preview]="true" appendTo="body" styleClass="hidden-preview">
+            </p-image>
+          </div>
+        }
+        @if (transformations.length === 0) {
+          <p class="no-data">Este personaje no posee transformaciones registradas.</p>
+        }
       </div>
     </section>
   </div>
-  <div class="flex justify-content-end gap-2 mt-4">
-    <button pButton label="Regreso" class="p-button-text p-button-secondary Regreso" id="Regreso"
-      (click)="onCancel()"></button>
-  </div>
-</form>
+
+  <!-- Footer de Botones -->
+
+    <button pButton label="Regreso" class="p-button-text p-button-secondary" (click)="onCancel()" id="regreso"></button>
+
+</div>

@@ -238,3 +238,192 @@ $detail-text-bio: #ccc;
   color: #000 !important;
   background-color: #ccc;
 }
+
+// Variables de tema
+$detail-primary: #ff9100;
+$detail-secondary: #ffcc00;
+$detail-bg-dark: #252525;
+$detail-bg-inner: #333;
+$detail-text-gray: #ccc;
+$detail-danger: #ff5555;
+
+.character-view-container {
+  padding: 1rem;
+
+  .profile-card {
+    // Estilos del Header
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 20px;
+
+      .avatar-wrapper {
+        flex-shrink: 0;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid $detail-primary;
+        background: $detail-bg-dark;
+
+        ::ng-deep .avatar-image {
+          width: 100%;
+          height: 100%;
+          
+          .avatar-img-content {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+        }
+      }
+
+      .profile-info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .character-name {
+          margin: 0;
+          font-size: 2.5rem;
+          text-transform: uppercase;
+          color: white;
+        }
+
+        .meta-tags {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+
+          .tag-base {
+            background: $detail-bg-inner;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: white;
+          }
+
+          .tag-affiliation {
+            @extend .tag-base;
+            background: $detail-primary;
+            color: black;
+            font-weight: bold;
+          }
+        }
+
+        .origin-text {
+          margin: 0;
+          color: #888;
+          font-size: 0.9rem;
+          cursor: zoom-in;
+
+          .planet-name {
+            color: $detail-danger;
+          }
+        }
+      }
+    }
+
+    // Secciones Generales (Power Metrics, Bio, Evolutions)
+    .power-metrics {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+
+      .stat-card {
+        flex: 1;
+        background: $detail-bg-dark;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+
+        .stat-label {
+          display: block;
+          font-size: 0.7rem;
+          color: #888;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        .stat-value {
+          font-size: 1.2rem;
+          font-family: monospace;
+          color: white;
+        }
+
+        &.base-ki { border-left: 4px solid $detail-primary; }
+        &.max-ki { 
+          border-left: 4px solid $detail-secondary; 
+          .stat-value { color: $detail-secondary; }
+        }
+      }
+    }
+
+    .biography-section {
+      background: $detail-bg-dark;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+
+      .bio-text {
+        margin: 0;
+        line-height: 1.6;
+        color: $detail-text-gray;
+        font-style: italic;
+      }
+    }
+
+    .evolution-list {
+      margin-top: 20px;
+
+      .transformations-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        .card-transformation {
+          display: flex;
+          flex-direction: column;
+          background: $detail-bg-inner;
+          padding: 10px 15px;
+          border-radius: 8px;
+          min-width: 120px;
+          border: 1px solid #444;
+          cursor: zoom-in;
+
+          .name { font-weight: bold; color: white; }
+          .ki { color: #ffa500; font-size: 0.75rem; }
+        }
+      }
+    }
+
+    // Títulos de sección comunes
+    .section-title {
+      margin-top: 0;
+      color: $detail-primary;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+    
+    .no-data {
+      color: #666;
+      font-style: italic;
+      font-size: 0.8rem;
+    }
+  }
+
+  .actions-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+  }
+}
+
+// Ocultar previewers auxiliares
+.hidden-preview { display: none; }
+.p-button-text,.p-button-secondary{
+  background: #fff !important;
+}
