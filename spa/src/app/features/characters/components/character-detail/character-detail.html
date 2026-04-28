@@ -43,7 +43,7 @@
       style="display: flex; align-items: center; gap: 30px; border-bottom: 1px solid #333; padding-bottom: 20px;">
       <!-- avatar-wrapper -->
       <div class="avatar-wrapper"
-        style="flex-shrink: 0; width: 150px; height: 150px; border-radius: 50%; overflow: hidden; border: 3px solid #ff9100;">
+        style="flex-shrink: 0; width: 150px; height: 150px; border-radius: 50%; overflow: hidden; border: 3px solid #ff9100; ">
         <!-- <img [src]="image" id="imagenVista" alt="Goku"
           style="width: 100%; height: 100%; object-fit: contain; background: #252525;"> -->
         <p-image 
@@ -70,11 +70,17 @@
             </i>
           </span>
           <span
-            style="background: #ff9100; color: black; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">{{affiliation}}</span>
+            style="background: #ff9100; color: black; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; ">{{affiliation}}</span>
         </div>
 
-        <p style="margin: 0; color: #888; font-size: 0.9rem;">Origin: <span style="color: #ff5555;">{{namePlanet}}
+        <p (click)="abrirZoom(imgPlanet)" style="margin: 0; color: #888; font-size: 0.9rem; cursor:zoom-in;">Origen: <span style="color: #ff5555;">{{namePlanet}}
             ({{isDestroyed?"💥 Destruido":"🌎 Vigente"}})</span></p>
+          <p-image #imgPlanet
+                      [src]="imagePlanet" 
+                      [preview]="true" 
+                      appendTo="body"
+                      styleClass="hidden-preview">
+              </p-image>
       </div>
     </header>
 
@@ -98,7 +104,7 @@
 
     <!-- biography-section -->
     <article class="biography-section" style="background: #252525; padding: 20px; border-radius: 10px;">
-      <h3 style="margin-top: 0; color: #ff9100; font-size: 0.9rem; text-transform: uppercase;">Description 📜</h3>
+      <h3 style="margin-top: 0; color: #ff9100; font-size: 0.9rem; text-transform: uppercase;">DESCRIPCIÓN 📜</h3>
       <p class="bio-text" style="margin: 0; line-height: 1.6; color: #ccc; font-style: italic;">
         "{{description}}"
       </p>
@@ -106,7 +112,7 @@
 
     <!-- evolution-list: Los chips de transformación saltan de línea si no caben -->
     <section class="evolution-list">
-      <h3 style="color: #ff9100; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 15px;">Transformations 🧬
+      <h3 style="color: #ff9100; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 15px;">TRANSFORMACIONES 🧬
       </h3>
       <div class="transformations-grid" style="display: flex; flex-wrap: wrap; gap: 10px;">
         <!-- Ciclo para reproducir las transformaciones -->
@@ -123,7 +129,8 @@
 
         </div> -->
         @for (trans of transformations; track trans.name) {
-          <div class="card-transformation" (click)="abrirZoom(img)" style="display: flex; flex-direction: column; background: #333; padding: 10px 15px; border-radius: 8px; min-width: 120px; border: 1px solid #444; cursor:zoom-in;"> 
+          <div class="card-transformation" (click)="abrirZoom(img)" 
+          style="display: flex; flex-direction: column; background: #333; padding: 10px 15px; border-radius: 8px; min-width: 120px; border: 1px solid #444; cursor:zoom-in;"> 
               <span class="name">{{ trans.name }}</span>
               <span class="ki">Ki: {{ trans.ki }}</span>
 
