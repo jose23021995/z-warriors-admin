@@ -70,6 +70,7 @@ export class CharacterDetailComponent implements OnInit {
 
   ngOnInit() {
     // Desestructuramos del objeto recibido (ModalCharacter)
+    console.log("holi holi",this.config.data);
     const { type, response:character } = this.config.data;
     this.characterResponse=character;
     console.log("informacion que llega del padre",this.config.data);

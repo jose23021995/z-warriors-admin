@@ -11,11 +11,6 @@ export interface Character {
   deletedAt: null | string | Date;
 }
 
-export interface ModalCharacter {
-  type: boolean;
-  data: Character; // Sugerencia: usa minúscula para evitar confusiones
-}
-
 export interface OriginPlanet {
   id:          number;
   name:        string;
@@ -30,7 +25,8 @@ export interface Transformation {
   name:      string;
   image:     string;
   ki:        string;
-  deletedAt: null | string | Date;
+  deletedAt?: null | string | Date;
+  numericKi?: number;
 }
 
 export interface Detail {
@@ -46,4 +42,11 @@ export interface Detail {
   deletedAt?:       null | string | Date;
   originPlanet:    OriginPlanet;
   transformations: Transformation[]; // Opcional
+}
+
+export interface ModalCharacter 
+{
+  type: boolean;
+  data: Character;
+  transformations?:Transformation[];
 }

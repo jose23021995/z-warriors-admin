@@ -10,7 +10,7 @@
         <div id="estadisticas">
           @if (data) {
           <!-- Quitamos el height fijo de aquí para que mande el CSS del contenedor -->
-          <p-chart type="bar" [data]="data" [options]="options" height="100%" />
+          <p-chart type="bar" [data]="data" [options]="options" height="100%" (onDataSelect)="onChartClick($event)"/>
           } @else {
           <!-- Opcional: un spinner mientras carga -->
           <div class="flex justify-content-center align-items-center h-full">

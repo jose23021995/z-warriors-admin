@@ -5,21 +5,30 @@ import { HeadersComponent } from '../../shared/components/headers/headers';
 import { CardModule } from 'primeng/card';
 import { CharacterService } from '../../core/services/character.service';
 import { Transformation } from '../../shared/interfaces/models/character.model';
+import { DialogService, DynamicDialogRef, DynamicDialogModule } from 'primeng/dynamicdialog'; // Añade DynamicDialogModule
+import { CharacterDetailComponent } from '../characters/components/character-detail/character-detail'; 
+import { Detail, ModalCharacter } from '../../shared/interfaces/models/character.model'
 
 @Component({
   selector: 'app-stats',
   standalone: true,
-  imports: [CommonModule, ChartModule, HeadersComponent, CardModule],
+  imports: [CommonModule, ChartModule, HeadersComponent, CardModule,DynamicDialogModule],
+  providers: [
+    DialogService
+  ],
   templateUrl: './stats.html',
   styleUrl: './stats.scss',
 })
 export class Stats implements OnInit {
+  ref: DynamicDialogRef | undefined | null;
   private cdr = inject(ChangeDetectorRef); 
   private charService = inject(CharacterService);
   private platformId = inject(PLATFORM_ID);
-
+  private dialogService = inject(DialogService);
+  modalSelected:any={};
   isLoading = signal<boolean>(false);
   rawCharacters: Transformation[] = [];
+  sortedCharacters: any[] = []
   data: any;
   options: any;
 
@@ -84,17 +93,20 @@ export class Stats implements OnInit {
     }
   }
 
-    async initChart() {
+async initChart() {
     await this.handleLoadData();
 
     if (this.rawCharacters.length === 0) return;
 
-    const sortedData = this.rawCharacters
+    // 1. CORRECCIÓN: Guardamos el array ordenado en una propiedad de la CLASE
+    // Así el índice del gráfico coincidirá con este array en el evento click
+    this.sortedCharacters = this.rawCharacters
       .map(c => ({ ...c, numericKi: this.parseKi(c.ki) }))
       .sort((a, b) => a.numericKi - b.numericKi);
 
-    const backgroundColors = sortedData.map((_, i) => {
-        const ratio = i / (sortedData.length - 1);
+    // 2. Generamos colores basados en la propiedad de la clase
+    const backgroundColors = this.sortedCharacters.map((_, i) => {
+        const ratio = i / (this.sortedCharacters.length - 1);
         const r = Math.floor(59 + ratio * (245 - 59));
         const g = Math.floor(130 + ratio * (158 - 130));
         const b = Math.floor(246 + ratio * (11 - 246));
@@ -102,10 +114,10 @@ export class Stats implements OnInit {
     });
 
     const chartData = {
-      labels: sortedData.map(c => c.name),
+      labels: this.sortedCharacters.map(c => c.name),
       datasets: [{
         label: 'Nivel de Ki',
-        data: sortedData.map(c => c.numericKi),
+        data: this.sortedCharacters.map(c => c.numericKi),
         backgroundColor: backgroundColors,
         borderColor: backgroundColors.map(color => color.replace('rgb', 'rgba').replace(')', ', 0.8)')),
         borderWidth: 1,
@@ -117,48 +129,89 @@ export class Stats implements OnInit {
     setTimeout(() => {
       this.data = chartData;
       this.options = {
-    indexAxis: 'y',
-    maintainAspectRatio: false,
-    plugins: {
-        legend: { display: false }
-    },
-    scales: {
-        x: {
-            type: 'logarithmic', // Esto es lo que permite ver barras de 30k junto a Octillones
-            min: 1000,           // Define un mínimo para que las barras pequeñas tengan cuerpo
+        indexAxis: 'y',
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              // Usamos el Ki original (string) para el tooltip
+              label: (context: any) => ` Poder: ${this.sortedCharacters[context.dataIndex].ki}`
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: 'logarithmic',
+            min: 1000,
             ticks: {
-                color: '#94a3b8',
-                callback: function(value: any) {
-                    // Esto limpia las etiquetas feas tipo 1e27
-                    if (value === 0) return '0';
-                    const remain = value / (Math.pow(10, Math.floor(Math.log10(value))));
-                    if (remain === 1 || remain === 2 || remain === 5) {
-                        return value.toExponential();
-                    }
-                    return '';
+              color: '#94a3b8',
+              callback: function(value: any) {
+                if (value === 0) return '0';
+                const remain = value / (Math.pow(10, Math.floor(Math.log10(value))));
+                if (remain === 1 || remain === 2 || remain === 5) {
+                  return value.toExponential();
                 }
+                return '';
+              }
             },
             grid: { color: '#334155' }
-        },
-        y: {
+          },
+          y: {
             ticks: { 
-                color: '#f8fafc',
-                autoSkip: false // Para que no se salte ningún nombre de personaje
+              color: '#f8fafc',
+              autoSkip: false 
             },
             grid: { display: false }
+          }
         }
-    }
-};
+      };
 
-      
-      // Esto "despierta" a la interfaz para que pinte el gráfico
+      // Forzamos la detección de cambios para que el gráfico aparezca al instante
       this.cdr.detectChanges(); 
     }, 50);
-  }
-
-
-dataCharacter(data:any){
-  console.log();
 }
+
+
+async onChartClick(event: any) {
+    const index = event.element.index;
+    const personajeSeleccionado = this.sortedCharacters[index]; 
+    const{id}=personajeSeleccionado;
+    const response = await this.charService.getCharacterTransformations(id);
+    try{
+      const {character}= response;
+      const{id:idCharacter}=character;
+      const res = await this.charService.getCharacter(idCharacter);
+      try{
+        this.modalSelected= {
+            type:false, 
+            transformations:personajeSeleccionado, 
+            response:res};
+        console.log("this.modalSelected",this.modalSelected);
+        this.ref = this.dialogService.open(CharacterDetailComponent, {
+          header: `Editar a ${response.name}`, // Usamos el nombre para el título
+          width: '50%',
+          data: this.modalSelected // Pasamos el ModalCharacter completo al hijo
+        });
+      }
+      catch(e){
+        console.error("Error al obtener transformaciones:", e);
+        // Opcional: limpiar datos previos si falla
+        this.rawCharacters = [];
+    } finally {
+        this.isLoading.set(false);
+        this.cdr.detectChanges();
+    }
+    } catch (error) {
+        console.error("Error al obtener transformaciones:", error);
+        // Opcional: limpiar datos previos si falla
+        this.rawCharacters = [];
+    } finally {
+        this.isLoading.set(false);
+        this.cdr.detectChanges();
+    }
+    
+}
+
 
 }
