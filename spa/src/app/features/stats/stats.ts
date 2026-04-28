@@ -188,7 +188,7 @@ async onChartClick(event: any) {
             transformations:personajeSeleccionado, 
             response:res};
         this.ref = this.dialogService.open(CharacterDetailComponent, {
-          header: `Editar a ${response.name}`, // Usamos el nombre para el título
+          header: `Informacion de ${response.name}`, // Usamos el nombre para el título
           width: '50%',
           data: this.modalSelected // Pasamos el ModalCharacter completo al hijo
         });

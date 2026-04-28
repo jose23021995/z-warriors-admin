@@ -53,7 +53,7 @@ export class CharacterListComponent implements OnInit {
     console.log("guerrero",guerrero);
     // Usamos el componente real aquí
     this.ref = this.dialogService.open(CharacterDetailComponent, {
-      header: `Editar a ${guerrero.name}`,
+      header: `Informacion de ${guerrero.name}`,
       width: '50%',
       data: { id: guerrero.id, nombre: guerrero.name }
     });
