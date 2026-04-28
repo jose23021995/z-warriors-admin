@@ -36,7 +36,6 @@ export class CharacterDetailComponent implements OnInit {
   private config = inject(DynamicDialogConfig);
   private ref = inject(DynamicDialogRef);
   public characterForm!: FormGroup;
-  public isEditable!: boolean;
   public characterResponse!:Detail;
   // --- Variables Públicas ---
   public name!: string;
@@ -59,7 +58,8 @@ export class CharacterDetailComponent implements OnInit {
   // Transformaciones
   public transformations: Transformation[] = [];
   ngOnInit() {
-    const { type, response:character,transformations:transformation } = this.config.data;
+    const { response:character,transformations:transformation } = this.config.data;
+    console.log("entrando a modal",this.config.data);
     this.characterResponse=character;
     console.log("informacion que llega del padre",this.config.data);
     const {
@@ -97,10 +97,8 @@ export class CharacterDetailComponent implements OnInit {
     this.imagePlanet = imgPl;
     this.isDestroyed = isDest;
     this.namePlanet = namePl;
-    this.isEditable = type;
     this.characterForm = this.fb.group({});
 
-    if (!this.isEditable) this.characterForm.disable();
   }
   onCancel() {
     this.ref.close();

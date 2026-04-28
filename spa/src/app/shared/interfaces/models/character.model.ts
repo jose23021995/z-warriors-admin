@@ -46,7 +46,6 @@ export interface Detail {
 
 export interface ModalCharacter 
 {
-  type: boolean;
   data: Character;
   transformations?:Transformation[];
 }
