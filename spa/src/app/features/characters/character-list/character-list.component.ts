@@ -12,7 +12,7 @@ import { CharacterDetailComponent } from '../components/character-detail/charact
 import { CharacterTable } from '../components/character-table/character-table';
 //servicio para peticiones http 
 import { CharacterService } from '../../../core/services/character.service';
-import { Character, ModalCharacter } from '../../../shared/interfaces/models/character.model'
+import { Detail, ModalCharacter } from '../../../shared/interfaces/models/character.model'
 import { ProgressBarModule } from 'primeng/progressbar';
 // Agrégalo al array de 'imports' de tu @Component
 
@@ -103,14 +103,21 @@ export class CharacterListComponent implements OnInit {
   // ... dentro de tu clase CharacterListComponent
 
  // En character-list.component.ts
-  handleCharacterUpdate(data: ModalCharacter) {
+  async handleCharacterUpdate(data: ModalCharacter) {
   // Desestructuramos del objeto 'data' (que es ModalCharacter) para sacar al guerrero
-  const { data:modal } = data; 
+  const { data:modal } = data;
+  const { type } = data;
+  const {data:character}=data;
+  const {id}=character;
+  console.log("data",data); 
+  console.log("id",id); 
+  const response:Detail = await this.charService.getCharacter(id);
+  console.log("response",response);
   
   this.ref = this.dialogService.open(CharacterDetailComponent, {
-    header: `Editar a ${modal.name}`, // Usamos el nombre para el título
+    header: `Editar a ${response.name}`, // Usamos el nombre para el título
     width: '50%',
-    data: data // Pasamos el ModalCharacter completo al hijo
+    data: {type,response} // Pasamos el ModalCharacter completo al hijo
   });
 }
 }

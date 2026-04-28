@@ -19,6 +19,10 @@ async getCharacters(page: number = 1, limit: number = 10, name: string = '') {
   return await firstValueFrom(this.http.get<any>(url));
 }
 
+async getCharacter(id: number | string) {
+    const url = `${this.apiUrl}/${id}`;
+    return await firstValueFrom(this.http.get<any>(url));
+  }
 
 
 }

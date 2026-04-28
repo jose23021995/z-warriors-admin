@@ -11,9 +11,10 @@ import { SelectModule } from 'primeng/select';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { ModalCharacter } from '../../../../shared/interfaces/models/character.model';
+import { Transformation,Detail,ModalCharacter } from '../../../../shared/interfaces/models/character.model';
 import { CardModule } from 'primeng/card';
-
+import { ImageModule } from 'primeng/image';
+import { Image } from 'primeng/image'
 
 @Component({
   selector: 'app-character-detail',
@@ -26,7 +27,7 @@ import { CardModule } from 'primeng/card';
     TextareaModule, 
     SelectModule, 
     RadioButtonModule, 
-    FileUploadModule,ProgressBarModule,CardModule
+    FileUploadModule,ProgressBarModule,CardModule,ImageModule,Image 
   ],
   templateUrl: './character-detail.html',
   styleUrl: './character-detail.scss',
@@ -35,10 +36,31 @@ export class CharacterDetailComponent implements OnInit {
   private fb = inject(FormBuilder);
   private config = inject(DynamicDialogConfig);
   private ref = inject(DynamicDialogRef);
-
   public characterForm!: FormGroup;
   public isEditable!: boolean;
+  public characterResponse!:Detail;
+  // --- Variables Públicas ---
+  public name!: string;
+  public description!: string;
+  public gender!: string;
+  public id!: number;
   public image!: string;
+  public ki!: string;
+  public maxKi!: string;
+  public race!: string;
+  public affiliation!: any;
+  public deletedAt!: any;
+
+  // Variables del Planeta
+  public idPlanet!: number;
+  public deletedAtPlanet!: null | string | Date;
+  public descriptionPlanet!: string;
+  public imagePlanet!: string;
+  public isDestroyed!: boolean;
+  public namePlanet!: string;
+
+  // Transformaciones
+  public transformations: Transformation[] = [];
 
   races = [
     { label: 'Saiyan', value: 'Saiyan' },
@@ -48,8 +70,41 @@ export class CharacterDetailComponent implements OnInit {
 
   ngOnInit() {
     // Desestructuramos del objeto recibido (ModalCharacter)
-    const { type, data:character } = this.config.data;
-    console.log(character);
+    const { type, response:character } = this.config.data;
+    this.characterResponse=character;
+    console.log("informacion que llega del padre",this.config.data);
+    const {
+      name, description, gender, id, image, ki, maxKi, race, 
+      affiliation, deletedAt, originPlanet, transformations 
+    } = this.characterResponse;
+
+    // 2. Desestructuración del planeta
+    const {
+      id: idPl, deletedAt: delPl, description: descPl, 
+      image: imgPl, isDestroyed: isDest, name: namePl 
+    } = originPlanet;
+
+    // 3. Asignación a variables públicas
+    this.name = name;
+    this.description = description;
+    this.gender = gender;
+    this.id = id;
+    this.image = image;
+    this.ki = ki;
+    this.maxKi = maxKi;
+    this.race = race;
+    this.affiliation = affiliation;
+    this.deletedAt = deletedAt;
+    this.transformations = transformations || [];
+
+    // Asignación de variables del planeta
+    this.idPlanet = idPl;
+    this.deletedAtPlanet = delPl;
+    this.descriptionPlanet = descPl;
+    this.imagePlanet = imgPl;
+    this.isDestroyed = isDest;
+    this.namePlanet = namePl;
+    
     this.isEditable = type;
     this.image = character.image;
 
@@ -112,5 +167,8 @@ getKiPercentage(): number {
 
   onCancel() {
     this.ref.close();
+  }
+  abrirZoom(imgComponent: Image) {
+    imgComponent.onImageClick();
   }
 }

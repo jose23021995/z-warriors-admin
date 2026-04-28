@@ -1,9 +1,9 @@
 <form [formGroup]="characterForm" class="p-fluid">
   <!-- IMAGEN -->
-  
+
 
   @if (!isEditable) {
-    <section id="vista" class="grid">
+  <!-- <section id="vista" class="grid profile-card">
 
         <div class="information">
           <div class="primariInformation">
@@ -34,68 +34,183 @@
           </p-card>
                       
         </div>
-      </section>
+        
+      </section> -->
+  <div id="vista" class="profile-card">
+
+    <!-- profile-header: Alinea imagen y textos de lado a lado -->
+    <header class="profile-header"
+      style="display: flex; align-items: center; gap: 30px; border-bottom: 1px solid #333; padding-bottom: 20px;">
+      <!-- avatar-wrapper -->
+      <div class="avatar-wrapper"
+        style="flex-shrink: 0; width: 150px; height: 150px; border-radius: 50%; overflow: hidden; border: 3px solid #ff9100;">
+        <!-- <img [src]="image" id="imagenVista" alt="Goku"
+          style="width: 100%; height: 100%; object-fit: contain; background: #252525;"> -->
+        <p-image 
+                        [src]="image" 
+                        [alt]="image" 
+                        width="50" 
+                        height="130"
+                        [preview]="true"
+                        styleClass="border-round shadow-1" style="width: 100%; height: 100%; object-fit: contain; background: #252525;">>
+                        
+                    </p-image>
+      </div>
+
+      <!-- profile-info: Apila nombre, tags y planeta -->
+      <div class="profile-info" style="display: flex; flex-direction: column; gap: 10px;">
+        <h1 class="character-name" style="margin: 0; font-size: 2.5rem; text-transform: uppercase;">{{ name }}</h1>
+
+        <!-- meta-tags: Badges uno al lado del otro -->
+        <div class="meta-tags" style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="background: #333; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">{{race}}</span>
+          <span style="background: #333; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">
+            <i [class]="gender === 'Male' ? 'pi pi-mars' : 'pi pi-venus'"
+              [style.color]="gender === 'Male' ? '#3b82f6' : '#ec4899'">
+            </i>
+          </span>
+          <span
+            style="background: #ff9100; color: black; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">{{affiliation}}</span>
+        </div>
+
+        <p style="margin: 0; color: #888; font-size: 0.9rem;">Origin: <span style="color: #ff5555;">{{namePlanet}}
+            ({{isDestroyed?"💥 Destruido":"🌎 Vigente"}})</span></p>
+      </div>
+    </header>
+
+    <!-- power-metrics: Reparte las tarjetas de Ki equitativamente -->
+    <section class="power-metrics" style="display: flex; gap: 15px;">
+      <div class="stat-card"
+        style="flex: 1; background: #252525; padding: 15px; border-radius: 10px; text-align: center; border-left: 4px solid #ff9100;">
+        <span
+          style="display: block; font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 1px;">Base
+          Ki ✨</span>
+        <strong style="font-size: 1.2rem; font-family: monospace;">{{ki}}</strong>
+      </div>
+      <div class="stat-card"
+        style="flex: 1; background: #252525; padding: 15px; border-radius: 10px; text-align: center; border-left: 4px solid #ffcc00;">
+        <span
+          style="display: block; font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 1px;">Max
+          Ki ✨✨</span>
+        <strong style="font-size: 1.2rem; font-family: monospace; color: #ffcc00;">{{maxKi}}</strong>
+      </div>
+    </section>
+
+    <!-- biography-section -->
+    <article class="biography-section" style="background: #252525; padding: 20px; border-radius: 10px;">
+      <h3 style="margin-top: 0; color: #ff9100; font-size: 0.9rem; text-transform: uppercase;">Description 📜</h3>
+      <p class="bio-text" style="margin: 0; line-height: 1.6; color: #ccc; font-style: italic;">
+        "{{description}}"
+      </p>
+    </article>
+
+    <!-- evolution-list: Los chips de transformación saltan de línea si no caben -->
+    <section class="evolution-list">
+      <h3 style="color: #ff9100; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 15px;">Transformations 🧬
+      </h3>
+      <div class="transformations-grid" style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <!-- Ciclo para reproducir las transformaciones -->
+        <!-- <div *ngFor="let trans of transformations" class="phase-chip"
+          style="display: flex; flex-direction: column; background: #333; padding: 10px 15px; border-radius: 8px; min-width: 120px; border: 1px solid #444;">
+
+          <span style="font-weight: bold; font-size: 0.9rem; color: #fff;" >
+            {{ trans.name }}
+          </span>
+
+          <span style="font-size: 0.7rem; color: #ffa500; font-family: monospace;">
+            Ki: {{ trans.ki }}
+          </span>
+
+        </div> -->
+        @for (trans of transformations; track trans.name) {
+          <div class="card-transformation" (click)="abrirZoom(img)" style="display: flex; flex-direction: column; background: #333; padding: 10px 15px; border-radius: 8px; min-width: 120px; border: 1px solid #444; cursor:zoom-in;"> 
+              <span class="name">{{ trans.name }}</span>
+              <span class="ki">Ki: {{ trans.ki }}</span>
+
+              <!-- El componente p-image oculto -->
+              <p-image #img 
+                      [src]="trans.image" 
+                      [preview]="true" 
+                      appendTo="body"
+                      styleClass="hidden-preview">
+              </p-image>
+          </div>
+        }
+
+        <!-- Mensaje opcional si no hay transformaciones -->
+        <p *ngIf="transformations.length === 0" style="color: #666; font-style: italic; font-size: 0.8rem;">
+          Este personaje no posee transformaciones registradas.
+        </p>
+
+      </div>
+    </section>
+
+  </div>
   }
 
   @if (isEditable) {
-    <section id="edicion" class="card-modal"> <!-- Quitamos grid de aquí para controlarlo mejor -->
-      <div class="grid p-fluid editar"> <!-- Añadimos el grid aquí -->
-        
-        <!-- COLUMNA IZQUIERDA (7 de 12) -->
-        <div class="col-12 md:col-7 izquierda">
-          <div class="field">
-            <label class="texto-etiqueta"><i class="pi pi-user"></i> Nombre</label>
-            <input pInputText formControlName="name" class="input-custom" />
-          </div>
+  <section id="edicion" class="card-modal">
+    <!-- Quitamos grid de aquí para controlarlo mejor -->
+    <div class="grid p-fluid editar">
+      <!-- Añadimos el grid aquí -->
 
-          <div class="field">
-            <label class="texto-etiqueta"><i class="pi pi-bolt"></i> Ki</label>
-            <input pInputText formControlName="ki" class="input-custom" />
-          </div>
-
-          <div class="field">
-            <label class="texto-etiqueta"><i class="pi pi-chart-line"></i> Max Ki</label>
-            <input pInputText formControlName="maxKi" class="input-custom" />
-          </div>
-
-          <div class="field">
-            <label class="texto-etiqueta"><i class="pi pi-tags"></i> Raza</label>
-            <p-select [options]="races" formControlName="race" placeholder="Selecciona Raza" styleClass="input-custom"></p-select>
-          </div>
+      <!-- COLUMNA IZQUIERDA (7 de 12) -->
+      <div class="col-12 md:col-7 izquierda">
+        <div class="field">
+          <label class="texto-etiqueta"><i class="pi pi-user"></i> Nombre</label>
+          <input pInputText formControlName="name" class="input-custom" />
         </div>
 
-        <!-- COLUMNA DERECHA (5 de 12) -->
-        <div class="col-12 md:col-5 flex flex-column gap-3 derecha">
-          <!-- CUADRO DE PREVIEW -->
-          <div class="preview-foto">
-            <img [src]="image" id="imagenVista" *ngIf="image" class="img-render">
-            <i class="pi pi-user text-6xl opacity-20" *ngIf="!image"></i>
-          </div>
-
-          <!-- DESCRIPCIÓN -->
-          
-
-          <!-- BOTONES -->
-          <p-fileUpload mode="basic" chooseLabel="Seleccionar Foto" 
-                        accept="image/*" styleClass="btn-cian" 
-                        chooseIcon="pi pi-camera" (onSelect)="onFileSelect($event)">
-          </p-fileUpload>
-          
+        <div class="field">
+          <label class="texto-etiqueta"><i class="pi pi-bolt"></i> Ki</label>
+          <input pInputText formControlName="ki" class="input-custom" />
         </div>
-        
+
+        <div class="field">
+          <label class="texto-etiqueta"><i class="pi pi-chart-line"></i> Max Ki</label>
+          <input pInputText formControlName="maxKi" class="input-custom" />
+        </div>
+
+        <div class="field">
+          <label class="texto-etiqueta"><i class="pi pi-tags"></i> Raza</label>
+          <p-select [options]="races" formControlName="race" placeholder="Selecciona Raza" styleClass="input-custom">
+          </p-select>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA (5 de 12) -->
+      <div class="col-12 md:col-5 flex flex-column gap-3 derecha">
+        <!-- CUADRO DE PREVIEW -->
+        <div class="preview-foto">
+          <img [src]="image" id="imagenVista" *ngIf="image" class="img-render">
+          <i class="pi pi-user text-6xl opacity-20" *ngIf="!image"></i>
+        </div>
+
+        <!-- DESCRIPCIÓN -->
+
+
+        <!-- BOTONES -->
+        <p-fileUpload mode="basic" chooseLabel="Seleccionar Foto" accept="image/*" styleClass="btn-cian"
+          chooseIcon="pi pi-camera" (onSelect)="onFileSelect($event)">
+        </p-fileUpload>
 
       </div>
-      <div class="field text-area">
-            <textarea pTextarea formControlName="description" rows="4" class="input-custom" placeholder="Descripción..."></textarea>
-          </div>
-    </section>
+
+
+    </div>
+    <div class="field text-area">
+      <textarea pTextarea formControlName="description" rows="4" class="input-custom"
+        placeholder="Descripción..."></textarea>
+    </div>
+  </section>
 
   }
 
   <div class="flex justify-content-end gap-2 mt-4">
     <button pButton label="Regreso" class="p-button-text p-button-secondary" (click)="onCancel()"></button>
     @if (isEditable) {
-      <button pButton label="Editar Personaje" [disabled]="characterForm.invalid" (click)="onSave()"></button>
+    <button pButton label="Editar Personaje" [disabled]="characterForm.invalid" (click)="onSave()"></button>
     }
   </div>
+
 </form>

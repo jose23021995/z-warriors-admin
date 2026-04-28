@@ -22,7 +22,7 @@
     --select-button-bg:#FF9200;
     --select-button:#4A36C2;
     --personajes-icon:url("/img/shared/person_header_information/h2_charactor.png") !important;
-    --card-fondo-icon:url("/img/shared/fondo/detail/ligth.jpg") !important;
+    --card-fondo-icon:url("/img/shared/fondo/detail/ligth.svg") !important;
 }
 
 /* Colores para el Modo Oscuro */
@@ -131,7 +131,8 @@ p-dynamicdialog{
                 padding: 0px !important;
                 max-width: 100% !important;
                 display: flex !important;
-                background-image: var(--card-fondo-icon);
+                background-color: var(--primary-card);
+                // background-image: var(--card-fondo-icon);
             }
             
         }

@@ -1,100 +1,392 @@
-.information{
-                width: 100% !important;
-                display: flex !important;
-                .primariInformation,.secundaryInformation{
-                    @media (max-width: 768px) {width: 100% !important;}
-                }
-                .primariInformation{
-                    width: 25% !important;
-                    @media (max-width: 1231px) {width: 30% !important;}
-                    @media (max-width: 1031px) {width: 35% !important;}
-                    @media (max-width: 891px) {width: 40% !important;}
-                    @media (max-width: 800px) {width: 45% !important;}
-                    p-card{
-                        .p-card-body{
-                            padding: 1.1rem !important;
-                            border-radius: 0px !important;
-                        }
-                    }
-                    .p-card-body{
-                            padding: 05rem !important;
-                            border-radius: 0px !important;
-                        }
-                }
-                .secundaryInformation{
-                    width: 75% !important;
-                    @media (max-width: 1231px) {width: 70% !important;}
-                    @media (max-width: 1031px) {width: 65% !important;}
-                    @media (max-width: 891px) {width: 60% !important;}
-                    @media (max-width: 800px) {width: 55% !important;}
-                    .imagenDescripcion{
-                        display: flex !important;
-                        flex-direction: row !important;
-                        justify-content: center;
-                        #imagenVista{
-                            
-                            width: 150px !important;
-                            @media (max-width: 768px) {width: 100% !important;}
-                        }
-                    }
-                    
-                }
-}
-#imagenVista{width: 150px !important; height: 230px;}
-.card-modal .p-card-body{
-    padding: 0px !important;
-}
+// .information {
+//   width: 100% !important;
+//   display: flex !important;
 
-#edicion{
-    background: rgba(255, 255, 255, 0.1) !important;
+//   .primariInformation,
+//   .secundaryInformation {
+//     @media (max-width: 768px) {
+//       width: 100% !important;
+//     }
+//   }
 
-    /* 2. El efecto de desenfoque (Lo que da el toque de "vidrio") */
-    backdrop-filter: blur(15px) saturate(150%);
-    -webkit-backdrop-filter: blur(15px) saturate(150%); /* Soporte para Safari */
+//   .primariInformation {
+//     width: 25% !important;
 
-    /* 3. Borde sutil para definir la forma */
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    
-    /* Opcional: Sombra para dar profundidad */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
-}
-.text-area{
-    margin-top: 20px;
-    width: 100% !important;
-    textarea{
-        width: 100% !important;
+//     @media (max-width: 1231px) {
+//       width: 30% !important;
+//     }
+
+//     @media (max-width: 1031px) {
+//       width: 35% !important;
+//     }
+
+//     @media (max-width: 891px) {
+//       width: 40% !important;
+//     }
+
+//     @media (max-width: 800px) {
+//       width: 45% !important;
+//     }
+
+//     p-card {
+//       .p-card-body {
+//         padding: 1.1rem !important;
+//         border-radius: 0px !important;
+//       }
+//     }
+
+//     .p-card-body {
+//       padding: 05rem !important;
+//       border-radius: 0px !important;
+//     }
+//   }
+
+//   .secundaryInformation {
+//     width: 75% !important;
+
+//     @media (max-width: 1231px) {
+//       width: 70% !important;
+//     }
+
+//     @media (max-width: 1031px) {
+//       width: 65% !important;
+//     }
+
+//     @media (max-width: 891px) {
+//       width: 60% !important;
+//     }
+
+//     @media (max-width: 800px) {
+//       width: 55% !important;
+//     }
+
+//     .imagenDescripcion {
+//       display: flex !important;
+//       flex-direction: row !important;
+//       justify-content: center;
+
+//       #imagenVista {
+
+//         width: 150px !important;
+
+//         @media (max-width: 768px) {
+//           width: 100% !important;
+//         }
+//       }
+//     }
+
+//   }
+// }
+
+// #imagenVista {
+//   width: 150px !important;
+//   height: 230px;
+// }
+
+// .card-modal .p-card-body {
+//   padding: 0px !important;
+// }
+
+// #edicion {
+//   background: rgba(255, 255, 255, 0.1) !important;
+
+//   /* 2. El efecto de desenfoque (Lo que da el toque de "vidrio") */
+//   backdrop-filter: blur(15px) saturate(150%);
+//   -webkit-backdrop-filter: blur(15px) saturate(150%);
+//   /* Soporte para Safari */
+
+//   /* 3. Borde sutil para definir la forma */
+//   border: 1px solid rgba(255, 255, 255, 0.2);
+
+//   /* Opcional: Sombra para dar profundidad */
+//   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+//   border-radius: 20px;
+// }
+
+// .text-area {
+//   margin-top: 20px;
+//   width: 100% !important;
+
+//   textarea {
+//     width: 100% !important;
+//   }
+// }
+
+// .grid.editar {
+
+//   display: flex !important;
+//   flex-direction: row !important;
+//   justify-content: space-between !important;
+
+//   .field {
+//     display: flex !important;
+//     flex-direction: column !important;
+//     border-bottom: 10px;
+
+//     .texto-etiqueta {
+//       display: block;
+//       /* Asegura que ocupe su propia línea */
+//       margin-bottom: 8px;
+//       /* Espacio con el input */
+//       color: #d8dbdd;
+//       /* Azul cian brillante (puedes usar #00d2ff) */
+//       font-weight: 800;
+//       /* Muy negrita */
+//       font-size: 0.85rem;
+//       /* Tamaño un poco más pequeño para estilo Pro */
+//       text-transform: uppercase;
+//       /* Todo en mayúsculas */
+//       letter-spacing: 1px;
+//       /* Espaciado entre letras tipo videojuego */
+
+//       /* TRUCO: Borde negro sutil para que sea legible en cualquier fondo */
+//       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+//     }
+
+//     /* Para el icono que pusiste dentro del label */
+//     .texto-etiqueta i {
+//       margin-right: 6px;
+//       /* Separa el icono del texto "Nombre" */
+//       color: #ffffff;
+//       /* El icono queda mejor en blanco */
+//       font-size: 0.9rem;
+//     }
+//   }
+
+// }
+
+// Variables de color para fácil mantenimiento
+$detail-color-primary: #ff9100;
+$detail-color-secondary: #ffcc00;
+$detail-color-danger: #ff5555;
+$detail-bg-card: #1a1a1a87;
+$detail-bg-item: #252525a1;
+$detail-bg-badge: #333;
+$detail-text-main: #ffffff;
+$detail-text-muted: #888;
+$detail-text-bio: #ccc;
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 800px;
+  margin: auto;
+  font-family: sans-serif;
+  background: $detail-bg-card;
+  color: $detail-text-main;
+  padding: 30px;
+  border-radius: 15px;
+
+  // Header del perfil
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    border-bottom: 1px solid $detail-bg-badge;
+    padding-bottom: 20px;
+
+    .avatar-wrapper {
+      flex-shrink: 0;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid $detail-color-primary;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: $detail-bg-item;
+      }
     }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .character-name {
+        margin: 0;
+        font-size: 2.5rem;
+        text-transform: uppercase;
+      }
+
+      .meta-tags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+
+        span {
+          background: $detail-bg-badge;
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-size: 0.8rem;
+
+          &.is-highlight { // Clase extra por si quieres resaltar uno
+            background: $detail-color-primary;
+            color: black;
+            font-weight: bold;
+          }
+        }
+      }
+
+      .origin-text {
+        margin: 0;
+        color: $detail-text-muted;
+        font-size: 0.9rem;
+
+        span {
+          color: $detail-color-danger;
+        }
+      }
+    }
+  }
+
+  // Métricas de Poder
+  .power-metrics {
+    display: flex;
+    gap: 15px;
+
+    .stat-card {
+      flex: 1;
+      background: $detail-bg-item;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      border-left: 4px solid $detail-color-primary;
+
+      &--max { // Modificador para el Max Ki
+        border-left-color: $detail-color-secondary;
+        strong { color: $detail-color-secondary; }
+      }
+
+      span {
+        display: block;
+        font-size: 0.7rem;
+        color: $detail-text-muted;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      strong {
+        font-size: 1.2rem;
+        font-family: monospace;
+      }
+    }
+  }
+
+  // Sección de Biografía
+  .biography-section {
+    background: $detail-bg-item;
+    padding: 20px;
+    border-radius: 10px;
+
+    h3 {
+      margin-top: 0;
+      color: $detail-color-primary;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .bio-text {
+      margin: 0;
+      line-height: 1.6;
+      color: $detail-text-bio;
+      font-style: italic;
+    }
+  }
+
+  // Lista de Transformaciones
+  .evolution-list {
+    h3 {
+      color: $detail-color-primary;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .transformations-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      .phase-chip {
+        display: flex;
+        flex-direction: column;
+        background: $detail-bg-badge;
+        padding: 10px 15px;
+        border-radius: 8px;
+        min-width: 120px;
+        transition: transform 0.2s;
+
+        &:hover {
+          transform: translateY(-3px);
+          // background: lighten($detail-bg-badge, 5%);
+        }
+
+        .phase-name {
+          font-weight: bold;
+          font-size: 0.9rem;
+        }
+
+        .phase-ki {
+          font-size: 0.7rem;
+          color: #aaa;
+        }
+      }
+    }
+  }
 }
-.grid.editar{
-    
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    
-    .field{
+
+::ng-deep {
+    .p-image {
         display: flex !important;
-        flex-direction: column !important;
-        border-bottom: 10px;
-        .texto-etiqueta {
-    display: block;          /* Asegura que ocupe su propia línea */
-    margin-bottom: 8px;      /* Espacio con el input */
-    color: #d8dbdd;          /* Azul cian brillante (puedes usar #00d2ff) */
-    font-weight: 800;        /* Muy negrita */
-    font-size: 0.85rem;      /* Tamaño un poco más pequeño para estilo Pro */
-    text-transform: uppercase; /* Todo en mayúsculas */
-    letter-spacing: 1px;     /* Espaciado entre letras tipo videojuego */
-    
-    /* TRUCO: Borde negro sutil para que sea legible en cualquier fondo */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-}
+        justify-content: center; // Centra la imagen horizontalmente
+        align-items: center;     // Centra la imagen verticalmente
+        position: relative;      // Necesario para que la máscara se alinee a la imagen
+        overflow: hidden;        // Mantiene todo dentro de los bordes redondeados
+        
+        img {
+            // Asegura que la imagen no se estire de forma extraña
+            display: block;
+            margin: auto;
+        }
 
-/* Para el icono que pusiste dentro del label */
-.texto-etiqueta i {
-    margin-right: 6px;       /* Separa el icono del texto "Nombre" */
-    color: #ffffff;          /* El icono queda mejor en blanco */
-    font-size: 0.9rem;
-}
+        .p-image-preview-mask {
+            // ESTA ES LA CLAVE: Forzamos a que la máscara ocupe el centro
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%); // Centrado matemático perfecto
+            
+            // Si quieres que el área clickeable sea igual a la imagen:
+            width: 50px !important; // Debe coincidir con el width de tu imagen
+            height: 130px !important; // Debe coincidir con el height de tu imagen
+            
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
     }
+}
 
+:host ::ng-deep {
+    .hidden-preview {
+        display: none !important; // Oculta la miniatura
+    }
+    
+    .transformation-badge {
+        background: #333;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        border: 1px solid #444;
+        transition: transform 0.1s;
+
+        &:hover {
+            background: #444;
+            transform: scale(1.02);
+        }
+    }
 }
