@@ -58,9 +58,13 @@ app-stats {
   }
 }
 
-#estadisticas{
+#estadisticas {
   background-color: #18181b !important;
-  border-radius: 50px;
+  border-radius: 20px; // Un poco menos para que no corte las barras
+  height: 800px; 
+  width: 100%;
+  padding: 20px;
+  overflow: hidden; // Evita barras de desplazamiento dobles
 }
 
 @media screen and (max-width: 970px) {
