@@ -68,7 +68,7 @@ export class CharacterListComponent implements OnInit {
       if (event.search) {
         const query = event.search.toLowerCase();
         
-        // FILTRO HÍBRIDO: Busca en Nombre O en Raza
+        // FILTRO : Nombre /aza
         const filtered = rawData.filter(char => 
           char.name.toLowerCase().includes(query) || 
           char.race.toLowerCase().includes(query)
@@ -77,7 +77,6 @@ export class CharacterListComponent implements OnInit {
         this.characters.set(filtered);
         this.totalCount.set(filtered.length);
       } else {
-        // Carga normal paginada
         this.characters.set(rawData);
         this.totalCount.set(response.meta?.totalItems || rawData.length);
       }
@@ -107,7 +106,6 @@ export class CharacterListComponent implements OnInit {
         data: {response}
       });  
     }
-    
   }
 }
 

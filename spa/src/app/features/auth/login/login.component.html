@@ -1,21 +1,17 @@
 <div class="login-container">
     <section class="section-login">
         <div class="login-header-dbz">
-            
         </div>
         <p-card id="card">
             <img src="img/logo.png" alt="Logo Z">
             <br><br>
             <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="flex flex-column gap-4">
-            
-            <!-- Campo Usuario -->
             <div class="field">
                 <p-floatLabel>
                     <input pInputText id="username" formControlName="username" />
                     <label for="username">{{ userLabel }}</label>
                 </p-floatLabel>
             </div>
-            <!-- Campo Contraseña -->
             <div class="field">
                 <p-floatLabel>
                 <p-password 
@@ -29,9 +25,7 @@
                 <label for="password">{{passLabel}}</label>
                 </p-floatLabel>
             </div>
-            <!-- Botón de Acción -->
             <div class="boton">
-                
             <div class="img"></div>
             <div class="submit">
                 <p-button 
