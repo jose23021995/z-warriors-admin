@@ -1,7 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule,FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl, FormArray } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+
 // PrimeNG 18 Imports
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -10,14 +11,18 @@ import { SelectModule } from 'primeng/select';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { Transformation,Detail,ModalCharacter } from '../../../../shared/interfaces/models/character.model';
 import { CardModule } from 'primeng/card';
 import { ImageModule } from 'primeng/image';
-import { Image } from 'primeng/image'
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ToastModule } from 'primeng/toast';
+// Interfaces
+import { Transformation, Detail, DetailEdit } from '../../../../shared/interfaces/models/character.model';
+
 @Component({
   selector: 'app-character-form',
+  standalone: true,
   imports: [
     CommonModule, 
     ReactiveFormsModule, 
@@ -31,8 +36,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     CardModule,
     ImageModule,
     DatePickerModule,
-    InputNumberModule, // <--- Necesario para p-inputNumber y su propiedad [min]
-    DatePickerModule,  // <--- Necesario para p-datepicker
+    InputNumberModule,
+    CheckboxModule
   ],
   templateUrl: './character-form.html',
   styleUrl: './character-form.scss',
@@ -42,105 +47,133 @@ export class CharacterForm implements OnInit {
   private config = inject(DynamicDialogConfig);
   private ref = inject(DynamicDialogRef);
   public characterForm!: FormGroup;
-  public characterResponse!:Detail;
-  // --- Variables Públicas ---
-  public name!: string;
-  public description!: string;
-  public gender!: string;
-  public id!: number;
-  public image!: string;
-  public ki!: string;
-  public maxKi!: string;
-  public race!: string;
-  public affiliation!: any;
-  public deletedAt!: any;
-  // Variables del Planeta
-  public idPlanet!: number;
-  public deletedAtPlanet!: null | string | Date;
-  public descriptionPlanet!: string;
-  public imagePlanet!: string;
-  public isDestroyed!: boolean;
-  public namePlanet!: string;
-  public date!:any;
-  // Transformaciones
-  public transformations: Transformation[] = [];
+  
+  public razas = [
+  { label: 'Saiyan', value: 'Saiyan' },
+  { label: 'Namekian', value: 'Namekian' },
+  { label: 'Human', value: 'Human' },
+  { label: 'Majin', value: 'Majin' },
+  { label: 'Frieza Race', value: 'Frieza Race' },
+  { label: 'Android', value: 'Android' },
+  { label: 'God', value: 'God' },
+  { label: 'Angel', value: 'Angel' },
+  { label: 'Unknown', value: 'Unknown' }
+];
+
   public facciones = [
     { label: 'Z Fighter', value: 'Z Fighter' },
     { label: 'Villain', value: 'Villain' },
     { label: 'Android', value: 'Android' },
     { label: 'Pride Trooper', value: 'Pride Trooper' }
   ];
-  public personajeForm!: FormGroup;
+
+  // Getter para el FormArray de transformaciones (usado en el HTML)
+  get transformationsArray() {
+  return this.characterForm.get('transformations') as FormArray;
+}
 
   ngOnInit() {
-    const { response:character,transformations:transformation } = this.config.data;
-    console.log("entrando a modal",this.config.data);
-    this.characterResponse=character;
-    console.log("informacion que llega del padre",this.config.data);
-    const {
-      name, description, gender, id, image, ki, maxKi, race, 
-      affiliation, deletedAt, originPlanet, transformations 
-    } = this.characterResponse;
-    let namaTr: string = '';
-    let imageTr: string = '';
-    if (transformation) {
-        ({ name: namaTr, image: imageTr } = transformation);
-    }
-        console.log(imageTr);
-    // 2. Desestructuración del planeta
-    const {
-      id: idPl, deletedAt: delPl, description: descPl, 
-      image: imgPl, isDestroyed: isDest, name: namePl 
-    } = originPlanet;
+    // 1. Extraer datos del modal
+    const { response: character, transformations: selectedTrans } = this.config.data;
+    
+    // 2. Inicializar el formulario con los datos cargados
+    this.initForm(character, selectedTrans);
+  }
 
-    // 3. Asignación a variables públicas
-      this.name = transformation?namaTr:name;
-      this.description = description;
-      this.gender = gender;
-      this.id = id;
-      this.image = transformation?imageTr:image;
-      this.ki = ki;
-      this.maxKi = maxKi;
-      this.race = race;
-      this.affiliation = affiliation;
-      this.deletedAt = deletedAt;
-      this.idPlanet = idPl;
-      this.deletedAtPlanet = delPl;
-      this.descriptionPlanet = descPl;
-      this.imagePlanet = imgPl;
-      this.isDestroyed = isDest;
-      this.namePlanet = namePl;
+  initForm(data: Detail, selectedTrans?: Transformation) {
+    // Si viene una transformación específica (como en tu lógica previa), sobreescribimos nombre e imagen
+    const displayName = selectedTrans ? selectedTrans.name : data.name;
+    const displayImage = selectedTrans ? selectedTrans.image : data.image;
 
-      this.transformations = transformations || [];
-      this.personajeForm = new FormGroup({
-      name: new FormControl(this.name || ''),
-      affiliation: new FormControl(this.affiliation || 'Z Fighter'),
-      ki: new FormControl(this.ki || 0, [Validators.required, Validators.min(0)]),
-      fechaRegistro: new FormControl(new Date()), // Campo inventado
-      description: new FormControl(this.description || ''),
-      // ... agrega el resto de variables aquí
+    this.characterForm = this.fb.group({
+      // Campos principales
+      id: [data.id],
+      name: [displayName, Validators.required],
+      ki: [data.ki || '0', Validators.required],
+      maxKi: [data.maxKi || '0'],
+      race: [data.race || ''],
+      gender: [data.gender || 'Masculino'],
+      description: [data.description || ''],
+      image: [displayImage || ''],
+      affiliation: [data.affiliation || 'Z Fighter'],
+      deletedAt: [data.deletedAt || null],
+      data: [new Date(), Validators.required], // Este es el campo 'data' del DetailEdit
+
+      // Objeto anidado completo
+      originPlanet: this.fb.group({
+        id: [data.originPlanet?.id],
+        name: [data.originPlanet?.name || ''],
+        isDestroyed: [data.originPlanet?.isDestroyed || false],
+        description: [data.originPlanet?.description || ''],
+        image: [data.originPlanet?.image || ''],
+        deletedAt: [data.originPlanet?.deletedAt || null]
+      }),
+
+      transformations: this.fb.array([])
     });
 
+
+    // 3. Llenar el FormArray con las transformaciones existentes
+    if (data.transformations && data.transformations.length > 0) {
+      data.transformations.forEach(t => this.addTransformation(t));
+    }
   }
-  
+
+  // Método para añadir transformación (acepta datos existentes o crea una vacía)
+  addTransformation(t?: Transformation) {
+    const transGroup = this.fb.group({
+      id: [t?.id || Date.now()],
+      name: [t?.name || '', Validators.required],
+      image: [t?.image || ''],
+      ki: [t?.ki || '0', Validators.required],
+      numericKi: [t?.numericKi || 0],
+      deletedAt: [t?.deletedAt || null]
+    });
+    this.transformationsArray.push(transGroup);
+  }
+
+  removeTransformation(index: number) {
+    this.transformationsArray.removeAt(index);
+  }
+
+  guardarCambios() {
+    if (this.characterForm.valid) {
+      const formValue = this.characterForm.value;
+      
+      // Construimos el objeto final tipo DetailEdit
+      const finalObject: DetailEdit = {
+        ...formValue,
+        data: formValue.date // Mapeamos 'date' del form a 'data' de la interfaz
+      };
+
+      console.log('Enviando DetailEdit:', finalObject);
+      this.ref.close(finalObject);
+    } else {
+      this.characterForm.markAllAsTouched();
+    }
+  }
+    // Método para manejar la selección de imagen
+  onImageSelect(event: any) {
+    const file = event.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        // Actualizamos el valor del campo 'image' en el formulario
+        this.characterForm.patchValue({
+          image: e.target.result
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+
   onCancel() {
     this.ref.close();
   }
-  guardarCambios() {
-    if (this.personajeForm.valid) {
-      // Aquí asignamos la fecha como pediste originalmente
-      this.date = new Date().toISOString(); 
-      
-      console.log('¡Datos del Saiyan listos!', this.personajeForm.value);
-      // Aquí iría tu lógica para enviar al backend o servicio
-    } else {
-      // Esto marca los errores en rojo si el formulario no es válido
-      this.personajeForm.markAllAsTouched();
-    }
-  }
 
-  // También agrega una función para el botón regresar si lo tienes en el HTML
   regresar() {
-    console.log('Regresando...');
+    this.ref.close();
   }
+  
 }

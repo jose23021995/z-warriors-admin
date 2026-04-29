@@ -29,6 +29,23 @@ export interface Transformation {
   numericKi?: number;
 }
 
+
+export interface DetailEdit {
+  id:              number;
+  name:            string;
+  ki:              string;
+  maxKi:           string;
+  race:            string;
+  gender:          string;
+  description:     string;
+  image:           string;
+  affiliation?:     string;
+  deletedAt?:       null | string | Date;
+  date:string | Date;
+  originPlanet:    OriginPlanet;
+  transformations: Transformation[]; // Opcional
+}
+
 export interface Detail {
   id:              number;
   name:            string;
@@ -44,21 +61,7 @@ export interface Detail {
   transformations: Transformation[]; // Opcional
 }
 
-export interface DetailEdit {
-  id:              number;
-  name:            string;
-  ki:              string;
-  maxKi:           string;
-  race:            string;
-  gender:          string;
-  description:     string;
-  image:           string;
-  affiliation?:     string;
-  deletedAt?:       null | string | Date;
-  data:string | Date;
-  originPlanet:    OriginPlanet;
-  transformations: Transformation[]; // Opcional
-}
+
 export interface ModalCharacter 
 {
   
