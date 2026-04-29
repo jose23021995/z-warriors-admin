@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal  } from '@angular/core';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
@@ -17,25 +17,15 @@ export class DashboardLayoutComponent {
   private router = inject(Router);
   private charService = inject(CharacterService);
   // Definición del menú para PrimeNG
-  items: MenuItem[] = [
+  public items = signal<MenuItem[]>([
+    { label: 'Personajes', icon: 'pi pi-users', routerLink: 'characters' },
+    { label: 'Estadísticas', icon: 'pi pi-chart-bar', routerLink: 'stats' },
     { 
-      label: 'Personajes', 
-      icon: 'pi pi-users', 
-      routerLink: 'characters' 
-    },
-    { 
-      label: 'Estadísticas', 
-      icon: 'pi pi-chart-bar', 
-      routerLink: 'stats' 
-    },
-    {
-      label: 'Prueba Interceptor',
-      icon: 'pi pi-exclamation-triangle',
-      command: () => {
-        this.pruebaInterceptor();
-      }
+      label: 'Prueba Interceptor', 
+      icon: 'pi pi-exclamation-triangle', 
+      command: () => this.pruebaInterceptor() 
     }
-  ];
+  ]);
   async pruebaInterceptor(){
     const response = await this.charService.getPrueba();
     console.log(response);
