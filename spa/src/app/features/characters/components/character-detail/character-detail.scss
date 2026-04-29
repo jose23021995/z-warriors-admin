@@ -498,3 +498,22 @@ $detail-danger: #ff5555;
   color: #000;
   width: 30%;
 }
+
+.input.buscador{
+      border-radius: 25px 0 0 0px !important;
+}
+.boton.p-button-success{
+    border-radius: 25px 0 0 25pxpx !important;
+}
+
+/* Usamos el selector de la clase .buscador que ya tiene tu botón */
+.boton.buscador {
+    border-radius: 25px 0 0 25px !important;
+    /* Aseguramos que el efecto ripple (onda) también respete la forma */
+    overflow: hidden !important; 
+}
+
+/* En algunas versiones de PrimeNG es necesario entrar al root del componente */
+:ng-deep .boton.buscador.p-button {
+    border-radius: 25px 0 0 25px !important;
+}
