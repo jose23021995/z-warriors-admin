@@ -67,7 +67,8 @@ $detail-text-bio: #ccc;
           border-radius: 20px;
           font-size: 0.8rem;
 
-          &.is-highlight { // Clase extra por si quieres resaltar uno
+          &.is-highlight {
+            // Clase extra por si quieres resaltar uno
             background: $detail-color-primary;
             color: black;
             font-weight: bold;
@@ -100,9 +101,13 @@ $detail-text-bio: #ccc;
       text-align: center;
       border-left: 4px solid $detail-color-primary;
 
-      &--max { // Modificador para el Max Ki
+      &--max {
+        // Modificador para el Max Ki
         border-left-color: $detail-color-secondary;
-        strong { color: $detail-color-secondary; }
+
+        strong {
+          color: $detail-color-secondary;
+        }
       }
 
       span {
@@ -184,57 +189,58 @@ $detail-text-bio: #ccc;
 }
 
 ::ng-deep {
-    .p-image {
-        display: flex !important;
-        justify-content: center; // Centra la imagen horizontalmente
-        align-items: center;     // Centra la imagen verticalmente
-        position: relative;      // Necesario para que la máscara se alinee a la imagen
-        overflow: hidden;        // Mantiene todo dentro de los bordes redondeados
-        
-        img {
-            // Asegura que la imagen no se estire de forma extraña
-            display: block;
-            margin: auto;
-        }
+  .p-image {
+    display: flex !important;
+    justify-content: center; // Centra la imagen horizontalmente
+    align-items: center; // Centra la imagen verticalmente
+    position: relative; // Necesario para que la máscara se alinee a la imagen
+    overflow: hidden; // Mantiene todo dentro de los bordes redondeados
 
-        .p-image-preview-mask {
-            // ESTA ES LA CLAVE: Forzamos a que la máscara ocupe el centro
-            left: 50% !important;
-            top: 50% !important;
-            transform: translate(-50%, -50%); // Centrado matemático perfecto
-            
-            // Si quieres que el área clickeable sea igual a la imagen:
-            width: 50px !important; // Debe coincidir con el width de tu imagen
-            height: 130px !important; // Debe coincidir con el height de tu imagen
-            
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-        }
+    img {
+      // Asegura que la imagen no se estire de forma extraña
+      display: block;
+      margin: auto;
     }
+
+    .p-image-preview-mask {
+      // ESTA ES LA CLAVE: Forzamos a que la máscara ocupe el centro
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%); // Centrado matemático perfecto
+
+      // Si quieres que el área clickeable sea igual a la imagen:
+      width: 50px !important; // Debe coincidir con el width de tu imagen
+      height: 130px !important; // Debe coincidir con el height de tu imagen
+
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+    }
+  }
 }
 
 :host ::ng-deep {
-    .hidden-preview {
-        display: none !important; // Oculta la miniatura
-    }
-    
-    .transformation-badge {
-        background: #333;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        cursor: pointer;
-        border: 1px solid #444;
-        transition: transform 0.1s;
+  .hidden-preview {
+    display: none !important; // Oculta la miniatura
+  }
 
-        &:hover {
-            background: #444;
-            transform: scale(1.02);
-        }
+  .transformation-badge {
+    background: #333;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #444;
+    transition: transform 0.1s;
+
+    &:hover {
+      background: #444;
+      transform: scale(1.02);
     }
+  }
 }
-#Regreso{
-  
+
+#Regreso {
+
   color: #000 !important;
   background-color: #ccc;
 }
@@ -251,6 +257,7 @@ $detail-danger: #ff5555;
   padding: 1rem;
 
   .profile-card {
+
     // Estilos del Header
     .profile-header {
       display: flex;
@@ -271,7 +278,7 @@ $detail-danger: #ff5555;
         ::ng-deep .avatar-image {
           width: 100%;
           height: 100%;
-          
+
           .avatar-img-content {
             width: 100%;
             height: 100%;
@@ -353,10 +360,16 @@ $detail-danger: #ff5555;
           color: white;
         }
 
-        &.base-ki { border-left: 4px solid $detail-primary; }
-        &.max-ki { 
-          border-left: 4px solid $detail-secondary; 
-          .stat-value { color: $detail-secondary; }
+        &.base-ki {
+          border-left: 4px solid $detail-primary;
+        }
+
+        &.max-ki {
+          border-left: 4px solid $detail-secondary;
+
+          .stat-value {
+            color: $detail-secondary;
+          }
         }
       }
     }
@@ -393,8 +406,15 @@ $detail-danger: #ff5555;
           border: 1px solid #444;
           cursor: zoom-in;
 
-          .name { font-weight: bold; color: white; }
-          .ki { color: #ffa500; font-size: 0.75rem; }
+          .name {
+            font-weight: bold;
+            color: white;
+          }
+
+          .ki {
+            color: #ffa500;
+            font-size: 0.75rem;
+          }
         }
       }
     }
@@ -407,7 +427,7 @@ $detail-danger: #ff5555;
       text-transform: uppercase;
       margin-bottom: 15px;
     }
-    
+
     .no-data {
       color: #666;
       font-style: italic;
@@ -423,7 +443,58 @@ $detail-danger: #ff5555;
 }
 
 // Ocultar previewers auxiliares
-.hidden-preview { display: none; }
-.p-button-text,.p-button-secondary{
+.hidden-preview {
+  display: none;
+}
+
+.p-button-text,
+.p-button-secondary {
   background: #fff !important;
+}
+
+@media (max-width: 1148px) {
+  .botones{
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row;
+    justify-content: center !important;
+  }
+  header,.power-metrics{
+    display: flex;
+    flex-direction: column;
+
+  }
+  header{
+    .profile-info{
+      display: flex;
+      flex-direction: column !important;
+
+      justify-content:center !important;
+      align-items: center !important;
+    }
+  }
+}
+//575
+@media (max-width: 575px) {
+  .transformations-grid{
+      display: flex;
+      flex-direction: column !important;
+      justify-content:center !important;
+      align-items: center !important;
+      .card-transformation{
+        width: 100% !important;
+      }
+  }
+  .botones{
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row;
+    justify-content: center !important;
+  }
+}
+
+.p-button-secondary{
+  margin-top: 10px;
+  color: #000;
+  width: 30%;
 }
