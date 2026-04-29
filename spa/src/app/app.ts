@@ -5,8 +5,8 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,ToastModule ],
-  providers:[MessageService],
+  imports: [RouterOutlet, ToastModule],
+  //providers:[MessageService],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

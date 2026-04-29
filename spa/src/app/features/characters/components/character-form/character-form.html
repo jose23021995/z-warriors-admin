@@ -1,176 +1,130 @@
 <form *ngIf="characterForm" [formGroup]="characterForm" (ngSubmit)="guardarCambios()" class="p-fluid grid p-3">
 
-  <!-- CONTENEDOR PRINCIPAL: Agrupa Imagen, Datos y Planeta -->
-  <div class="col-12 grid db-container mb-3" id="section1">
-
-    <!-- LADO IZQUIERDO: IMAGEN (4 de 12 columnas) -->
-    <div class="col-12 md:col-4 flex flex-column align-items-center justify-content-center modulo imagen">
-      <div class="relative">
-        <p-image [src]="characterForm.get('image')?.value || 'assets/placeholder.png'" height="265" width="180"
-          class="db-avatar shadow-8"></p-image>
-        <p-fileupload mode="basic" (onSelect)="onImageSelect($event)" auto="true" chooseIcon="pi pi-plus"
-          class="absolute"></p-fileupload>
-      </div>
-    </div>
-    <!-- LADO DERECHO: DATOS BÁSICOS (8 de 12 columnas) -->
-    <div class="col-12 md:col-8 grid modulo character">
-      <div class="col-12"><span class="section-title">Datos Básicos</span></div>
-      <div class="col-6">
-        <span class="db-label">Nombre</span>
-        <input pInputText formControlName="name" class="name" style="width: 95% !important;" />
-      </div>
-
-      <div class="col-6">
-        <span class="db-label">Raza</span>
-        <p-select [options]="[{label:'Masculino', value:'Masculino'}, {label:'Femenino', value:'Femenino'}]"
-          formControlName="gender" optionLabel="label" optionValue="value" dataKey="value"
-          placeholder="Seleccione Género" class="w-full">
-        </p-select>
-      </div>
-
-      <div class="col-6">
-        <span class="db-label">Género</span>
-        <p-select [options]="[{label:'Masculino', value:'Male'}, {label:'Femenino', value:'Female'}]"
-          formControlName="gender" optionLabel="label" optionValue="value" placeholder="Seleccione Género">
-        </p-select>
-      </div>
-
-      <div class="col-6">
-        <span class="db-label">Afiliación</span>
-        <p-select [options]="facciones" formControlName="affiliation" optionLabel="label" optionValue="value">
-        </p-select>
-      </div>
-    </div>
-
-    <!-- BLOQUE INFERIOR: PLANETA (Ocupa las 12 columnas del contenedor padre) -->
-    <div class="col-12 mt-3 p-3 modulo" formGroupName="originPlanet">
-      <div>
-        <span class="section-title">Planeta de Origen</span>
-      </div>
-
-      <div class="grid">
-        <div class="col-4">
-          <span class="db-label">NOMBRE DE PLANETA</span>
-          <input pInputText formControlName="name" style="width: 95% !important;" />
-        </div>
-        <div class="col-4 flex align-items-center mt-3 gap-2">
-          <!-- Añadimos un id para vincularlo al label -->
-          <p-checkbox formControlName="isDestroyed" [binary]="true" inputId="destroyedCheck">
-          </p-checkbox>
-
-          <!-- El texto dinámico va aquí -->
-          <label for="destroyedCheck" class="text-white font-bold cursor-pointer" style="color: aliceblue;">
-            {{ characterForm.get('originPlanet.isDestroyed')?.value ? '💥 Destruido' : '🌎 Vigente' }}
-          </label>
-        </div>
-
-        <div class="col-4">
-          <span class="db-label">DESCRIPCIÓN DE PLANETA</span>
-          <textarea pTextarea formControlName="description" rows="1" class="textarea"></textarea>
-        </div>
-      </div>
-    </div>
-  </div> <!-- FIN DEL CONTENEDOR PRINCIPAL -->
-
-  <!-- BLOQUE KI (Negros) -->
-  <div class="col-12 grid px-0" id="section2">
-    <div class="col-6 medidorDePoder">
-      <div class="db-container text-center">
-        <span class="db-label">BASE KI</span>
-        <p-inputNumber [min]="0" formControlName="ki" mode="decimal" [useGrouping]="true" mode="decimal"
-          [style]="{'width': '100%'}" [inputStyle]="{'width': '100%'}"></p-inputNumber>
-      </div>
-    </div>
-    <div class="col-6 medidorDePoder">
-      <div class="db-container text-center">
-        <span class="db-label">MAX KI</span>
-        <p-inputNumber formControlName="maxKi" [min]="0" mode="decimal" [useGrouping]="true" locale="de-DE"
-          [maxFractionDigits]="0" [style]="{'width': '100%'}" [inputStyle]="{'width': '100%'}">
-        </p-inputNumber>
-      </div>
-    </div>
-  </div>
-
-  <!-- DESCRIPCIÓN -->
-  <div class="col-12 mt-3 db-container" id="section3">
-    <span class="db-label">Descripción de personaje</span>
-    <textarea pTextarea formControlName="description" rows="4" class="textarea"></textarea>
-  </div>
-  <br>
-  <!-- TRANSFORMACIONES -->
-  <div class="col-12 mt-3 db-container" formArrayName="transformations" id="seccion4">
-    <div class="flex justify-content-between align-items-center mb-2">
-      <span class="section-title">Transformaciones</span>
-      <button pButton type="button" label="AÑADIR" (click)="addTransformation()"
-        class="p-button-text p-button-warning"></button>
-    </div>
-
-    <!-- Contenedor de las transformaciones -->
-    <section class="transformaciones">
-
-      <!-- MENSAJE CUANDO NO HAY ELEMENTOS -->
-      <div *ngIf="transformationsArray.controls.length === 0"
-        class="text-center p-4 border-round surface-ground border-1 border-gray-700 mb-2">
-        <i class="pi pi-info-circle text-gray-500 mr-2"></i>
-        <span class="text-gray-500 italic">No hay transformaciones registradas.</span>
-      </div>
-
-      <!-- LISTADO DE TRANSFORMACIONES -->
-      <div *ngFor="let trans of transformationsArray.controls; let i=index" [formGroupName]="i"
-        class="trans-item p-3 mb-3 border-1 border-gray-700 border-round surface-card">
-
-        <!-- Título opcional para identificar la posición -->
-        <div class="mb-2 text-primary font-bold">Transformación #{{i + 1}}</div>
-
-        <div class="flex flex-column gap-3">
-          <!-- Campo Nombre -->
-          <div class="flex flex-column gap-1">
-            <label [for]="'name-' + i" class="text-sm font-medium text-gray-400">Nombre de la transformación</label>
-            <input [id]="'name-' + i" pInputText formControlName="name" placeholder="Ej: Super Saiyan" class="w-full" />
-          </div>
-
-          <!-- Fila para los Ki -->
-          <div class="grid p-0 m-0">
-            <div class="col-6 pl-0">
-              <label [for]="'ki-' + i" class="text-sm font-medium text-gray-400">Ki (Texto)</label>
-              <p-inputNumber [min]="0" [id]="'ki-' + i" formControlName="ki" placeholder="Puntos de Ki" class="w-full">
-              </p-inputNumber>
+    <!-- SECCIÓN 1: IMAGEN Y DATOS -->
+    <div class="col-12 grid db-container mb-3" id="section1">
+        
+        <!-- AVATAR CON SIGNAL -->
+        <div class="col-12 md:col-4 flex flex-column align-items-center justify-content-center modulo imagen">
+            <div class="relative">
+                <!-- Usamos imagePreview() -->
+                <p-image [src]="imagePreview() || 'assets/placeholder.png'" height="265" width="180" class="db-avatar shadow-8"></p-image>
+                <p-fileupload mode="basic" (onSelect)="onImageSelect($event)" auto="true" chooseIcon="pi pi-plus" class="absolute"></p-fileupload>
             </div>
-            <div class="col-6 pr-0">
-              <label [for]="'nki-' + i" class="text-sm font-medium text-gray-400">Ki Numérico</label>
-              <p-inputNumber [min]="0" [id]="'nki-' + i" formControlName="numericKi" placeholder="Valor exacto"
-                class="w-full">
-              </p-inputNumber>
-            </div>
-          </div>
-
-          <!-- Botón de acción -->
-          <button type="button" pButton icon="pi pi-trash" (click)="removeTransformation(i)"
-            class="p-button-danger p-button-text w-full mt-2" label="Eliminar esta transformación">
-          </button>
         </div>
-      </div>
 
-    </section>
-  </div>
-  <!-- SECCIÓN 5: FECHA DE REGISTRO GENERAL -->
-  <div class="col-12 mt-3 db-container" id="seccion5">
-    <span class="db-label">Fecha de Registro del Personaje</span>
-    <div class="mt-2">
-      <p-datepicker formControlName="date" [showIcon]="true" appendTo="body" dateFormat="dd/mm/yy"
-        placeholder="Seleccione la fecha de registro" class="w-full">
-      </p-datepicker>
+        <!-- DATOS BÁSICOS -->
+        <div class="col-12 md:col-8 grid modulo character">
+            <div class="col-12"><span class="section-title">Datos Básicos</span></div>
+            
+            <div class="col-6">
+                <span class="db-label">Nombre</span>
+                <input pInputText formControlName="name" class="w-full" />
+            </div>
+
+            <div class="col-6">
+                <span class="db-label">Raza</span>
+                <!-- Usamos razas() -->
+                <p-select [options]="razas()" formControlName="race" optionLabel="label" optionValue="value" placeholder="Seleccione Raza" class="w-full"></p-select>
+            </div>
+
+            <div class="col-6">
+                <span class="db-label">Género</span>
+                <p-select [options]="[{label:'Masculino', value:'Masculino'}, {label:'Femenino', value:'Femenino'}]" formControlName="gender" optionLabel="label" optionValue="value" placeholder="Género" class="w-full"></p-select>
+            </div>
+
+            <div class="col-6">
+                <span class="db-label">Afiliación</span>
+                <!-- Usamos facciones() -->
+                <p-select [options]="facciones()" formControlName="affiliation" optionLabel="label" optionValue="value" class="w-full"></p-select>
+            </div>
+        </div>
+
+        <!-- PLANETA (DENTRO DE SECCIÓN 1) -->
+        <div class="col-12 mt-3 p-3 modulo" formGroupName="originPlanet">
+            <div><span class="section-title">Planeta de Origen</span></div>
+            <div class="grid">
+                <div class="col-4">
+                    <span class="db-label">Nombre de Planeta</span>
+                    <input pInputText formControlName="name" class="w-full" />
+                </div>
+
+                <div class="col-4 flex align-items-center mt-3 gap-2">
+                    <p-checkbox formControlName="isDestroyed" [binary]="true" inputId="destroyedCheck"></p-checkbox>
+                    <!-- Usamos el computed planetaEstado() -->
+                    <label for="destroyedCheck" class="text-white font-bold cursor-pointer">
+                        {{ planetaEstado() }}
+                    </label>
+                </div>
+
+                <div class="col-4">
+                    <span class="db-label">Descripción</span>
+                    <textarea pTextarea formControlName="description" rows="1" class="textarea w-full"></textarea>
+                </div>
+            </div>
+        </div>
     </div>
-    <small *ngIf="characterForm.get('date')?.invalid && characterForm.get('date')?.touched" class="p-error">
-      La fecha de registro es obligatoria.
-    </small>
-  </div>
-  <!-- BOTONES -->
-  <div class="col-12 flex justify-content-between mt-4 botones">
-    <div class="flex gap-3 pt-2">
-      <button pButton type="submit" label="GUARDAR CAMBIOS" class="btn-guardar px-5"></button>
-      <button pButton type="button" label="CANCELAR" (click)="onCancel()"
-        class="p-button-secondary border-round-2xl"></button>
+
+    <!-- SECCIÓN 2: MEDIDORES DE KI -->
+    <div class="col-12 grid px-0" id="section2">
+        <div class="col-6 medidorDePoder">
+            <div class="db-container text-center">
+                <span class="db-label">BASE KI</span>
+                <p-inputNumber formControlName="ki" mode="decimal" [useGrouping]="true" class="w-full"></p-inputNumber>
+            </div>
+        </div>
+        <div class="col-6 medidorDePoder">
+            <div class="db-container text-center">
+                <span class="db-label">MAX KI</span>
+                <p-inputNumber formControlName="maxKi" mode="decimal" [useGrouping]="true" class="w-full"></p-inputNumber>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <!-- SECCIÓN 3: BIO -->
+    <div class="col-12 mt-3 db-container" id="section3">
+        <span class="db-label">Descripción de personaje</span>
+        <textarea pTextarea formControlName="description" rows="4" class="textarea w-full"></textarea>
+    </div>
+
+    <!-- SECCIÓN 4: TRANSFORMACIONES -->
+    <div class="col-12 mt-3 db-container" formArrayName="transformations" id="seccion4">
+        <div class="flex justify-content-between align-items-center mb-2">
+            <span class="section-title">Transformaciones</span>
+            <button pButton type="button" label="AÑADIR" (click)="addTransformation()" class="p-button-text p-button-warning"></button>
+        </div>
+
+        <section class="transformaciones">
+            <div *ngIf="transformationsArray.controls.length === 0" class="text-center p-4 border-round border-1 border-gray-700 mb-2">
+                <span class="text-gray-500 italic">No hay transformaciones registradas.</span>
+            </div>
+
+            <div *ngFor="let trans of transformationsArray.controls; let i=index" [formGroupName]="i" class="trans-item p-3 mb-3 border-1 border-gray-700 border-round surface-card">
+                <div class="mb-2 text-primary font-bold">Transformación #{{i + 1}}</div>
+                <div class="flex flex-column gap-3">
+                    <input pInputText formControlName="name" placeholder="Nombre" class="w-full" />
+                    <div class="grid p-0 m-0">
+                        <div class="col-6 pl-0">
+                            <p-inputNumber formControlName="ki" placeholder="Ki" class="w-full"></p-inputNumber>
+                        </div>
+                        <div class="col-6 pr-0">
+                            <p-inputNumber formControlName="numericKi" placeholder="Ki Numérico" class="w-full"></p-inputNumber>
+                        </div>
+                    </div>
+                    <button type="button" pButton icon="pi pi-trash" (click)="removeTransformation(i)" class="p-button-danger p-button-text w-full" label="Eliminar"></button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SECCIÓN 5: FECHA -->
+    <div class="col-12 mt-3 db-container" id="seccion5">
+        <span class="db-label">Fecha de Registro</span>
+        <p-datepicker formControlName="date" [showIcon]="true" appendTo="body" dateFormat="dd/mm/yy" class="w-full"></p-datepicker>
+    </div>
+
+    <!-- BOTONES FINALES -->
+    <div class="col-12 flex justify-content-center mt-4 gap-3">
+        <button pButton type="submit" label="GUARDAR CAMBIOS" class="btn-guardar px-5"></button>
+        <button pButton type="button" label="CANCELAR" (click)="onCancel()" class="p-button-secondary"></button>
+    </div>
 </form>
