@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,33 +29,37 @@ const {auth:{title,buttonText,passLabel,subtitle,userLabel}} =loginData;
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  title = title;
-  subtitle = subtitle;
-  userLabel = userLabel;
-  passLabel = passLabel;
-  buttonText = buttonText;
-  loginForm: FormGroup;
+  // 2. Usar inject en lugar de constructor
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  // 3. Variables de texto como Signals (Opcional, pero consistente)
+  public title = signal(title);
+  public subtitle = signal(subtitle);
+  public userLabel = signal(userLabel);
+  public passLabel = signal(passLabel);
+  public buttonText = signal(buttonText);
   
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {
-    this.loginForm = this.fb.group({
-      username: ['admin', [Validators.required]],
-      password: ['admin123', [Validators.required]]
-    });
-  }
+  // Señal para manejar el estado del botón
+  public isLoading = signal(false);
+
+  public loginForm: FormGroup = this.fb.group({
+    username: ['admin', [Validators.required]],
+    password: ['admin123', [Validators.required]]
+  });
 
   onLogin() {
     if (this.loginForm.valid) {
+      this.isLoading.set(true); // Actualizar señal
       const { username, password } = this.loginForm.value;
+
       if (username === 'admin' && password === 'admin123') {
         this.authService.login('fake-jwt-token');
       } else {
         alert('Credenciales incorrectas');
+        this.isLoading.set(false);
       }
     }
   }
 }
-
