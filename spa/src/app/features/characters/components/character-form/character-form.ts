@@ -14,6 +14,8 @@ import { ImageModule } from 'primeng/image';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 // Interfaces
 import { Transformation, Detail, DetailEdit } from '../../../../shared/interfaces/models/character.model';
 
@@ -34,7 +36,8 @@ import { Transformation, Detail, DetailEdit } from '../../../../shared/interface
     ImageModule,
     DatePickerModule,
     InputNumberModule,
-    CheckboxModule
+    CheckboxModule,
+    ToastModule 
   ],
   templateUrl: './character-form.html',
   styleUrl: './character-form.scss',
@@ -44,6 +47,7 @@ export class CharacterForm implements OnInit {
   private config = inject(DynamicDialogConfig);
   private ref = inject(DynamicDialogRef);
   public characterForm!: FormGroup;
+  private messageService = inject(MessageService);
   
   public razas = [
     { label: 'Saiyan', value: 'Saiyan' },
@@ -150,22 +154,35 @@ initForm(data: Detail, selectedTrans?: Transformation) {
 
   guardarCambios() {
     if (this.characterForm.valid) {
-      const formValue = this.characterForm.value;    
-      // Construimos el objeto final
-      const finalObject: DetailEdit = {
-        ...formValue
-      };
-      console.log('--- OBJETO A GUARDAR ---');
-      console.table(finalObject);
-      alert("¡Se guardó correctamente el personaje: " + finalObject.name + "!");
-      this.ref.close(finalObject);
+      const formValue = this.characterForm.value;
+      const finalObject: DetailEdit = { ...formValue };
+
+      // Lanzar Toast de éxito
+      this.messageService.add({ 
+        severity: 'success', 
+        summary: '¡Guardado!', 
+        detail: `Personaje ${finalObject.name} actualizado.`,
+        life: 2000
+      });
+
+      // Esperar un poco antes de cerrar para que se vea el Toast
+      setTimeout(() => {
+        this.ref.close(finalObject);
+      }, 600);
 
     } else {
-      console.error('El formulario tiene errores:', this.characterForm.errors);
-      alert("¡Ups! Parece que hay un error. Por favor, revisa que todos los campos obligatorios estén llenos.");
+      // Toast de error
+      this.messageService.add({ 
+        severity: 'warn', 
+        summary: 'Formulario Incompleto', 
+        detail: 'Por favor, completa los campos obligatorios.',
+        life: 3000
+      });
+      
       this.characterForm.markAllAsTouched();
     }
   }
+
 
   onImageSelect(event: any) {
     const file = event.files[0];
