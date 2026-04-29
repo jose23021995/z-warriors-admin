@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 // PrimeNG 18 Imports
@@ -16,7 +16,9 @@ import { ImageModule } from 'primeng/image';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
-import { ToastModule } from 'primeng/toast';
+
+import Swal from 'sweetalert2'
+
 // Interfaces
 import { Transformation, Detail, DetailEdit } from '../../../../shared/interfaces/models/character.model';
 
@@ -49,58 +51,79 @@ export class CharacterForm implements OnInit {
   public characterForm!: FormGroup;
   
   public razas = [
-  { label: 'Saiyan', value: 'Saiyan' },
-  { label: 'Namekian', value: 'Namekian' },
-  { label: 'Human', value: 'Human' },
-  { label: 'Majin', value: 'Majin' },
-  { label: 'Frieza Race', value: 'Frieza Race' },
-  { label: 'Android', value: 'Android' },
-  { label: 'God', value: 'God' },
-  { label: 'Angel', value: 'Angel' },
-  { label: 'Unknown', value: 'Unknown' }
-];
-
-  public facciones = [
-    { label: 'Z Fighter', value: 'Z Fighter' },
-    { label: 'Villain', value: 'Villain' },
+    { label: 'Saiyan', value: 'Saiyan' },
+    { label: 'Namekian', value: 'Namekian' },
+    { label: 'Human', value: 'Human' },
+    { label: 'Majin', value: 'Majin' },
+    { label: 'Frieza Race', value: 'Frieza Race' },
     { label: 'Android', value: 'Android' },
-    { label: 'Pride Trooper', value: 'Pride Trooper' }
+    { label: 'God', value: 'God' },
+    { label: 'Angel', value: 'Angel' },
+    { label: 'Unknown', value: 'Unknown' }
   ];
 
-  // Getter para el FormArray de transformaciones (usado en el HTML)
+  public facciones = [
+    { label: 'Guerrero Z', value: 'Z Fighter' },
+    { label: 'Ejército de Freezer', value: 'Army of Frieza' },
+    { label: 'Freelancer', value: 'Freelancer' },
+    { label: 'Villano', value: 'Villain' },
+    { label: 'Androide', value: 'Android' },
+    { label: 'Tropa del Orgullo', value: 'Pride Trooper' }
+  ];
+
   get transformationsArray() {
-  return this.characterForm.get('transformations') as FormArray;
-}
+    return this.characterForm.get('transformations') as FormArray;
+  }
 
   ngOnInit() {
     // 1. Extraer datos del modal
     const { response: character, transformations: selectedTrans } = this.config.data;
     
-    // 2. Inicializar el formulario con los datos cargados
+    // 2. Inicializar el formulario
     this.initForm(character, selectedTrans);
   }
 
+  /**
+   * Limpia valores de Ki que vengan como String con formato (ej: "20.000")
+   * y los convierte en números puros para evitar el error NaN.
+   */
+  private parseKi(val: any): number {
+    if (val === null || val === undefined || val === '') return 0;
+    if (typeof val === 'number') return val;
+
+    // Eliminamos cualquier caracter que no sea número (puntos, comas, espacios)
+    const cleanVal = val.toString().replace(/[^0-9]/g, '');
+    const num = Number(cleanVal);
+
+    return isNaN(num) ? 0 : num;
+  }
+
   initForm(data: Detail, selectedTrans?: Transformation) {
-    // Si viene una transformación específica (como en tu lógica previa), sobreescribimos nombre e imagen
+    // Traducción de Género: API (Male/Female) -> Formulario (Masculino/Femenino)
+    let generoPrecargado = data.gender;
+    if (data.gender === 'Male') generoPrecargado = 'Masculino';
+    if (data.gender === 'Female') generoPrecargado = 'Femenino';
+
     const displayName = selectedTrans ? selectedTrans.name : data.name;
     const displayImage = selectedTrans ? selectedTrans.image : data.image;
+    
+    // Manejo de la fecha raíz (DetailEdit.date)
     const inicialFecha = (data as any).date ? new Date((data as any).date) : new Date();
 
     this.characterForm = this.fb.group({
-      // Campos principales
       id: [data.id],
       name: [displayName, Validators.required],
-      ki: [data.ki || 0, [Validators.required, Validators.min(0)]],
-      maxKi: [data.maxKi || 0, [Validators.min(0)]],
+      // Aplicamos parseKi para manejar números grandes sin NaN
+      ki: [this.parseKi(data.ki), [Validators.required, Validators.min(0)]],
+      maxKi: [this.parseKi(data.maxKi), [Validators.min(0)]],
       race: [data.race || ''],
-      gender: [data.gender || 'Masculino'],
+      gender: [generoPrecargado || 'Masculino'],
       description: [data.description || ''],
       image: [displayImage || ''],
       affiliation: [data.affiliation || 'Z Fighter'],
       deletedAt: [data.deletedAt || null],
       date: [inicialFecha, Validators.required], 
 
-      // Objeto anidado completo
       originPlanet: this.fb.group({
         id: [data.originPlanet?.id],
         name: [data.originPlanet?.name || ''],
@@ -113,23 +136,21 @@ export class CharacterForm implements OnInit {
       transformations: this.fb.array([])
     });
 
-
-    // 3. Llenar el FormArray con las transformaciones existentes
+    // Llenar el FormArray con las transformaciones existentes
     if (data.transformations && data.transformations.length > 0) {
       data.transformations.forEach(t => this.addTransformation(t));
     }
   }
 
-  // Método para añadir transformación (acepta datos existentes o crea una vacía)
   addTransformation(t?: Transformation) {
     const transGroup = this.fb.group({
       id: [t?.id || Date.now()],
       name: [t?.name || '', Validators.required],
       image: [t?.image || ''],
-      ki: [t?.ki || '0', Validators.required],
-      numericKi: [t?.numericKi || 0],
-      deletedAt: [t?.deletedAt || null],
-      
+      // También limpiamos los Ki dentro de las transformaciones
+      ki: [this.parseKi(t?.ki), Validators.required],
+      numericKi: [this.parseKi(t?.numericKi)],
+      deletedAt: [t?.deletedAt || null]
     });
     this.transformationsArray.push(transGroup);
   }
@@ -138,34 +159,23 @@ export class CharacterForm implements OnInit {
     this.transformationsArray.removeAt(index);
   }
 
-  guardarCambios() {
+guardarCambios() {
   if (this.characterForm.valid) {
-    // Obtenemos los valores del formulario
     const formValue = this.characterForm.value;
-    
-    // Como formValue ya tiene la propiedad 'date' (por el p-datepicker),
-    // y coincide con el nombre en tu interfaz DetailEdit, 
-    // simplemente extendemos el objeto.
-    const finalObject: DetailEdit = {
-      ...formValue
-      // Ya no necesitas "data: formValue.date" porque la interfaz pide "date"
-    };
-
-    console.log('Enviando DetailEdit:', finalObject);
+    const finalObject: DetailEdit = { ...formValue };
+    alert("Los cambios se han registrado correctamente");
     this.ref.close(finalObject);
   } else {
-    // Si el formulario es inválido (ej: no pusieron la fecha), marcamos errores
+    alert("Por favor, revisa los campos marcados en rojo");
     this.characterForm.markAllAsTouched();
   }
 }
 
-    // Método para manejar la selección de imagen
   onImageSelect(event: any) {
     const file = event.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        // Actualizamos el valor del campo 'image' en el formulario
         this.characterForm.patchValue({
           image: e.target.result
         });
@@ -174,7 +184,6 @@ export class CharacterForm implements OnInit {
     }
   }
 
-
   onCancel() {
     this.ref.close();
   }
@@ -182,5 +191,4 @@ export class CharacterForm implements OnInit {
   regresar() {
     this.ref.close();
   }
-  
 }

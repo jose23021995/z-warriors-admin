@@ -27,8 +27,9 @@
 
       <div class="col-6">
         <span class="db-label">Género</span>
-        <p-select [options]="[{label:'Masculino', value:'Masculino'},{label:'Femenino', value:'Femenino'}]"
-          formControlName="gender"></p-select>
+        <p-select [options]="[{label:'Masculino', value:'Male'}, {label:'Femenino', value:'Female'}]"
+          formControlName="gender" optionLabel="label" optionValue="value" placeholder="Seleccione Género">
+        </p-select>
       </div>
 
       <div class="col-6">
@@ -66,13 +67,20 @@
     <div class="col-6 medidorDePoder">
       <div class="db-container text-center">
         <span class="db-label">BASE KI (puntos)</span>
-        <p-inputNumber [min]="0" formControlName="ki" mode="decimal" [useGrouping]="true"></p-inputNumber>
+        <p-inputNumber [min]="0" formControlName="ki" mode="decimal" [useGrouping]="true" mode="decimal"></p-inputNumber>
       </div>
     </div>
     <div class="col-6 medidorDePoder">
       <div class="db-container text-center">
         <span class="db-label">MAX KI (septillion)</span>
-        <p-inputNumber [min]="0" formControlName="maxKi" mode="decimal"></p-inputNumber>
+        <p-inputNumber 
+        formControlName="maxKi" 
+        [min]="0" 
+        mode="decimal" 
+        [useGrouping]="true" 
+        locale="de-DE"
+        [maxFractionDigits]="0">
+        </p-inputNumber>
       </div>
     </div>
   </div>
@@ -124,7 +132,8 @@
             </div>
             <div class="col-6 pr-0">
               <label [for]="'nki-' + i" class="text-sm font-medium text-gray-400">Ki Numérico</label>
-              <p-inputNumber [min]="0" [id]="'nki-' + i" formControlName="numericKi" placeholder="Valor exacto" class="w-full">
+              <p-inputNumber [min]="0" [id]="'nki-' + i" formControlName="numericKi" placeholder="Valor exacto"
+                class="w-full">
               </p-inputNumber>
             </div>
           </div>
