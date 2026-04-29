@@ -1,6 +1,6 @@
 :host {
     display: block;
-    background-color: #d18a3a; // El naranja de fondo de tu imagen
+    background-color: #5f5f5f75; // El naranja de fondo de tu imagen
     padding: 20px;
     border-radius: 15px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,12 +14,15 @@
 }
 
 .db-label {
-    color: #ffd19a;
+    color: #fff;
     font-weight: bold;
     text-transform: uppercase;
     font-size: 0.85rem;
     margin-bottom: 5px;
     display: block;
+    textarea{
+      height: 200px !important;
+    }
 }
 
 .section-title {
@@ -58,8 +61,112 @@
     }
 }
 
+#section1,#section2,#section3,#section4{
+  margin-top: 15px !important;
+  modulo{
+    width: 30% !important;
+    div{
+      span{
+            color: #f3ede5;
+            border-bottom: 2px solid #ffffff;
+      }
+      padding-bottom: 10px;
+    }
+  }
+}
 #section1{
   display: flex !important;
   flex-direction: row !important;
   justify-content:space-around !important;
+  background-color: #000000a3;
+  input,p-select{
+    width: 100% !important;
+  }
+  .modulo{
+    width: 30% !important;
+    div{
+      span{
+            color: #f3ede5;
+            border-bottom: 2px solid #ffffff;
+      }
+      padding-bottom: 10px;
+    }
+  }
+
+
+  .imagen{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: var(--card-fondo-icon) !important;
+    border-radius: 20px !important;
+    .relative{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+
+    }
+    .p-button {
+      width: 100% !important;
+    }
+    .p-fileupload-basic-content{
+      width: 100% !important;
+      display: flex !important;
+      justify-content: center !important;
+    }
+  }
+
+}
+
+#section2{
+  
+  display: flex !important;
+      justify-content: space-between !important;
+  .medidorDePoder{
+    width: 49% !important;
+    .db-container{
+      background-color: #000000a3;
+
+    }
+
+  }
+}
+
+#section3{
+  
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+}
+#seccion4 {
+  background-color: #000000a3;
+  .transformaciones {
+    display: flex !important;
+    flex-wrap: wrap !important; // Esto permite el salto de línea
+    gap: 1rem; // Espacio entre tarjetas
+    padding: 10px 0;
+    
+  }
+
+  .trans-item {
+    background-image: rgba(0, 0, 0, 0.3);
+    flex: 1 1 200px; // Crece si hay espacio, pero intenta medir 200px mínimo
+    max-width: 250px; // Para que no se vean gigantes en pantallas muy anchas
+    
+    // Ajuste para los inputs dentro de la tarjeta
+    :ng-deep .p-inputnumber {
+      width: 100%;
+    }
+  }
+}
+
+
+.textarea{
+  height: 160px !important;
+  width: 100%;
+}
+
+.db-container{
+  background-color: #000000a3;
 }

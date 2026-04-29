@@ -4,28 +4,30 @@
   <div class="col-12 grid db-container mb-3" id="section1">
     
     <!-- LADO IZQUIERDO: IMAGEN (4 de 12 columnas) -->
-    <div class="col-12 md:col-4 flex flex-column align-items-center justify-content-center">
+    <div class="col-12 md:col-4 flex flex-column align-items-center justify-content-center modulo imagen">
       <div class="relative">
-        <p-image [src]="characterForm.get('image')?.value || 'assets/placeholder.png'" width="180" class="db-avatar shadow-8"></p-image>
+        <p-image [src]="characterForm.get('image')?.value || 'assets/placeholder.png'" height="265" width="180" class="db-avatar shadow-8"></p-image>
         <p-fileupload mode="basic" (onSelect)="onImageSelect($event)" auto="true" chooseIcon="pi pi-plus" class="absolute" ></p-fileupload>
       </div>
     </div>
-
     <!-- LADO DERECHO: DATOS BÁSICOS (8 de 12 columnas) -->
-    <div class="col-12 md:col-8 grid">
+    <div class="col-12 md:col-8 grid modulo">
       <div class="col-12"><span class="section-title">Datos Básicos</span></div>
       <div class="col-6">
         <span class="db-label">Nombre</span>
         <input pInputText formControlName="name" />
       </div>
+
       <div class="col-6">
         <span class="db-label">Raza</span>
         <p-select [options]="razas" formControlName="race" optionLabel="label" optionValue="value"></p-select>
       </div>
+
       <div class="col-6">
         <span class="db-label">Género</span>
         <p-select [options]="[{label:'Masculino', value:'Masculino'},{label:'Femenino', value:'Femenino'}]" formControlName="gender"></p-select>
       </div>
+
       <div class="col-6">
         <span class="db-label">Afiliación</span>
         <p-select [options]="facciones" formControlName="affiliation" optionLabel="label" optionValue="value"></p-select>
@@ -33,8 +35,11 @@
     </div>
 
     <!-- BLOQUE INFERIOR: PLANETA (Ocupa las 12 columnas del contenedor padre) -->
-    <div class="col-12 mt-3 p-3" formGroupName="originPlanet">
-      <span class="section-title">Planeta de Origen</span>
+    <div class="col-12 mt-3 p-3 modulo" formGroupName="originPlanet">
+      <div>
+        <span class="section-title">Planeta de Origen</span>
+      </div>
+        
       <div class="grid">
         <div class="col-4">
           <span class="db-label">Name</span>
@@ -45,47 +50,60 @@
         </div>
         <div class="col-4">
           <span class="db-label">Desc.</span>
-          <textarea pTextarea formControlName="description" rows="1"></textarea>
+          <textarea pTextarea formControlName="description" rows="1" class="textarea"></textarea>
         </div>
       </div>
     </div>
   </div> <!-- FIN DEL CONTENEDOR PRINCIPAL -->
 
   <!-- BLOQUE KI (Negros) -->
-  <div class="col-12 grid px-0">
-    <div class="col-6">
-      <div class="db-container text-center" style="background: black; border: 2px solid #ffd19a;">
-        <span class="db-label" style="color: #888;">BASE KI (puntos)</span>
+  <div class="col-12 grid px-0" id="section2">
+    <div class="col-6 medidorDePoder">
+      <div class="db-container text-center" >
+        <span class="db-label" >BASE KI (puntos)</span>
         <p-inputNumber formControlName="ki" mode="decimal" [useGrouping]="true"></p-inputNumber>
       </div>
     </div>
-    <div class="col-6">
-      <div class="db-container text-center" style="background: black; border: 2px solid #ffd19a;">
-        <span class="db-label" style="color: #888;">MAX KI (septillion)</span>
+    <div class="col-6 medidorDePoder">
+      <div class="db-container text-center">
+        <span class="db-label" >MAX KI (septillion)</span>
         <p-inputNumber formControlName="maxKi" mode="decimal"></p-inputNumber>
       </div>
     </div>
   </div>
 
   <!-- DESCRIPCIÓN -->
-  <div class="col-12 mt-3">
+  <div class="col-12 mt-3 db-container" id="section3">
     <span class="db-label">Descripción</span>
-    <textarea pTextarea formControlName="description" rows="4" style="background: white !important; color: black !important;"></textarea>
-  </div>
-
+    <textarea pTextarea formControlName="description" rows="4" class="textarea"></textarea>
+  </div>    
+  <br>
   <!-- TRANSFORMACIONES -->
-  <div class="col-12 mt-3 db-container" formArrayName="transformations">
-    <div class="flex justify-content-between align-items-center mb-2">
-      <span class="section-title">Transformaciones</span>
-      <button pButton type="button" label="AÑADIR" (click)="addTransformation()" class="p-button-text p-button-warning"></button>
-    </div>
-    <div *ngFor="let trans of transformationsArray.controls; let i=index" [formGroupName]="i" class="grid mb-2 border-bottom-1 border-gray-700">
-      <div class="col-4"><input pInputText formControlName="name" placeholder="Nombre" /></div>
-      <div class="col-3"><p-inputNumber formControlName="ki" placeholder="Ki" /></div>
-      <div class="col-4"><p-inputNumber formControlName="numericKi" placeholder="Numeric Ki" /></div>
-      <div class="col-1"><button pButton icon="pi pi-trash" (click)="removeTransformation(i)" class="p-button-danger p-button-text"></button></div>
-    </div>
+  <div class="col-12 mt-3 db-container" formArrayName="transformations" id="seccion4">
+  <div class="flex justify-content-between align-items-center mb-2">
+    <span class="section-title">Transformaciones</span>
+    <button pButton type="button" label="AÑADIR" (click)="addTransformation()" class="p-button-text p-button-warning"></button>
   </div>
+  
+  <!-- Contenedor de las transformaciones -->
+  <section class="transformaciones">
+    <!-- Cada transformación ahora es un 'card-inline' -->
+    <div *ngFor="let trans of transformationsArray.controls; let i=index" 
+         [formGroupName]="i" 
+         class="trans-item p-2 mb-2 border-1 border-gray-700 border-round">
+        
+        <div class="flex flex-column gap-2">
+            <input pInputText formControlName="name" placeholder="Nombre" class="w-full" />
+            <p-inputNumber formControlName="ki" placeholder="Ki" class="w-full"></p-inputNumber>
+            <p-inputNumber formControlName="numericKi" placeholder="Numeric Ki" class="w-full"></p-inputNumber>
+            <button pButton icon="pi pi-trash" (click)="removeTransformation(i)" 
+                    class="p-button-danger p-button-text w-full" label="Eliminar">
+            </button>
+        </div>
+    </div>
+  </section>
+</div>
+
 
   <!-- BOTONES -->
   <div class="col-12 flex justify-content-between mt-4">
