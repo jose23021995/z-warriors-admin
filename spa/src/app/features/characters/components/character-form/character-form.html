@@ -13,23 +13,18 @@
       </div>
     </div>
     <!-- LADO DERECHO: DATOS BÁSICOS (8 de 12 columnas) -->
-    <div class="col-12 md:col-8 grid modulo">
+    <div class="col-12 md:col-8 grid modulo character">
       <div class="col-12"><span class="section-title">Datos Básicos</span></div>
       <div class="col-6">
         <span class="db-label">Nombre</span>
-        <input pInputText formControlName="name" />
+        <input pInputText formControlName="name" class="name" style="width: 95% !important;" />
       </div>
 
       <div class="col-6">
         <span class="db-label">Raza</span>
-        <p-select 
-            [options]="[{label:'Masculino', value:'Masculino'}, {label:'Femenino', value:'Femenino'}]"
-            formControlName="gender"
-            optionLabel="label" 
-            optionValue="value"
-            dataKey="value"
-            placeholder="Seleccione Género"
-            class="w-full">
+        <p-select [options]="[{label:'Masculino', value:'Masculino'}, {label:'Femenino', value:'Femenino'}]"
+          formControlName="gender" optionLabel="label" optionValue="value" dataKey="value"
+          placeholder="Seleccione Género" class="w-full">
         </p-select>
       </div>
 
@@ -55,15 +50,22 @@
 
       <div class="grid">
         <div class="col-4">
-          <span class="db-label">Name</span>
-          <input pInputText formControlName="name" />
+          <span class="db-label">NOMBRE DE PLANETA</span>
+          <input pInputText formControlName="name" style="width: 95% !important;" />
         </div>
-        <div class="col-4 flex align-items-center mt-3">
-          <p-checkbox formControlName="isDestroyed" [binary]="true" label="¿Destruido?" labelStyleClass="text-white">
+        <div class="col-4 flex align-items-center mt-3 gap-2">
+          <!-- Añadimos un id para vincularlo al label -->
+          <p-checkbox formControlName="isDestroyed" [binary]="true" inputId="destroyedCheck">
           </p-checkbox>
+
+          <!-- El texto dinámico va aquí -->
+          <label for="destroyedCheck" class="text-white font-bold cursor-pointer" style="color: aliceblue;">
+            {{ characterForm.get('originPlanet.isDestroyed')?.value ? '💥 Destruido' : '🌎 Vigente' }}
+          </label>
         </div>
+
         <div class="col-4">
-          <span class="db-label">Desc.</span>
+          <span class="db-label">DESCRIPCIÓN DE PLANETA</span>
           <textarea pTextarea formControlName="description" rows="1" class="textarea"></textarea>
         </div>
       </div>
@@ -74,20 +76,16 @@
   <div class="col-12 grid px-0" id="section2">
     <div class="col-6 medidorDePoder">
       <div class="db-container text-center">
-        <span class="db-label">BASE KI (puntos)</span>
-        <p-inputNumber [min]="0" formControlName="ki" mode="decimal" [useGrouping]="true" mode="decimal"></p-inputNumber>
+        <span class="db-label">BASE KI</span>
+        <p-inputNumber [min]="0" formControlName="ki" mode="decimal" [useGrouping]="true" mode="decimal"
+          [style]="{'width': '100%'}" [inputStyle]="{'width': '100%'}"></p-inputNumber>
       </div>
     </div>
     <div class="col-6 medidorDePoder">
       <div class="db-container text-center">
-        <span class="db-label">MAX KI (septillion)</span>
-        <p-inputNumber 
-        formControlName="maxKi" 
-        [min]="0" 
-        mode="decimal" 
-        [useGrouping]="true" 
-        locale="de-DE"
-        [maxFractionDigits]="0">
+        <span class="db-label">MAX KI</span>
+        <p-inputNumber formControlName="maxKi" [min]="0" mode="decimal" [useGrouping]="true" locale="de-DE"
+          [maxFractionDigits]="0" [style]="{'width': '100%'}" [inputStyle]="{'width': '100%'}">
         </p-inputNumber>
       </div>
     </div>
@@ -95,7 +93,7 @@
 
   <!-- DESCRIPCIÓN -->
   <div class="col-12 mt-3 db-container" id="section3">
-    <span class="db-label">Descripción</span>
+    <span class="db-label">Descripción de personaje</span>
     <textarea pTextarea formControlName="description" rows="4" class="textarea"></textarea>
   </div>
   <br>
@@ -155,29 +153,23 @@
 
     </section>
   </div>
-<!-- SECCIÓN 5: FECHA DE REGISTRO GENERAL -->
-<div class="col-12 mt-3 db-container" id="seccion5">
-  <span class="db-label">Fecha de Registro del Personaje</span>
-  <div class="mt-2">
-    <p-datepicker 
-      formControlName="date" 
-      [showIcon]="true" 
-      appendTo="body" 
-      dateFormat="dd/mm/yy"
-      placeholder="Seleccione la fecha de registro"
-      class="w-full">
-    </p-datepicker>
+  <!-- SECCIÓN 5: FECHA DE REGISTRO GENERAL -->
+  <div class="col-12 mt-3 db-container" id="seccion5">
+    <span class="db-label">Fecha de Registro del Personaje</span>
+    <div class="mt-2">
+      <p-datepicker formControlName="date" [showIcon]="true" appendTo="body" dateFormat="dd/mm/yy"
+        placeholder="Seleccione la fecha de registro" class="w-full">
+      </p-datepicker>
+    </div>
+    <small *ngIf="characterForm.get('date')?.invalid && characterForm.get('date')?.touched" class="p-error">
+      La fecha de registro es obligatoria.
+    </small>
   </div>
-  <small *ngIf="characterForm.get('date')?.invalid && characterForm.get('date')?.touched" class="p-error">
-    La fecha de registro es obligatoria.
-  </small>
-</div>
 
 
   <!-- BOTONES -->
-  <div class="col-12 flex justify-content-between mt-4">
-    <button pButton type="button" label="Regresar" (click)="onCancel()" class="p-button-text text-white"></button>
-    <div class="flex gap-3">
+  <div class="col-12 flex justify-content-between mt-4 botones">
+    <div class="flex gap-3 pt-2">
       <button pButton type="submit" label="GUARDAR CAMBIOS" class="btn-guardar px-5"></button>
       <button pButton type="button" label="CANCELAR" (click)="onCancel()"
         class="p-button-secondary border-round-2xl"></button>

@@ -1,164 +1,226 @@
 :host {
-    display: block;
-    background-color: #5f5f5f75; // El naranja de fondo de tu imagen
-    padding: 20px;
-    border-radius: 15px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: block;
+  background-color: #5f5f5f75; // El naranja de fondo de tu imagen
+  padding: 20px;
+  border-radius: 15px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.db-container {
-    background: rgba(0, 0, 0, 0.25); // Fondo oscuro traslúcido
-    border-radius: 12px;
-    padding: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.db-container 
+{
+  background: rgba(0, 0, 0, 0.25); // Fondo oscuro traslúcido
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .db-label {
-    color: #fff;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    margin-bottom: 5px;
-    display: block;
-    textarea{
-      height: 200px !important;
-    }
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+  display: block;
+
+  textarea {
+    height: 200px !important;
+  }
 }
 
 .section-title {
-    color: #fb8c00;
-    border-bottom: 2px solid #fb8c00;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
-    font-weight: 800;
+  color: #fb8c00;
+  border-bottom: 2px solid #fb8c00;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  font-weight: 800;
 }
 
 // Personalización de Inputs de PrimeNG
 :ng-deep {
-    .p-inputtext, .p-inputnumber-input, .p-select, .p-textarea {
-        background: rgba(0, 0, 0, 0.4) !important;
-        border: 1px solid #555 !important;
-        color: white !important;
-        border-radius: 8px !important;
-        
-        &:focus {
-            border-color: #fb8c00 !important;
-            box-shadow: 0 0 0 0.2rem rgba(251, 140, 0, 0.25) !important;
-        }
-    }
+  .p-inputtext,
+  .p-inputnumber-input,
+  .p-select,
+  .p-textarea {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid #555 !important;
+    color: white !important;
+    border-radius: 8px !important;
 
-    .p-select-label { color: white !important; }
-
-    // Estilo especial para los botones de Guardar/Cancelar
-    .btn-guardar {
-        background: linear-gradient(to bottom, #ffeb3b, #fb8c00) !important;
-        border: 2px solid #5d4037 !important;
-        color: #5d4037 !important;
-        border-radius: 25px !important;
-        font-weight: 900 !important;
-        box-shadow: 0 4px 0 #5d4037;
-        &:active { transform: translateY(2px); box-shadow: 0 2px 0 #5d4037; }
+    &:focus {
+      border-color: #fb8c00 !important;
+      box-shadow: 0 0 0 0.2rem rgba(251, 140, 0, 0.25) !important;
     }
+  }
+
+  .p-select-label {
+    color: white !important;
+  }
+
+  // Estilo especial para los botones de Guardar/Cancelar
+  .btn-guardar {
+    background: linear-gradient(to bottom, #ffeb3b, #fb8c00) !important;
+    border: 2px solid #5d4037 !important;
+    color: #5d4037 !important;
+    border-radius: 25px !important;
+    font-weight: 900 !important;
+    box-shadow: 0 4px 0 #5d4037;
+
+    &:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #5d4037;
+    }
+  }
 }
 
-#section1,#section2,#section3,#section4,#section5{
+#section1,
+#section2,
+#section3,
+#section4,
+#section5 {
   margin-top: 15px !important;
-  modulo{
+  modulo {
     width: 30% !important;
-    div{
-      span{
-            color: #f3ede5;
-            border-bottom: 2px solid #ffffff;
+
+    div {
+      span {
+        color: #f3ede5;
+        border-bottom: 2px solid #ffffff;
       }
       padding-bottom: 10px;
     }
   }
 }
-#section1{
+
+#section1 {
   display: flex !important;
   flex-direction: row !important;
-  justify-content:space-around !important;
+  justify-content: space-around !important;
   background-color: #000000a3;
-  input,p-select{
+  .textarea{
+    width: 100%;
+    @media (max-width: 768px) {
+      width: 93%;
+    }
+  }
+  input,
+  p-select {
     width: 100% !important;
   }
-  .modulo{
+
+  .modulo {
     width: 30% !important;
-    div{
-      span{
-            color: #f3ede5;
-            border-bottom: 2px solid #ffffff;
+
+    div {
+      span {
+        color: #f3ede5;
+        border-bottom: 2px solid #ffffff;
       }
+
       padding-bottom: 10px;
     }
   }
 
 
-  .imagen{
+  .imagen {
     display: flex;
     flex-direction: column;
     align-items: center;
     background-image: var(--card-fondo-icon) !important;
     border-radius: 20px !important;
-    .relative{
+    @media (max-width: 768px) {
+          margin-bottom: 20px !important;
+    }
+    .relative {
       display: flex;
       flex-direction: column;
       align-items: center;
-
-
     }
+
     .p-button {
       width: 100% !important;
     }
-    .p-fileupload-basic-content{
+
+    .p-fileupload-basic-content {
       width: 100% !important;
       display: flex !important;
       justify-content: center !important;
     }
   }
 
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column !important;
+    align-items: center;
+    .modulo{
+      width: 100% !important;
+    }
+  }
+
 }
 
-#section2{
-  
+#section2 {
   display: flex !important;
-      justify-content: space-between !important;
-  .medidorDePoder{
+  justify-content: space-between !important;
+  .medidorDePoder {
     width: 49% !important;
-    .db-container{
+
+    .db-container {
       background-color: #000000a3;
 
+      p-inputNumber {
+        input {
+          width: 100% !important;
+        }
+
+      }
     }
 
   }
+  @media (max-width: 768px) {
+    display: flex !important;
+    //justify-content: space-between !important;
+    flex-direction: column !important;
+    .medidorDePoder {
+      padding-top: 10px !important;
+      width: 100% !important;
+    }
+  }
 }
 
-#section3{
-  
+#section3 {
+
   display: flex !important;
   flex-direction: column !important;
-  width: 100% !important;
+  //width: 100% !important;
 }
+
 #seccion4 {
   background-color: #000000a3;
+
   .transformaciones {
     display: flex !important;
     flex-wrap: wrap !important; // Esto permite el salto de línea
     gap: 1rem; // Espacio entre tarjetas
     padding: 10px 0;
-    .surface-card{
-          background-color: var(--primary-card);
-          border-radius: 10px;
-          padding: 8px;
+    @media (max-width: 768px) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 18px;
     }
-    
+    .surface-card {
+      background-color: var(--primary-card);
+      border-radius: 10px;
+      padding: 8px;
+      
+    }
   }
 
   .trans-item {
     background-image: rgba(0, 0, 0, 0.3);
     flex: 1 1 200px; // Crece si hay espacio, pero intenta medir 200px mínimo
     max-width: 250px; // Para que no se vean gigantes en pantallas muy anchas
-    
+
     // Ajuste para los inputs dentro de la tarjeta
     :ng-deep .p-inputnumber {
       width: 100%;
@@ -167,11 +229,38 @@
 }
 
 
-.textarea{
+.textarea {
   height: 160px !important;
-  width: 100%;
 }
 
-.db-container{
+.db-container {
   background-color: #000000a3;
+}
+
+#seccion5{
+  margin-top: 10px !important;
+  @media (max-width: 768px) {
+      
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .mt-2{
+            width: 100% !important;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            
+      }
+      
+    }
+}
+
+input.name{
+  width: 90% !important;
+}
+
+.botones{
+  margin-top: 10px;
+    display: flex;
+    justify-content: center;
 }
