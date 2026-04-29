@@ -61,7 +61,7 @@
     }
 }
 
-#section1,#section2,#section3,#section4{
+#section1,#section2,#section3,#section4,#section5{
   margin-top: 15px !important;
   modulo{
     width: 30% !important;
@@ -146,6 +146,11 @@
     flex-wrap: wrap !important; // Esto permite el salto de línea
     gap: 1rem; // Espacio entre tarjetas
     padding: 10px 0;
+    .surface-card{
+          background-color: var(--primary-card);
+          border-radius: 10px;
+          padding: 8px;
+    }
     
   }
 

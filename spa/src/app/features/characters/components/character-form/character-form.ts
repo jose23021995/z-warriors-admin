@@ -84,20 +84,21 @@ export class CharacterForm implements OnInit {
     // Si viene una transformación específica (como en tu lógica previa), sobreescribimos nombre e imagen
     const displayName = selectedTrans ? selectedTrans.name : data.name;
     const displayImage = selectedTrans ? selectedTrans.image : data.image;
+    const inicialFecha = (data as any).date ? new Date((data as any).date) : new Date();
 
     this.characterForm = this.fb.group({
       // Campos principales
       id: [data.id],
       name: [displayName, Validators.required],
-      ki: [data.ki || '0', Validators.required],
-      maxKi: [data.maxKi || '0'],
+      ki: [data.ki || 0, [Validators.required, Validators.min(0)]],
+      maxKi: [data.maxKi || 0, [Validators.min(0)]],
       race: [data.race || ''],
       gender: [data.gender || 'Masculino'],
       description: [data.description || ''],
       image: [displayImage || ''],
       affiliation: [data.affiliation || 'Z Fighter'],
       deletedAt: [data.deletedAt || null],
-      data: [new Date(), Validators.required], // Este es el campo 'data' del DetailEdit
+      date: [inicialFecha, Validators.required], 
 
       // Objeto anidado completo
       originPlanet: this.fb.group({
@@ -127,7 +128,8 @@ export class CharacterForm implements OnInit {
       image: [t?.image || ''],
       ki: [t?.ki || '0', Validators.required],
       numericKi: [t?.numericKi || 0],
-      deletedAt: [t?.deletedAt || null]
+      deletedAt: [t?.deletedAt || null],
+      
     });
     this.transformationsArray.push(transGroup);
   }
@@ -137,21 +139,26 @@ export class CharacterForm implements OnInit {
   }
 
   guardarCambios() {
-    if (this.characterForm.valid) {
-      const formValue = this.characterForm.value;
-      
-      // Construimos el objeto final tipo DetailEdit
-      const finalObject: DetailEdit = {
-        ...formValue,
-        data: formValue.date // Mapeamos 'date' del form a 'data' de la interfaz
-      };
+  if (this.characterForm.valid) {
+    // Obtenemos los valores del formulario
+    const formValue = this.characterForm.value;
+    
+    // Como formValue ya tiene la propiedad 'date' (por el p-datepicker),
+    // y coincide con el nombre en tu interfaz DetailEdit, 
+    // simplemente extendemos el objeto.
+    const finalObject: DetailEdit = {
+      ...formValue
+      // Ya no necesitas "data: formValue.date" porque la interfaz pide "date"
+    };
 
-      console.log('Enviando DetailEdit:', finalObject);
-      this.ref.close(finalObject);
-    } else {
-      this.characterForm.markAllAsTouched();
-    }
+    console.log('Enviando DetailEdit:', finalObject);
+    this.ref.close(finalObject);
+  } else {
+    // Si el formulario es inválido (ej: no pusieron la fecha), marcamos errores
+    this.characterForm.markAllAsTouched();
   }
+}
+
     // Método para manejar la selección de imagen
   onImageSelect(event: any) {
     const file = event.files[0];

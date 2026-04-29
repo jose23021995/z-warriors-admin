@@ -2,12 +2,14 @@
 
   <!-- CONTENEDOR PRINCIPAL: Agrupa Imagen, Datos y Planeta -->
   <div class="col-12 grid db-container mb-3" id="section1">
-    
+
     <!-- LADO IZQUIERDO: IMAGEN (4 de 12 columnas) -->
     <div class="col-12 md:col-4 flex flex-column align-items-center justify-content-center modulo imagen">
       <div class="relative">
-        <p-image [src]="characterForm.get('image')?.value || 'assets/placeholder.png'" height="265" width="180" class="db-avatar shadow-8"></p-image>
-        <p-fileupload mode="basic" (onSelect)="onImageSelect($event)" auto="true" chooseIcon="pi pi-plus" class="absolute" ></p-fileupload>
+        <p-image [src]="characterForm.get('image')?.value || 'assets/placeholder.png'" height="265" width="180"
+          class="db-avatar shadow-8"></p-image>
+        <p-fileupload mode="basic" (onSelect)="onImageSelect($event)" auto="true" chooseIcon="pi pi-plus"
+          class="absolute"></p-fileupload>
       </div>
     </div>
     <!-- LADO DERECHO: DATOS BÁSICOS (8 de 12 columnas) -->
@@ -25,12 +27,14 @@
 
       <div class="col-6">
         <span class="db-label">Género</span>
-        <p-select [options]="[{label:'Masculino', value:'Masculino'},{label:'Femenino', value:'Femenino'}]" formControlName="gender"></p-select>
+        <p-select [options]="[{label:'Masculino', value:'Masculino'},{label:'Femenino', value:'Femenino'}]"
+          formControlName="gender"></p-select>
       </div>
 
       <div class="col-6">
         <span class="db-label">Afiliación</span>
-        <p-select [options]="facciones" formControlName="affiliation" optionLabel="label" optionValue="value"></p-select>
+        <p-select [options]="facciones" formControlName="affiliation" optionLabel="label" optionValue="value">
+        </p-select>
       </div>
     </div>
 
@@ -39,14 +43,15 @@
       <div>
         <span class="section-title">Planeta de Origen</span>
       </div>
-        
+
       <div class="grid">
         <div class="col-4">
           <span class="db-label">Name</span>
           <input pInputText formControlName="name" />
         </div>
         <div class="col-4 flex align-items-center mt-3">
-          <p-checkbox formControlName="isDestroyed" [binary]="true" label="¿Destruido?" labelStyleClass="text-white"></p-checkbox>
+          <p-checkbox formControlName="isDestroyed" [binary]="true" label="¿Destruido?" labelStyleClass="text-white">
+          </p-checkbox>
         </div>
         <div class="col-4">
           <span class="db-label">Desc.</span>
@@ -59,15 +64,15 @@
   <!-- BLOQUE KI (Negros) -->
   <div class="col-12 grid px-0" id="section2">
     <div class="col-6 medidorDePoder">
-      <div class="db-container text-center" >
-        <span class="db-label" >BASE KI (puntos)</span>
-        <p-inputNumber formControlName="ki" mode="decimal" [useGrouping]="true"></p-inputNumber>
+      <div class="db-container text-center">
+        <span class="db-label">BASE KI (puntos)</span>
+        <p-inputNumber [min]="0" formControlName="ki" mode="decimal" [useGrouping]="true"></p-inputNumber>
       </div>
     </div>
     <div class="col-6 medidorDePoder">
       <div class="db-container text-center">
-        <span class="db-label" >MAX KI (septillion)</span>
-        <p-inputNumber formControlName="maxKi" mode="decimal"></p-inputNumber>
+        <span class="db-label">MAX KI (septillion)</span>
+        <p-inputNumber [min]="0" formControlName="maxKi" mode="decimal"></p-inputNumber>
       </div>
     </div>
   </div>
@@ -76,33 +81,66 @@
   <div class="col-12 mt-3 db-container" id="section3">
     <span class="db-label">Descripción</span>
     <textarea pTextarea formControlName="description" rows="4" class="textarea"></textarea>
-  </div>    
+  </div>
   <br>
   <!-- TRANSFORMACIONES -->
   <div class="col-12 mt-3 db-container" formArrayName="transformations" id="seccion4">
-  <div class="flex justify-content-between align-items-center mb-2">
-    <span class="section-title">Transformaciones</span>
-    <button pButton type="button" label="AÑADIR" (click)="addTransformation()" class="p-button-text p-button-warning"></button>
-  </div>
-  
-  <!-- Contenedor de las transformaciones -->
-  <section class="transformaciones">
-    <!-- Cada transformación ahora es un 'card-inline' -->
-    <div *ngFor="let trans of transformationsArray.controls; let i=index" 
-         [formGroupName]="i" 
-         class="trans-item p-2 mb-2 border-1 border-gray-700 border-round">
-        
-        <div class="flex flex-column gap-2">
-            <input pInputText formControlName="name" placeholder="Nombre" class="w-full" />
-            <p-inputNumber formControlName="ki" placeholder="Ki" class="w-full"></p-inputNumber>
-            <p-inputNumber formControlName="numericKi" placeholder="Numeric Ki" class="w-full"></p-inputNumber>
-            <button pButton icon="pi pi-trash" (click)="removeTransformation(i)" 
-                    class="p-button-danger p-button-text w-full" label="Eliminar">
-            </button>
-        </div>
+    <div class="flex justify-content-between align-items-center mb-2">
+      <span class="section-title">Transformaciones</span>
+      <button pButton type="button" label="AÑADIR" (click)="addTransformation()"
+        class="p-button-text p-button-warning"></button>
     </div>
-  </section>
-</div>
+
+    <!-- Contenedor de las transformaciones -->
+    <section class="transformaciones">
+
+      <!-- MENSAJE CUANDO NO HAY ELEMENTOS -->
+      <div *ngIf="transformationsArray.controls.length === 0"
+        class="text-center p-4 border-round surface-ground border-1 border-gray-700 mb-2">
+        <i class="pi pi-info-circle text-gray-500 mr-2"></i>
+        <span class="text-gray-500 italic">No hay transformaciones registradas.</span>
+      </div>
+
+      <!-- LISTADO DE TRANSFORMACIONES -->
+      <div *ngFor="let trans of transformationsArray.controls; let i=index" [formGroupName]="i"
+        class="trans-item p-3 mb-3 border-1 border-gray-700 border-round surface-card">
+
+        <!-- Título opcional para identificar la posición -->
+        <div class="mb-2 text-primary font-bold">Transformación #{{i + 1}}</div>
+
+        <div class="flex flex-column gap-3">
+          <!-- Campo Nombre -->
+          <div class="flex flex-column gap-1">
+            <label [for]="'name-' + i" class="text-sm font-medium text-gray-400">Nombre de la transformación</label>
+            <input [id]="'name-' + i" pInputText formControlName="name" placeholder="Ej: Super Saiyan" class="w-full" />
+          </div>
+
+          <!-- Fila para los Ki -->
+          <div class="grid p-0 m-0">
+            <div class="col-6 pl-0">
+              <label [for]="'ki-' + i" class="text-sm font-medium text-gray-400">Ki (Texto)</label>
+              <p-inputNumber [min]="0" [id]="'ki-' + i" formControlName="ki" placeholder="Puntos de Ki" class="w-full">
+              </p-inputNumber>
+            </div>
+            <div class="col-6 pr-0">
+              <label [for]="'nki-' + i" class="text-sm font-medium text-gray-400">Ki Numérico</label>
+              <p-inputNumber [min]="0" [id]="'nki-' + i" formControlName="numericKi" placeholder="Valor exacto" class="w-full">
+              </p-inputNumber>
+            </div>
+          </div>
+
+          <!-- Botón de acción -->
+          <button type="button" pButton icon="pi pi-trash" (click)="removeTransformation(i)"
+            class="p-button-danger p-button-text w-full mt-2" label="Eliminar esta transformación">
+          </button>
+        </div>
+      </div>
+
+    </section>
+  </div>
+  <div class="col-12 mt-3 db-container" formArrayName="transformations" id="seccion5">
+
+  </div>
 
 
   <!-- BOTONES -->
@@ -110,7 +148,8 @@
     <button pButton type="button" label="Regresar" (click)="onCancel()" class="p-button-text text-white"></button>
     <div class="flex gap-3">
       <button pButton type="submit" label="GUARDAR CAMBIOS" class="btn-guardar px-5"></button>
-      <button pButton type="button" label="CANCELAR" (click)="onCancel()" class="p-button-secondary border-round-2xl"></button>
+      <button pButton type="button" label="CANCELAR" (click)="onCancel()"
+        class="p-button-secondary border-round-2xl"></button>
     </div>
   </div>
 </form>
