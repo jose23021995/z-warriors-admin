@@ -44,8 +44,24 @@ export interface Detail {
   transformations: Transformation[]; // Opcional
 }
 
+export interface DetailEdit {
+  id:              number;
+  name:            string;
+  ki:              string;
+  maxKi:           string;
+  race:            string;
+  gender:          string;
+  description:     string;
+  image:           string;
+  affiliation?:     string;
+  deletedAt?:       null | string | Date;
+  data:string | Date;
+  originPlanet:    OriginPlanet;
+  transformations: Transformation[]; // Opcional
+}
 export interface ModalCharacter 
 {
-  data: Character;
+  
+  character: Character;
   transformations?:Transformation[];
 }

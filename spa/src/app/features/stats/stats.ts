@@ -184,7 +184,6 @@ async onChartClick(event: any) {
       const res = await this.charService.getCharacter(idCharacter);
       try{
         this.modalSelected= {
-            type:false, 
             transformations:personajeSeleccionado, 
             response:res};
         this.ref = this.dialogService.open(CharacterDetailComponent, {

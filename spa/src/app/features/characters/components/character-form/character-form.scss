@@ -1,0 +1,184 @@
+// Variables de color para fácil mantenimiento
+$detail-color-primary: #ff9100;
+$detail-color-secondary: #ffcc00;
+$detail-color-danger: #ff5555;
+$detail-bg-card: #1a1a1a87;
+$detail-bg-item: #252525a1;
+$detail-bg-badge: #333;
+$detail-text-main: #ffffff;
+$detail-text-muted: #888;
+$detail-text-bio: #ccc;
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 800px;
+  margin: auto;
+  font-family: sans-serif;
+  background: $detail-bg-card;
+  color: $detail-text-main;
+  padding: 30px;
+  border-radius: 15px;
+
+  // Header del perfil
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    border-bottom: 1px solid $detail-bg-badge;
+    padding-bottom: 20px;
+
+    .avatar-wrapper {
+      flex-shrink: 0;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid $detail-color-primary;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: $detail-bg-item;
+      }
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .character-name {
+        margin: 0;
+        font-size: 2.5rem;
+        text-transform: uppercase;
+      }
+
+      .meta-tags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+
+        span {
+          background: $detail-bg-badge;
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-size: 0.8rem;
+
+          &.is-highlight { // Clase extra por si quieres resaltar uno
+            background: $detail-color-primary;
+            color: black;
+            font-weight: bold;
+          }
+        }
+      }
+
+      .origin-text {
+        margin: 0;
+        color: $detail-text-muted;
+        font-size: 0.9rem;
+
+        span {
+          color: $detail-color-danger;
+        }
+      }
+    }
+  }
+
+  // Métricas de Poder
+  .power-metrics {
+    display: flex;
+    gap: 15px;
+
+    .stat-card {
+      flex: 1;
+      background: $detail-bg-item;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      border-left: 4px solid $detail-color-primary;
+
+      &--max { // Modificador para el Max Ki
+        border-left-color: $detail-color-secondary;
+        strong { color: $detail-color-secondary; }
+      }
+
+      span {
+        display: block;
+        font-size: 0.7rem;
+        color: $detail-text-muted;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      strong {
+        font-size: 1.2rem;
+        font-family: monospace;
+      }
+    }
+  }
+
+  // Sección de Biografía
+  .biography-section {
+    background: $detail-bg-item;
+    padding: 20px;
+    border-radius: 10px;
+
+    h3 {
+      margin-top: 0;
+      color: $detail-color-primary;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .bio-text {
+      margin: 0;
+      line-height: 1.6;
+      color: $detail-text-bio;
+      font-style: italic;
+    }
+  }
+
+  // Lista de Transformaciones
+  .evolution-list {
+    h3 {
+      color: $detail-color-primary;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .transformations-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      .phase-chip {
+        display: flex;
+        flex-direction: column;
+        background: $detail-bg-badge;
+        padding: 10px 15px;
+        border-radius: 8px;
+        min-width: 120px;
+        transition: transform 0.2s;
+
+        &:hover {
+          transform: translateY(-3px);
+          // background: lighten($detail-bg-badge, 5%);
+        }
+
+        .phase-name {
+          font-weight: bold;
+          font-size: 0.9rem;
+        }
+
+        .phase-ki {
+          font-size: 0.7rem;
+          color: #aaa;
+        }
+      }
+    }
+  }
+}

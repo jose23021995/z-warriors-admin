@@ -1,0 +1,72 @@
+<div class="card p-4" style="background-color: #d18a3a; border-radius: 15px;">
+  <h2 class="text-center text-white mb-4">FORMULARIO DE DETALLES DEL PERSONAJE</h2>
+
+  <form [formGroup]="personajeForm" (ngSubmit)="guardarCambios()" class="p-fluid grid">
+    
+    <!-- Sección Datos Básicos -->
+    <div class="col-12 md:col-6">
+      <div class="p-field mb-3">
+        <label for="name" class="font-bold block mb-2">Nombre</label>
+        <input pInputText id="name" formControlName="name" />
+      </div>
+
+      <div class="p-field mb-3">
+        <label for="affiliation" class="font-bold block mb-2">Afiliación</label>
+        <p-select 
+          [options]="facciones" 
+          formControlName="affiliation" 
+          optionLabel="label" 
+          optionValue="value" 
+          placeholder="Selecciona Facción">
+        </p-select>
+      </div>
+    </div>
+
+    <!-- Sección Ki y Fecha -->
+    <div class="col-12 md:col-6">
+      <div class="p-field mb-3">
+        <label for="ki" class="font-bold block mb-2">Base KI (Puntos)</label>
+        <p-inputNumber 
+        id="ki" 
+        formControlName="ki" 
+        [min]="0" 
+        [showButtons]="true"
+        placeholder="45000000">
+        </p-inputNumber>
+        <small class="p-error" *ngIf="personajeForm.get('ki')?.errors?.['min']">
+          El Ki no puede ser negativo.
+        </small>
+      </div>
+
+      <div class="p-field mb-3">
+        <label for="fechaRegistro" class="font-bold block mb-2">Fecha de Registro</label>
+        <p-datepicker 
+        id="fechaRegistro" 
+        formControlName="fechaRegistro" 
+        [iconDisplay]="'input'" 
+        [showIcon]="true" 
+        dateFormat="dd/mm/yy">
+        </p-datepicker>
+
+      </div>
+    </div>
+
+    <!-- Descripción (TextArea) -->
+    <div class="col-12">
+      <div class="p-field mb-4">
+        <label for="description" class="font-bold block mb-2">Descripción</label>
+        <textarea pTextarea id="description" formControlName="description" rows="5"></textarea>
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="col-12 flex justify-content-end gap-2 mt-3">
+      <button pButton type="button" label="Regresar" class="p-button-secondary p-button-outlined"></button>
+      <button pButton type="submit" label="GUARDAR CAMBIOS" class="p-button-warning"></button>
+      <button pButton type="button" label="CANCELAR" class="p-button-danger"></button>
+    </div>
+
+  </form>
+</div>
+
+<button (click)="onCancel()">regresar</button>

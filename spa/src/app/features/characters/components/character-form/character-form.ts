@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule,FormControl } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 // PrimeNG 18 Imports
 import { ButtonModule } from 'primeng/button';
@@ -14,10 +14,10 @@ import { Transformation,Detail,ModalCharacter } from '../../../../shared/interfa
 import { CardModule } from 'primeng/card';
 import { ImageModule } from 'primeng/image';
 import { Image } from 'primeng/image'
-
+import { DatePickerModule } from 'primeng/datepicker';
+import { InputNumberModule } from 'primeng/inputnumber';
 @Component({
-  selector: 'app-character-detail',
-  standalone: true,
+  selector: 'app-character-form',
   imports: [
     CommonModule, 
     ReactiveFormsModule, 
@@ -30,12 +30,14 @@ import { Image } from 'primeng/image'
     ProgressBarModule,
     CardModule,
     ImageModule,
-    Image 
+    DatePickerModule,
+    InputNumberModule, // <--- Necesario para p-inputNumber y su propiedad [min]
+    DatePickerModule,  // <--- Necesario para p-datepicker
   ],
-  templateUrl: './character-detail.html',
-  styleUrl: './character-detail.scss',
+  templateUrl: './character-form.html',
+  styleUrl: './character-form.scss',
 })
-export class CharacterDetailComponent implements OnInit {
+export class CharacterForm implements OnInit {
   private fb = inject(FormBuilder);
   private config = inject(DynamicDialogConfig);
   private ref = inject(DynamicDialogRef);
@@ -59,8 +61,17 @@ export class CharacterDetailComponent implements OnInit {
   public imagePlanet!: string;
   public isDestroyed!: boolean;
   public namePlanet!: string;
+  public date!:any;
   // Transformaciones
   public transformations: Transformation[] = [];
+  public facciones = [
+    { label: 'Z Fighter', value: 'Z Fighter' },
+    { label: 'Villain', value: 'Villain' },
+    { label: 'Android', value: 'Android' },
+    { label: 'Pride Trooper', value: 'Pride Trooper' }
+  ];
+  public personajeForm!: FormGroup;
+
   ngOnInit() {
     const { response:character,transformations:transformation } = this.config.data;
     console.log("entrando a modal",this.config.data);
@@ -83,31 +94,53 @@ export class CharacterDetailComponent implements OnInit {
     } = originPlanet;
 
     // 3. Asignación a variables públicas
-    this.name = transformation?namaTr:name;
-    this.description = description;
-    this.gender = gender;
-    this.id = id;
-    this.image = transformation?imageTr:image;
-    this.ki = ki;
-    this.maxKi = maxKi;
-    this.race = race;
-    this.affiliation = affiliation;
-    this.deletedAt = deletedAt;
-    this.transformations = transformations || [];
-    // Asignación de variables del planeta
-    this.idPlanet = idPl;
-    this.deletedAtPlanet = delPl;
-    this.descriptionPlanet = descPl;
-    this.imagePlanet = imgPl;
-    this.isDestroyed = isDest;
-    this.namePlanet = namePl;
-    this.characterForm = this.fb.group({});
+      this.name = transformation?namaTr:name;
+      this.description = description;
+      this.gender = gender;
+      this.id = id;
+      this.image = transformation?imageTr:image;
+      this.ki = ki;
+      this.maxKi = maxKi;
+      this.race = race;
+      this.affiliation = affiliation;
+      this.deletedAt = deletedAt;
+      this.idPlanet = idPl;
+      this.deletedAtPlanet = delPl;
+      this.descriptionPlanet = descPl;
+      this.imagePlanet = imgPl;
+      this.isDestroyed = isDest;
+      this.namePlanet = namePl;
+
+      this.transformations = transformations || [];
+      this.personajeForm = new FormGroup({
+      name: new FormControl(this.name || ''),
+      affiliation: new FormControl(this.affiliation || 'Z Fighter'),
+      ki: new FormControl(this.ki || 0, [Validators.required, Validators.min(0)]),
+      fechaRegistro: new FormControl(new Date()), // Campo inventado
+      description: new FormControl(this.description || ''),
+      // ... agrega el resto de variables aquí
+    });
 
   }
+  
   onCancel() {
     this.ref.close();
   }
-  abrirZoom(imgComponent: Image) {
-    imgComponent.onImageClick();
+  guardarCambios() {
+    if (this.personajeForm.valid) {
+      // Aquí asignamos la fecha como pediste originalmente
+      this.date = new Date().toISOString(); 
+      
+      console.log('¡Datos del Saiyan listos!', this.personajeForm.value);
+      // Aquí iría tu lógica para enviar al backend o servicio
+    } else {
+      // Esto marca los errores en rojo si el formulario no es válido
+      this.personajeForm.markAllAsTouched();
+    }
+  }
+
+  // También agrega una función para el botón regresar si lo tienes en el HTML
+  regresar() {
+    console.log('Regresando...');
   }
 }

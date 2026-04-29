@@ -94,9 +94,9 @@ getKiPercentage(ki: string, maxKi: string): number {
     return 'secondary';
   }
 
-  returnInformationModal(character: Character) { 
+  returnInformationModal(character: Character,type:any) { 
     console.log("tabla",character);
-    this.onCharacterSelected.emit(character);
+    this.onCharacterSelected.emit({character,type});
   }
 }
 

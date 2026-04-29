@@ -9,6 +9,7 @@ import { DialogService, DynamicDialogRef, DynamicDialogModule } from 'primeng/dy
 import { HeadersComponent } from '../../../shared/components/headers/headers';
 //componentes propios del componente padre
 import { CharacterDetailComponent } from '../components/character-detail/character-detail'; 
+import { CharacterForm } from '../components/character-form/character-form'; 
 import { CharacterTable } from '../components/character-table/character-table';
 //servicio para peticiones http 
 import { CharacterService } from '../../../core/services/character.service';
@@ -103,16 +104,25 @@ export class CharacterListComponent implements OnInit {
   // ... dentro de tu clase CharacterListComponent
 
  // En character-list.component.ts
-  async handleCharacterUpdate(data:Character) {
-    const {id}=data;
-  const response:Detail = await this.charService.getCharacter(id); //importante
-  console.log("response",response);
-  
-  this.ref = this.dialogService.open(CharacterDetailComponent, {
-    header: `Editar a ${response.name}`, 
-    width: '50%',
-    data: {response}
-  });
+  async handleCharacterUpdate(data:any) {
+    const {character,type}=data;
+    const {id}=character;
+    const response:Detail = await this.charService.getCharacter(id); //importante
+    if (!type) 
+    {
+      this.ref = this.dialogService.open(CharacterDetailComponent, {
+        header: `Informacion de ${response.name}`, 
+        width: '50%',
+        data: {response}
+      });  
+    } else {
+      this.ref = this.dialogService.open(CharacterForm, {
+        header: `Editar a ${response.name}`, 
+        width: '50%',
+        data: {response}
+      });  
+    }
+    
 }
 }
 
