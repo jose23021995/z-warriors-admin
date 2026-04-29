@@ -1,0 +1,16 @@
+::ng-deep .boton.buscador {
+    // 1. Forzamos el fondo con tu variable de tarjeta
+    background-color: var(--primary-card) !important;
+    border-color: var(--primary-card) !important;
+
+    // 2. Forzamos el color del icono con tu variable de fondo
+    .p-button-icon {
+        color: #fff !important;
+    }
+
+    // Opcional: Feedback al pasar el mouse para que no parezca estático
+    &:hover {
+        filter: brightness(1.1);
+        background-color: var(--primary-card) !important;
+    }
+}

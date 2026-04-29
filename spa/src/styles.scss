@@ -24,6 +24,8 @@
     --select-button:#4A36C2;
     --personajes-icon:url("/img/shared/person_header_information/h2_charactor.png") !important;
     --card-fondo-icon:url("/img/shared/fondo/detail/ligth.svg") !important;
+    --salir-bg:#212529;
+    --salir-color:#FFFFFF;
 }
 
 /* Colores para el Modo Oscuro */
@@ -53,7 +55,8 @@
     --personajes-icon:url("/img/shared/person_header_information/h2_charactor_dark.png") !important;
     --estadisticas-icon:url("/img/shared/person_header_information/estadisticas.png") !important;
     --card-fondo-icon:url("/img/shared/fondo/detail/dark.jpg") !important;
-
+    --salir-bg:#DC3545;
+    --salir-color:#FFFFFF;
 }
 
 /* Estilos globales */

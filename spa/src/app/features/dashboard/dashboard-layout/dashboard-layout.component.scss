@@ -53,3 +53,41 @@
     flex-direction: column !important;
   }
 }
+
+p-button{
+  background-color: red !important;
+  
+  border-radius: 10px !important;
+  margin-left: 10px;
+  button{
+    span{
+      color: #fff !important;
+    }
+    color: #fff !important;
+  }
+}
+
+.p-button-text.p-button-danger {
+    /* background: transparent; */
+    color: #fff !important;
+}
+
+::ng-deep .btn-salir-header {
+    .p-button {
+        background-color: var(--salir-bg) !important; /* Rojo */
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 8px 16px !important;
+        
+        /* Forzamos el texto y el icono a blanco */
+        color: var(--salir-color) !important;
+
+        .p-button-icon, .p-button-label {
+            color: var(--salir-color) !important;
+        }
+
+        &:hover {
+            background-color: #cc0000 !important; /* Rojo más oscuro al pasar el mouse */
+        }
+    }
+}
