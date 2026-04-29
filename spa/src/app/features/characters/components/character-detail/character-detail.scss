@@ -1,269 +1,36 @@
-// Variables de color para fácil mantenimiento
-$detail-color-primary: #ff9100;
-$detail-color-secondary: #ffcc00;
-$detail-color-danger: #ff5555;
-$detail-bg-card: #1a1a1a87;
-$detail-bg-item: #252525a1;
-$detail-bg-badge: #333;
-$detail-text-main: #ffffff;
-$detail-text-muted: #888;
-$detail-text-bio: #ccc;
-
-.profile-card {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 800px;
-  margin: auto;
-  font-family: sans-serif;
-  background: $detail-bg-card;
-  color: $detail-text-main;
-  padding: 30px;
-  border-radius: 15px;
-
-  // Header del perfil
-  .profile-header {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    border-bottom: 1px solid $detail-bg-badge;
-    padding-bottom: 20px;
-
-    .avatar-wrapper {
-      flex-shrink: 0;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 3px solid $detail-color-primary;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        background: $detail-bg-item;
-      }
-    }
-
-    .profile-info {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-
-      .character-name {
-        margin: 0;
-        font-size: 2.5rem;
-        text-transform: uppercase;
-      }
-
-      .meta-tags {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-
-        span {
-          background: $detail-bg-badge;
-          padding: 4px 12px;
-          border-radius: 20px;
-          font-size: 0.8rem;
-
-          &.is-highlight {
-            // Clase extra por si quieres resaltar uno
-            background: $detail-color-primary;
-            color: black;
-            font-weight: bold;
-          }
-        }
-      }
-
-      .origin-text {
-        margin: 0;
-        color: $detail-text-muted;
-        font-size: 0.9rem;
-
-        span {
-          color: $detail-color-danger;
-        }
-      }
-    }
-  }
-
-  // Métricas de Poder
-  .power-metrics {
-    display: flex;
-    gap: 15px;
-
-    .stat-card {
-      flex: 1;
-      background: $detail-bg-item;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-      border-left: 4px solid $detail-color-primary;
-
-      &--max {
-        // Modificador para el Max Ki
-        border-left-color: $detail-color-secondary;
-
-        strong {
-          color: $detail-color-secondary;
-        }
-      }
-
-      span {
-        display: block;
-        font-size: 0.7rem;
-        color: $detail-text-muted;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      strong {
-        font-size: 1.2rem;
-        font-family: monospace;
-      }
-    }
-  }
-
-  // Sección de Biografía
-  .biography-section {
-    background: $detail-bg-item;
-    padding: 20px;
-    border-radius: 10px;
-
-    h3 {
-      margin-top: 0;
-      color: $detail-color-primary;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-    }
-
-    .bio-text {
-      margin: 0;
-      line-height: 1.6;
-      color: $detail-text-bio;
-      font-style: italic;
-    }
-  }
-
-  // Lista de Transformaciones
-  .evolution-list {
-    h3 {
-      color: $detail-color-primary;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      margin-bottom: 15px;
-    }
-
-    .transformations-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-
-      .phase-chip {
-        display: flex;
-        flex-direction: column;
-        background: $detail-bg-badge;
-        padding: 10px 15px;
-        border-radius: 8px;
-        min-width: 120px;
-        transition: transform 0.2s;
-
-        &:hover {
-          transform: translateY(-3px);
-          // background: lighten($detail-bg-badge, 5%);
-        }
-
-        .phase-name {
-          font-weight: bold;
-          font-size: 0.9rem;
-        }
-
-        .phase-ki {
-          font-size: 0.7rem;
-          color: #aaa;
-        }
-      }
-    }
-  }
-}
-
-::ng-deep {
-  .p-image {
-    display: flex !important;
-    justify-content: center; // Centra la imagen horizontalmente
-    align-items: center; // Centra la imagen verticalmente
-    position: relative; // Necesario para que la máscara se alinee a la imagen
-    overflow: hidden; // Mantiene todo dentro de los bordes redondeados
-
-    img {
-      // Asegura que la imagen no se estire de forma extraña
-      display: block;
-      margin: auto;
-    }
-
-    .p-image-preview-mask {
-      // ESTA ES LA CLAVE: Forzamos a que la máscara ocupe el centro
-      left: 50% !important;
-      top: 50% !important;
-      transform: translate(-50%, -50%); // Centrado matemático perfecto
-
-      // Si quieres que el área clickeable sea igual a la imagen:
-      width: 50px !important; // Debe coincidir con el width de tu imagen
-      height: 130px !important; // Debe coincidir con el height de tu imagen
-
-      display: flex !important;
-      justify-content: center !important;
-      align-items: center !important;
-    }
-  }
-}
-
-:host ::ng-deep {
-  .hidden-preview {
-    display: none !important; // Oculta la miniatura
-  }
-
-  .transformation-badge {
-    background: #333;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    border: 1px solid #444;
-    transition: transform 0.1s;
-
-    &:hover {
-      background: #444;
-      transform: scale(1.02);
-    }
-  }
-}
-
-#Regreso {
-
-  color: #000 !important;
-  background-color: #ccc;
-}
-
-// Variables de tema
+// 1. VARIABLES
 $detail-primary: #ff9100;
 $detail-secondary: #ffcc00;
+$detail-danger: #ff5555;
+$detail-bg-card: #1a1a1a87;
 $detail-bg-dark: #252525;
 $detail-bg-inner: #333;
+$detail-bg-item: #252525a1;
+$detail-text-main: #ffffff;
+$detail-text-muted: #888;
 $detail-text-gray: #ccc;
-$detail-danger: #ff5555;
 
+// 2. ESTILOS BASE Y COMPONENTES
 .character-view-container {
   padding: 1rem;
 
   .profile-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: auto;
+    font-family: sans-serif;
+    background: $detail-bg-card;
+    color: $detail-text-main;
+    padding: 30px;
+    border-radius: 15px;
 
-    // Estilos del Header
     .profile-header {
       display: flex;
       align-items: center;
       gap: 30px;
-      border-bottom: 1px solid #333;
+      border-bottom: 1px solid $detail-bg-inner;
       padding-bottom: 20px;
 
       .avatar-wrapper {
@@ -322,7 +89,7 @@ $detail-danger: #ff5555;
 
         .origin-text {
           margin: 0;
-          color: #888;
+          color: $detail-text-muted;
           font-size: 0.9rem;
           cursor: zoom-in;
 
@@ -333,7 +100,6 @@ $detail-danger: #ff5555;
       }
     }
 
-    // Secciones Generales (Power Metrics, Bio, Evolutions)
     .power-metrics {
       display: flex;
       gap: 15px;
@@ -349,7 +115,7 @@ $detail-danger: #ff5555;
         .stat-label {
           display: block;
           font-size: 0.7rem;
-          color: #888;
+          color: $detail-text-muted;
           text-transform: uppercase;
           letter-spacing: 1px;
         }
@@ -405,6 +171,11 @@ $detail-danger: #ff5555;
           min-width: 120px;
           border: 1px solid #444;
           cursor: zoom-in;
+          transition: transform 0.2s;
+
+          &:hover {
+            transform: translateY(-3px);
+          }
 
           .name {
             font-weight: bold;
@@ -419,19 +190,12 @@ $detail-danger: #ff5555;
       }
     }
 
-    // Títulos de sección comunes
     .section-title {
       margin-top: 0;
       color: $detail-primary;
       font-size: 0.9rem;
       text-transform: uppercase;
       margin-bottom: 15px;
-    }
-
-    .no-data {
-      color: #666;
-      font-style: italic;
-      font-size: 0.8rem;
     }
   }
 
@@ -442,78 +206,89 @@ $detail-danger: #ff5555;
   }
 }
 
-// Ocultar previewers auxiliares
-.hidden-preview {
-  display: none;
+// 3. BOTONES Y AJUSTES ESPECÍFICOS
+.boton.buscador {
+  border-radius: 25px 0 0 25px !important;
+  overflow: hidden !important;
 }
 
-.p-button-text,
 .p-button-secondary {
-  background: #fff !important;
-}
-
-@media (max-width: 1148px) {
-  .botones{
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center !important;
-  }
-  header,.power-metrics{
-    display: flex;
-    flex-direction: column;
-
-  }
-  header{
-    .profile-info{
-      display: flex;
-      flex-direction: column !important;
-
-      justify-content:center !important;
-      align-items: center !important;
-    }
-  }
-}
-//575
-@media (max-width: 575px) {
-  .transformations-grid{
-      display: flex;
-      flex-direction: column !important;
-      justify-content:center !important;
-      align-items: center !important;
-      .card-transformation{
-        width: 100% !important;
-      }
-  }
-  .botones{
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center !important;
-  }
-}
-
-.p-button-secondary{
   margin-top: 10px;
   color: #000;
   width: 30%;
+  background: #fff !important;
 }
 
-.input.buscador{
-      border-radius: 25px 0 0 0px !important;
-}
-.boton.p-button-success{
-    border-radius: 25px 0 0 25pxpx !important;
+#Regreso {
+  color: #000 !important;
+  background-color: #ccc;
 }
 
-/* Usamos el selector de la clase .buscador que ya tiene tu botón */
-.boton.buscador {
+// 4. DEEP SELECTORS (PrimeNG Overrides)
+:host ::ng-deep {
+  .p-image {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    img {
+      display: block;
+      margin: auto;
+    }
+
+    .p-image-preview-mask {
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%);
+      width: 50px !important;
+      height: 130px !important;
+      display: flex !important;
+    }
+  }
+
+  .boton.buscador.p-button {
     border-radius: 25px 0 0 25px !important;
-    /* Aseguramos que el efecto ripple (onda) también respete la forma */
-    overflow: hidden !important; 
+  }
+
+  .hidden-preview {
+    display: none !important;
+  }
 }
 
-/* En algunas versiones de PrimeNG es necesario entrar al root del componente */
-:ng-deep .boton.buscador.p-button {
-    border-radius: 25px 0 0 25px !important;
+.botones {
+  width: 100% !important;
+  display: flex;
+  justify-content: center !important;
+}
+
+// 5. RESPONSIVE
+@media (max-width: 1148px) {
+  .botones {
+    width: 100% !important;
+    display: flex;
+    justify-content: center !important;
+  }
+
+  .profile-header,
+  .power-metrics {
+    flex-direction: column;
+  }
+
+  .profile-info {
+    align-items: center !important;
+    text-align: center;
+  }
+}
+
+@media (max-width: 575px) {
+  .transformations-grid {
+    flex-direction: column !important;
+    align-items: center !important;
+
+    .card-transformation {
+      width: 100% !important;
+    }
+  }
 }
