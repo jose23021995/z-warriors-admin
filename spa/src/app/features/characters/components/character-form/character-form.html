@@ -22,7 +22,15 @@
 
       <div class="col-6">
         <span class="db-label">Raza</span>
-        <p-select [options]="razas" formControlName="race" optionLabel="label" optionValue="value"></p-select>
+        <p-select 
+            [options]="[{label:'Masculino', value:'Masculino'}, {label:'Femenino', value:'Femenino'}]"
+            formControlName="gender"
+            optionLabel="label" 
+            optionValue="value"
+            dataKey="value"
+            placeholder="Seleccione Género"
+            class="w-full">
+        </p-select>
       </div>
 
       <div class="col-6">
@@ -147,9 +155,23 @@
 
     </section>
   </div>
-  <div class="col-12 mt-3 db-container" formArrayName="transformations" id="seccion5">
-
+<!-- SECCIÓN 5: FECHA DE REGISTRO GENERAL -->
+<div class="col-12 mt-3 db-container" id="seccion5">
+  <span class="db-label">Fecha de Registro del Personaje</span>
+  <div class="mt-2">
+    <p-datepicker 
+      formControlName="date" 
+      [showIcon]="true" 
+      appendTo="body" 
+      dateFormat="dd/mm/yy"
+      placeholder="Seleccione la fecha de registro"
+      class="w-full">
+    </p-datepicker>
   </div>
+  <small *ngIf="characterForm.get('date')?.invalid && characterForm.get('date')?.touched" class="p-error">
+    La fecha de registro es obligatoria.
+  </small>
+</div>
 
 
   <!-- BOTONES -->

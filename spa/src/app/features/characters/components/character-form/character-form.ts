@@ -98,49 +98,58 @@ export class CharacterForm implements OnInit {
     return isNaN(num) ? 0 : num;
   }
 
-  initForm(data: Detail, selectedTrans?: Transformation) {
-    // Traducción de Género: API (Male/Female) -> Formulario (Masculino/Femenino)
-    let generoPrecargado = data.gender;
-    if (data.gender === 'Male') generoPrecargado = 'Masculino';
-    if (data.gender === 'Female') generoPrecargado = 'Femenino';
-
-    const displayName = selectedTrans ? selectedTrans.name : data.name;
-    const displayImage = selectedTrans ? selectedTrans.image : data.image;
-    
-    // Manejo de la fecha raíz (DetailEdit.date)
-    const inicialFecha = (data as any).date ? new Date((data as any).date) : new Date();
-
-    this.characterForm = this.fb.group({
-      id: [data.id],
-      name: [displayName, Validators.required],
-      // Aplicamos parseKi para manejar números grandes sin NaN
-      ki: [this.parseKi(data.ki), [Validators.required, Validators.min(0)]],
-      maxKi: [this.parseKi(data.maxKi), [Validators.min(0)]],
-      race: [data.race || ''],
-      gender: [generoPrecargado || 'Masculino'],
-      description: [data.description || ''],
-      image: [displayImage || ''],
-      affiliation: [data.affiliation || 'Z Fighter'],
-      deletedAt: [data.deletedAt || null],
-      date: [inicialFecha, Validators.required], 
-
-      originPlanet: this.fb.group({
-        id: [data.originPlanet?.id],
-        name: [data.originPlanet?.name || ''],
-        isDestroyed: [data.originPlanet?.isDestroyed || false],
-        description: [data.originPlanet?.description || ''],
-        image: [data.originPlanet?.image || ''],
-        deletedAt: [data.originPlanet?.deletedAt || null]
-      }),
-
-      transformations: this.fb.array([])
-    });
-
-    // Llenar el FormArray con las transformaciones existentes
-    if (data.transformations && data.transformations.length > 0) {
-      data.transformations.forEach(t => this.addTransformation(t));
-    }
+initForm(data: Detail, selectedTrans?: Transformation) {
+  // 1. Traducción de Género Blindada (Maneja mayúsculas/minúsculas y espacios)
+  const rawGender = (data.gender || '').trim().toLowerCase();
+  let generoPrecargado = 'Masculino'; // Default
+  
+  if (rawGender === 'female' || rawGender === 'femenino') {
+    generoPrecargado = 'Femenino';
+  } else if (rawGender === 'male' || rawGender === 'masculino') {
+    generoPrecargado = 'Masculino';
   }
+
+  // 2. Preparación de variables de imagen y nombre
+  const displayName = selectedTrans ? selectedTrans.name : data.name;
+  const displayImage = selectedTrans ? selectedTrans.image : data.image;
+  
+  // 3. Manejo robusto de la fecha (si falla la conversión, usa fecha actual)
+  const rawDate = (data as any).date;
+  const inicialFecha = rawDate ? new Date(rawDate) : new Date();
+  const fechaValida = isNaN(inicialFecha.getTime()) ? new Date() : inicialFecha;
+
+  this.characterForm = this.fb.group({
+    id: [data.id],
+    name: [displayName, Validators.required],
+    // parseKi limpia septillones y evita NaN
+    ki: [this.parseKi(data.ki), [Validators.required, Validators.min(0)]],
+    maxKi: [this.parseKi(data.maxKi), [Validators.min(0)]],
+    race: [data.race || ''],
+    gender: [generoPrecargado, Validators.required], 
+    description: [data.description || ''],
+    image: [displayImage || ''],
+    affiliation: [data.affiliation || 'Z Fighter'],
+    deletedAt: [data.deletedAt || null],
+    date: [fechaValida, Validators.required], 
+
+    originPlanet: this.fb.group({
+      id: [data.originPlanet?.id],
+      name: [data.originPlanet?.name || ''],
+      isDestroyed: [data.originPlanet?.isDestroyed || false],
+      description: [data.originPlanet?.description || ''],
+      image: [data.originPlanet?.image || ''],
+      deletedAt: [data.originPlanet?.deletedAt || null]
+    }),
+
+    transformations: this.fb.array([])
+  });
+
+  // 4. Carga de transformaciones existentes
+  if (data.transformations && data.transformations.length > 0) {
+    data.transformations.forEach(t => this.addTransformation(t));
+  }
+}
+
 
   addTransformation(t?: Transformation) {
     const transGroup = this.fb.group({
@@ -160,16 +169,37 @@ export class CharacterForm implements OnInit {
   }
 
 guardarCambios() {
+  // 1. Verificamos si el formulario es válido
   if (this.characterForm.valid) {
     const formValue = this.characterForm.value;
-    const finalObject: DetailEdit = { ...formValue };
-    alert("Los cambios se han registrado correctamente");
+    
+    // Construimos el objeto final
+    const finalObject: DetailEdit = {
+      ...formValue
+    };
+
+    // 2. Mostramos en consola EXACTAMENTE lo que se va a enviar
+    console.log('--- OBJETO A GUARDAR ---');
+    console.table(finalObject); // Esto crea una tabla visual muy clara en F12
+
+    // 3. Alert normal del navegador (Sincrónico)
+    alert("¡Se guardó correctamente el personaje: " + finalObject.name + "!");
+
+    // 4. Enviamos los datos y cerramos el modal
     this.ref.close(finalObject);
+
   } else {
-    alert("Por favor, revisa los campos marcados en rojo");
+    // 5. Caso de error
+    console.error('El formulario tiene errores:', this.characterForm.errors);
+    
+    alert("¡Ups! Parece que hay un error. Por favor, revisa que todos los campos obligatorios estén llenos.");
+    
+    // Marcamos los campos en rojo para que el usuario los vea
     this.characterForm.markAllAsTouched();
   }
 }
+
+
 
   onImageSelect(event: any) {
     const file = event.files[0];
