@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { MenuItem } from 'primeng/api';
 import { DarkModeComponent } from '../../../shared/components/dark-mode/dark-mode.component';
 import { DividerModule } from 'primeng/divider'; // <--- 1. Importa el módulo
-
+import { CharacterService } from "../../../core/services/character.service";
 @Component({
   selector: 'app-dashboard-layout',
   standalone: true,
@@ -15,7 +15,7 @@ import { DividerModule } from 'primeng/divider'; // <--- 1. Importa el módulo
 })
 export class DashboardLayoutComponent {
   private router = inject(Router);
-
+  private charService = inject(CharacterService);
   // Definición del menú para PrimeNG
   items: MenuItem[] = [
     { 
@@ -27,8 +27,19 @@ export class DashboardLayoutComponent {
       label: 'Estadísticas', 
       icon: 'pi pi-chart-bar', 
       routerLink: 'stats' 
+    },
+    {
+      label: 'Prueba Interceptor',
+      icon: 'pi pi-exclamation-triangle',
+      command: () => {
+        this.pruebaInterceptor();
+      }
     }
   ];
+  async pruebaInterceptor(){
+    const response = await this.charService.getPrueba();
+    console.log(response);
+  }
 
   logout() {
     localStorage.removeItem('token'); // Requisito: Borra token

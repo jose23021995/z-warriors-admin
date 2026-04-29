@@ -9,7 +9,7 @@ export class CharacterService {
   private http = inject(HttpClient);
   private apiUrl = 'https://dragonball-api.com/api/characters';
   private apiUrlTransformations = 'https://dragonball-api.com/api/transformations';
-  
+  private pruebaIntercptor = 'https://dragonball-api.com/api/prueba';
   // Método asíncrono para obtener personajes
 async getCharacters(page: number = 1, limit: number = 10, name: string = '') {
   // Si hay búsqueda, pedimos un límite alto (ej. 50) para poder filtrar por raza localmente
@@ -30,6 +30,9 @@ async getCharacters(page: number = 1, limit: number = 10, name: string = '') {
   async getCharacterTransformations(id: number | string) {
     const url = `${this.apiUrlTransformations}/${id}`;
     return await firstValueFrom(this.http.get<any>(url));
+  }
+  async getPrueba() {
+    return await firstValueFrom(this.http.get<any>(this.pruebaIntercptor));
   }
 
 }
