@@ -1,7 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+
 // PrimeNG 18 Imports
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -10,27 +11,27 @@ import { SelectModule } from 'primeng/select';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { Transformation,Detail,ModalCharacter } from '../../../../shared/interfaces/models/character.model';
 import { CardModule } from 'primeng/card';
-import { ImageModule } from 'primeng/image';
-import { Image } from 'primeng/image'
+import { ImageModule, Image } from 'primeng/image';
+
+// Interfaces
+import { Transformation, Detail } from '../../../../shared/interfaces/models/character.model';
 
 @Component({
   selector: 'app-character-detail',
   standalone: true,
   imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
-    ButtonModule, 
-    InputTextModule, 
-    TextareaModule, 
-    SelectModule, 
-    RadioButtonModule, 
+    CommonModule,
+    ReactiveFormsModule,
+    ButtonModule,
+    InputTextModule,
+    TextareaModule,
+    SelectModule,
+    RadioButtonModule,
     FileUploadModule,
     ProgressBarModule,
     CardModule,
-    ImageModule,
-    Image 
+    ImageModule
   ],
   templateUrl: './character-detail.html',
   styleUrl: './character-detail.scss',
@@ -39,72 +40,67 @@ export class CharacterDetailComponent implements OnInit {
   private fb = inject(FormBuilder);
   private config = inject(DynamicDialogConfig);
   private ref = inject(DynamicDialogRef);
-  public characterForm!: FormGroup;
-  public characterResponse!:Detail;
-  // --- Variables Públicas ---
-  public name!: string;
-  public description!: string;
-  public gender!: string;
-  public id!: number;
-  public image!: string;
-  public ki!: string;
-  public maxKi!: string;
-  public race!: string;
-  public affiliation!: any;
-  public deletedAt!: any;
-  // Variables del Planeta
-  public idPlanet!: number;
-  public deletedAtPlanet!: null | string | Date;
-  public descriptionPlanet!: string;
-  public imagePlanet!: string;
-  public isDestroyed!: boolean;
-  public namePlanet!: string;
-  // Transformaciones
-  public transformations: Transformation[] = [];
-  ngOnInit() {
-    const { response:character,transformations:transformation } = this.config.data;
-    console.log("entrando a modal",this.config.data);
-    this.characterResponse=character;
-    console.log("informacion que llega del padre",this.config.data);
-    const {
-      name, description, gender, id, image, ki, maxKi, race, 
-      affiliation, deletedAt, originPlanet, transformations 
-    } = this.characterResponse;
-    let namaTr: string = '';
-    let imageTr: string = '';
-    if (transformation) {
-        ({ name: namaTr, image: imageTr } = transformation);
-    }
-        console.log(imageTr);
-    // 2. Desestructuración del planeta
-    const {
-      id: idPl, deletedAt: delPl, description: descPl, 
-      image: imgPl, isDestroyed: isDest, name: namePl 
-    } = originPlanet;
 
-    // 3. Asignación a variables públicas
-    this.name = transformation?namaTr:name;
-    this.description = description;
-    this.gender = gender;
-    this.id = id;
-    this.image = transformation?imageTr:image;
-    this.ki = ki;
-    this.maxKi = maxKi;
-    this.race = race;
-    this.affiliation = affiliation;
-    this.deletedAt = deletedAt;
-    this.transformations = transformations || [];
-    this.idPlanet = idPl;
-    this.deletedAtPlanet = delPl;
-    this.descriptionPlanet = descPl;
-    this.imagePlanet = imgPl;
-    this.isDestroyed = isDest;
-    this.namePlanet = namePl;
+  public characterForm!: FormGroup;
+
+  // --- SIGNALS DE ESTADO (Visualización) ---
+  public name = signal<string>('');
+  public description = signal<string>('');
+  public gender = signal<string>('');
+  public id = signal<number | null>(null);
+  public image = signal<string>('');
+  public ki = signal<string>('');
+  public maxKi = signal<string>('');
+  public race = signal<string>('');
+  public affiliation = signal<any>(null);
+  public deletedAt = signal<any>(null);
+  public idPlanet = signal<number | null>(null);
+  public descriptionPlanet = signal<string>('');
+  public imagePlanet = signal<string>('');
+  public isDestroyed = signal<boolean>(false);
+  public namePlanet = signal<string>('');
+  public deletedAtPlanet = signal<any>(null);
+
+  public transformations = signal<Transformation[]>([]);
+
+  public planetaEstado = computed(() => 
+    this.isDestroyed() ? '💥 Destruido' : '🌎 Vigente'
+  );
+
+  ngOnInit() {
+    const { response: character, transformations: transformation } = this.config.data;
+    
+    if (!character) return;
+
+    this.name.set(transformation?.name || character.name);
+    this.image.set(transformation?.image || character.image);
+    this.description.set(character.description);
+    this.gender.set(character.gender);
+    this.id.set(character.id);
+    this.ki.set(character.ki);
+    this.maxKi.set(character.maxKi);
+    this.race.set(character.race);
+    this.affiliation.set(character.affiliation);
+    this.deletedAt.set(character.deletedAt);
+    this.transformations.set(character.transformations || []);
+
+    const planet = character.originPlanet;
+    if (planet) {
+      this.idPlanet.set(planet.id);
+      this.namePlanet.set(planet.name);
+      this.descriptionPlanet.set(planet.description);
+      this.imagePlanet.set(planet.image);
+      this.isDestroyed.set(planet.isDestroyed);
+      this.deletedAtPlanet.set(planet.deletedAt);
+    }
+
     this.characterForm = this.fb.group({});
   }
+
   onCancel() {
     this.ref.close();
   }
+
   abrirZoom(imgComponent: Image) {
     imgComponent.onImageClick();
   }

@@ -4,29 +4,31 @@
     <!-- Header: Imagen y Datos -->
     <header class="profile-header">
       <div class="avatar-wrapper">
-        <p-image [src]="image" [alt]="name" [preview]="true" 
-                 styleClass="avatar-image" imageClass="avatar-img-content">
+        <!-- Signal: image() y name() -->
+        <p-image [src]="image()" [alt]="name()" [preview]="true" styleClass="avatar-image" imageClass="avatar-img-content">
         </p-image>
       </div>
 
       <div class="profile-info">
-        <h1 class="character-name">{{ name }}</h1>
+        <h1 class="character-name">{{ name() }}</h1>
         
         <div class="meta-tags">
-          <span class="tag-base">{{race}}</span>
+          <span class="tag-base">{{ race() }}</span>
           <span class="tag-base tag-icon">
-            <i [class]="gender === 'Male' ? 'pi pi-mars' : 'pi pi-venus'"
-               [ngStyle]="{'color': gender === 'Male' ? '#3b82f6' : '#ec4899'}">
+            <!-- Signal: gender() -->
+            <i [class]="gender() === 'Male' ? 'pi pi-mars' : 'pi pi-venus'" 
+               [ngStyle]="{'color': gender() === 'Male' ? '#3b82f6' : '#ec4899'}">
             </i>
           </span>
-          <span class="tag-affiliation">{{affiliation}}</span>
+          <span class="tag-affiliation">{{ affiliation() }}</span>
         </div>
 
+        <!-- Signal: namePlanet() y planetaEstado() -->
         <p class="origin-text" (click)="abrirZoom(imgPlanet)">
-          Origen: <span class="planet-name">{{namePlanet}} ({{isDestroyed ? "💥 Destruido" : "🌎 Vigente"}})</span>
+          Origen: <span class="planet-name">{{ namePlanet() }} ({{ planetaEstado() }})</span>
         </p>
         
-        <p-image #imgPlanet [src]="imagePlanet" [preview]="true" appendTo="body" styleClass="hidden-preview">
+        <p-image #imgPlanet [src]="imagePlanet()" [preview]="true" appendTo="body" styleClass="hidden-preview">
         </p-image>
       </div>
     </header>
@@ -35,25 +37,26 @@
     <section class="power-metrics">
       <div class="stat-card base-ki">
         <span class="stat-label">Base Ki ✨</span>
-        <strong class="stat-value">{{ki}}</strong>
+        <strong class="stat-value">{{ ki() }}</strong>
       </div>
       <div class="stat-card max-ki">
         <span class="stat-label">Max Ki ✨✨</span>
-        <strong class="stat-value">{{maxKi}}</strong>
+        <strong class="stat-value">{{ maxKi() }}</strong>
       </div>
     </section>
 
     <!-- Biografía -->
     <article class="biography-section">
       <h3 class="section-title">DESCRIPCIÓN 📜</h3>
-      <p class="bio-text">"{{description}}"</p>
+      <p class="bio-text">"{{ description() }}"</p>
     </article>
 
     <!-- Transformaciones -->
     <section class="evolution-list">
       <h3 class="section-title">TRANSFORMACIONES 🧬</h3>
       <div class="transformations-grid">
-        @for (trans of transformations; track trans.name) {
+        <!-- Signal: transformations() -->
+        @for (trans of transformations(); track trans.name) {
           <div class="card-transformation" (click)="abrirZoom(img)">
             <span class="name">{{ trans.name }}</span>
             <span class="ki">Ki: {{ trans.ki }}</span>
@@ -61,15 +64,15 @@
             </p-image>
           </div>
         }
-        @if (transformations.length === 0) {
+        
+        @if (transformations().length === 0) {
           <p class="no-data">Este personaje no posee transformaciones registradas.</p>
         }
       </div>
     </section>
   </div>
-  <div class="botones">
-    <button pButton label="Regreso" class="p-button-text p-button-secondary"  (click)="onCancel()" id="regreso"></button>
-  </div>
-    
 
+  <div class="botones">
+    <button pButton label="Regresar" class="p-button-text p-button-secondary" (click)="onCancel()" id="regreso"></button>
+  </div>
 </div>
