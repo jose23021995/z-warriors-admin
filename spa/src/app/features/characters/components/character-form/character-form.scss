@@ -1,184 +1,65 @@
-// Variables de color para fácil mantenimiento
-$detail-color-primary: #ff9100;
-$detail-color-secondary: #ffcc00;
-$detail-color-danger: #ff5555;
-$detail-bg-card: #1a1a1a87;
-$detail-bg-item: #252525a1;
-$detail-bg-badge: #333;
-$detail-text-main: #ffffff;
-$detail-text-muted: #888;
-$detail-text-bio: #ccc;
-
-.profile-card {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 800px;
-  margin: auto;
-  font-family: sans-serif;
-  background: $detail-bg-card;
-  color: $detail-text-main;
-  padding: 30px;
-  border-radius: 15px;
-
-  // Header del perfil
-  .profile-header {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    border-bottom: 1px solid $detail-bg-badge;
-    padding-bottom: 20px;
-
-    .avatar-wrapper {
-      flex-shrink: 0;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 3px solid $detail-color-primary;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        background: $detail-bg-item;
-      }
-    }
-
-    .profile-info {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-
-      .character-name {
-        margin: 0;
-        font-size: 2.5rem;
-        text-transform: uppercase;
-      }
-
-      .meta-tags {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-
-        span {
-          background: $detail-bg-badge;
-          padding: 4px 12px;
-          border-radius: 20px;
-          font-size: 0.8rem;
-
-          &.is-highlight { // Clase extra por si quieres resaltar uno
-            background: $detail-color-primary;
-            color: black;
-            font-weight: bold;
-          }
-        }
-      }
-
-      .origin-text {
-        margin: 0;
-        color: $detail-text-muted;
-        font-size: 0.9rem;
-
-        span {
-          color: $detail-color-danger;
-        }
-      }
-    }
-  }
-
-  // Métricas de Poder
-  .power-metrics {
-    display: flex;
-    gap: 15px;
-
-    .stat-card {
-      flex: 1;
-      background: $detail-bg-item;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-      border-left: 4px solid $detail-color-primary;
-
-      &--max { // Modificador para el Max Ki
-        border-left-color: $detail-color-secondary;
-        strong { color: $detail-color-secondary; }
-      }
-
-      span {
-        display: block;
-        font-size: 0.7rem;
-        color: $detail-text-muted;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      strong {
-        font-size: 1.2rem;
-        font-family: monospace;
-      }
-    }
-  }
-
-  // Sección de Biografía
-  .biography-section {
-    background: $detail-bg-item;
+:host {
+    display: block;
+    background-color: #d18a3a; // El naranja de fondo de tu imagen
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    h3 {
-      margin-top: 0;
-      color: $detail-color-primary;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-    }
+.db-container {
+    background: rgba(0, 0, 0, 0.25); // Fondo oscuro traslúcido
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-    .bio-text {
-      margin: 0;
-      line-height: 1.6;
-      color: $detail-text-bio;
-      font-style: italic;
-    }
-  }
+.db-label {
+    color: #ffd19a;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    display: block;
+}
 
-  // Lista de Transformaciones
-  .evolution-list {
-    h3 {
-      color: $detail-color-primary;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      margin-bottom: 15px;
-    }
+.section-title {
+    color: #fb8c00;
+    border-bottom: 2px solid #fb8c00;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
 
-    .transformations-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-
-      .phase-chip {
-        display: flex;
-        flex-direction: column;
-        background: $detail-bg-badge;
-        padding: 10px 15px;
-        border-radius: 8px;
-        min-width: 120px;
-        transition: transform 0.2s;
-
-        &:hover {
-          transform: translateY(-3px);
-          // background: lighten($detail-bg-badge, 5%);
+// Personalización de Inputs de PrimeNG
+:ng-deep {
+    .p-inputtext, .p-inputnumber-input, .p-select, .p-textarea {
+        background: rgba(0, 0, 0, 0.4) !important;
+        border: 1px solid #555 !important;
+        color: white !important;
+        border-radius: 8px !important;
+        
+        &:focus {
+            border-color: #fb8c00 !important;
+            box-shadow: 0 0 0 0.2rem rgba(251, 140, 0, 0.25) !important;
         }
-
-        .phase-name {
-          font-weight: bold;
-          font-size: 0.9rem;
-        }
-
-        .phase-ki {
-          font-size: 0.7rem;
-          color: #aaa;
-        }
-      }
     }
-  }
+
+    .p-select-label { color: white !important; }
+
+    // Estilo especial para los botones de Guardar/Cancelar
+    .btn-guardar {
+        background: linear-gradient(to bottom, #ffeb3b, #fb8c00) !important;
+        border: 2px solid #5d4037 !important;
+        color: #5d4037 !important;
+        border-radius: 25px !important;
+        font-weight: 900 !important;
+        box-shadow: 0 4px 0 #5d4037;
+        &:active { transform: translateY(2px); box-shadow: 0 2px 0 #5d4037; }
+    }
+}
+
+#section1{
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content:space-around !important;
 }

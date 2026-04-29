@@ -1,131 +1,98 @@
-<form *ngIf="characterForm" [formGroup]="characterForm" (ngSubmit)="guardarCambios()" class="p-fluid grid">
-  <!-- Sección de Imagen y Carga -->
-<div class="col-12 mt-3 mb-4">
-  <div class="grid align-items-center p-3 border-round" style="background: rgba(0,0,0,0.1); border: 1px dashed #d18a3a;">
+<form *ngIf="characterForm" [formGroup]="characterForm" (ngSubmit)="guardarCambios()" class="p-fluid grid p-3">
+
+  <!-- CONTENEDOR PRINCIPAL: Agrupa Imagen, Datos y Planeta -->
+  <div class="col-12 grid db-container mb-3" id="section1">
     
-    <!-- Previsualización de la imagen actual -->
-    <div class="col-12 md:col-4 text-center">
-      <label class="block font-bold text-white mb-2">Avatar del Personaje</label>
-      <p-image 
-        [src]="characterForm.get('image')?.value || 'assets/placeholder-saiyan.png'" 
-        alt="Preview" 
-        width="150" 
-        [preview]="true"
-        class="shadow-4 border-round">
-      </p-image>
+    <!-- LADO IZQUIERDO: IMAGEN (4 de 12 columnas) -->
+    <div class="col-12 md:col-4 flex flex-column align-items-center justify-content-center">
+      <div class="relative">
+        <p-image [src]="characterForm.get('image')?.value || 'assets/placeholder.png'" width="180" class="db-avatar shadow-8"></p-image>
+        <p-fileupload mode="basic" (onSelect)="onImageSelect($event)" auto="true" chooseIcon="pi pi-plus" class="absolute" ></p-fileupload>
+      </div>
     </div>
 
-    <!-- Componente de Carga -->
-    <div class="col-12 md:col-8">
-      <label class="block font-bold text-white mb-2">Cambiar Imagen</label>
-      <p-fileupload 
-        mode="basic" 
-        chooseLabel="Elegir Imagen" 
-        chooseIcon="pi pi-upload"
-        accept="image/*" 
-        maxFileSize="1000000" 
-        (onSelect)="onImageSelect($event)"
-        styleClass="p-button-warning">
-      </p-fileupload>
-      <small class="text-white-alpha-60 block mt-2">Formatos aceptados: JPG, PNG. Máx: 1MB</small>
+    <!-- LADO DERECHO: DATOS BÁSICOS (8 de 12 columnas) -->
+    <div class="col-12 md:col-8 grid">
+      <div class="col-12"><span class="section-title">Datos Básicos</span></div>
+      <div class="col-6">
+        <span class="db-label">Nombre</span>
+        <input pInputText formControlName="name" />
+      </div>
+      <div class="col-6">
+        <span class="db-label">Raza</span>
+        <p-select [options]="razas" formControlName="race" optionLabel="label" optionValue="value"></p-select>
+      </div>
+      <div class="col-6">
+        <span class="db-label">Género</span>
+        <p-select [options]="[{label:'Masculino', value:'Masculino'},{label:'Femenino', value:'Femenino'}]" formControlName="gender"></p-select>
+      </div>
+      <div class="col-6">
+        <span class="db-label">Afiliación</span>
+        <p-select [options]="facciones" formControlName="affiliation" optionLabel="label" optionValue="value"></p-select>
+      </div>
     </div>
 
-  </div>
-</div>
-
-  <!-- Fila 1: Nombre y Raza -->
-  <div class="col-12 md:col-6 p-field">
-    <label class="font-bold text-white">Nombre del Personaje</label>
-    <input pInputText formControlName="name" />
-  </div>
-  <div class="col-12 md:col-6 p-field">
-    <label class="font-bold text-white block mb-2">Raza del Personaje</label>
-    <p-select 
-        [options]="razas" 
-        formControlName="race" 
-        optionLabel="label" 
-        optionValue="value" 
-        placeholder="Selecciona una raza"
-        [filter]="true" 
-        filterBy="label"
-        class="w-full">
-    </p-select>
-    </div>
-
-
-  <!-- Fila 2: Ki Base y Max Ki (NaN corregido usando mode="decimal") -->
-  <div class="col-12 md:col-6 p-field">
-    <label class="font-bold text-white">Base Ki (Puntos)</label>
-    <p-inputNumber formControlName="ki" mode="decimal" [useGrouping]="false"></p-inputNumber>
-  </div>
-  <div class="col-12 md:col-6 p-field">
-    <label class="font-bold text-white">Max Ki</label>
-    <p-inputNumber formControlName="maxKi" mode="decimal" [useGrouping]="false"></p-inputNumber>
-  </div>
-
-  <!-- Fila 3: Género y Afiliación -->
-  <div class="col-12 md:col-6 p-field">
-    <label class="font-bold text-white">Afiliación</label>
-    <p-select [options]="facciones" formControlName="affiliation" optionLabel="label" optionValue="value"></p-select>
-  </div>
-  <div class="col-12 md:col-6 p-field">
-    <label class="font-bold text-white">Género</label>
-    <div class="flex gap-3 mt-2">
-      <p-radioButton name="gender" value="Masculino" label="Masculino" formControlName="gender"></p-radioButton>
-      <p-radioButton name="gender" value="Femenino" label="Femenino" formControlName="gender"></p-radioButton>
-    </div>
-  </div>
-
-  <!-- Sección Planeta -->
-  <div class="col-12 mt-3" formGroupName="originPlanet">
-    <div class="p-3 border-round" style="background: rgba(255,255,255,0.1); border: 1px solid #d18a3a;">
-      <h4 class="text-white mt-0">Planeta: {{characterForm.get('originPlanet.name')?.value}}</h4>
+    <!-- BLOQUE INFERIOR: PLANETA (Ocupa las 12 columnas del contenedor padre) -->
+    <div class="col-12 mt-3 p-3" formGroupName="originPlanet">
+      <span class="section-title">Planeta de Origen</span>
       <div class="grid">
-        <div class="col-8">
-          <label class="text-white">Nombre del Planeta</label>
+        <div class="col-4">
+          <span class="db-label">Name</span>
           <input pInputText formControlName="name" />
         </div>
-        <div class="col-4 flex align-items-end mb-2">
+        <div class="col-4 flex align-items-center mt-3">
           <p-checkbox formControlName="isDestroyed" [binary]="true" label="¿Destruido?" labelStyleClass="text-white"></p-checkbox>
         </div>
+        <div class="col-4">
+          <span class="db-label">Desc.</span>
+          <textarea pTextarea formControlName="description" rows="1"></textarea>
+        </div>
+      </div>
+    </div>
+  </div> <!-- FIN DEL CONTENEDOR PRINCIPAL -->
+
+  <!-- BLOQUE KI (Negros) -->
+  <div class="col-12 grid px-0">
+    <div class="col-6">
+      <div class="db-container text-center" style="background: black; border: 2px solid #ffd19a;">
+        <span class="db-label" style="color: #888;">BASE KI (puntos)</span>
+        <p-inputNumber formControlName="ki" mode="decimal" [useGrouping]="true"></p-inputNumber>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="db-container text-center" style="background: black; border: 2px solid #ffd19a;">
+        <span class="db-label" style="color: #888;">MAX KI (septillion)</span>
+        <p-inputNumber formControlName="maxKi" mode="decimal"></p-inputNumber>
       </div>
     </div>
   </div>
 
-  <!-- Descripción -->
-  <div class="col-12 p-field">
-    <label class="font-bold text-white">Descripción del Personaje</label>
-    <textarea pTextarea formControlName="description" rows="3"></textarea>
+  <!-- DESCRIPCIÓN -->
+  <div class="col-12 mt-3">
+    <span class="db-label">Descripción</span>
+    <textarea pTextarea formControlName="description" rows="4" style="background: white !important; color: black !important;"></textarea>
   </div>
 
-  <!-- Sección Transformaciones -->
-  <div class="col-12 mt-4">
-    <div class="flex justify-content-between align-items-center mb-3">
-      <h3 class="text-white m-0">Transformaciones ({{transformationsArray.length}})</h3>
-      <button pButton type="button" icon="pi pi-plus" label="Añadir" (click)="addTransformation()" class="p-button-sm p-button-info"></button>
+  <!-- TRANSFORMACIONES -->
+  <div class="col-12 mt-3 db-container" formArrayName="transformations">
+    <div class="flex justify-content-between align-items-center mb-2">
+      <span class="section-title">Transformaciones</span>
+      <button pButton type="button" label="AÑADIR" (click)="addTransformation()" class="p-button-text p-button-warning"></button>
     </div>
-
-    <div formArrayName="transformations">
-      <div *ngFor="let trans of transformationsArray.controls; let i=index" [formGroupName]="i" 
-           class="grid mb-3 p-2 border-round" style="background: rgba(0,0,0,0.2);">
-        <div class="col-5 p-field">
-          <small class="text-white">Nombre</small>
-          <input pInputText formControlName="name" placeholder="ej: SSJ3" />
-        </div>
-        <div class="col-5 p-field">
-          <small class="text-white">Ki de Transf.</small>
-          <p-inputNumber formControlName="ki" mode="decimal" [useGrouping]="false"></p-inputNumber>
-        </div>
-        <div class="col-2 flex align-items-end mb-2">
-          <button pButton type="button" icon="pi pi-trash" class="p-button-danger p-button-text" (click)="removeTransformation(i)"></button>
-        </div>
-      </div>
+    <div *ngFor="let trans of transformationsArray.controls; let i=index" [formGroupName]="i" class="grid mb-2 border-bottom-1 border-gray-700">
+      <div class="col-4"><input pInputText formControlName="name" placeholder="Nombre" /></div>
+      <div class="col-3"><p-inputNumber formControlName="ki" placeholder="Ki" /></div>
+      <div class="col-4"><p-inputNumber formControlName="numericKi" placeholder="Numeric Ki" /></div>
+      <div class="col-1"><button pButton icon="pi pi-trash" (click)="removeTransformation(i)" class="p-button-danger p-button-text"></button></div>
     </div>
   </div>
 
-  <!-- Botones de Acción -->
-  <div class="col-12 flex justify-content-end gap-2 mt-4">
-    <button pButton type="button" label="CANCELAR" (click)="onCancel()" class="p-button-secondary p-button-outlined"></button>
-    <button pButton type="submit" label="GUARDAR CAMBIOS" class="p-button-warning font-bold"></button>
+  <!-- BOTONES -->
+  <div class="col-12 flex justify-content-between mt-4">
+    <button pButton type="button" label="Regresar" (click)="onCancel()" class="p-button-text text-white"></button>
+    <div class="flex gap-3">
+      <button pButton type="submit" label="GUARDAR CAMBIOS" class="btn-guardar px-5"></button>
+      <button pButton type="button" label="CANCELAR" (click)="onCancel()" class="p-button-secondary border-round-2xl"></button>
+    </div>
   </div>
 </form>

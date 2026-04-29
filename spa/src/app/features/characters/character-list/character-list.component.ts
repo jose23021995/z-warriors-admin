@@ -112,13 +112,13 @@ export class CharacterListComponent implements OnInit {
     {
       this.ref = this.dialogService.open(CharacterDetailComponent, {
         header: `Informacion de ${response.name}`, 
-        width: '50%',
+        width: '60%',
         data: {response}
       });  
     } else {
       this.ref = this.dialogService.open(CharacterForm, {
         header: `Editar a ${response.name}`, 
-        width: '50%',
+        width: '90%',
         data: {response}
       });  
     }
