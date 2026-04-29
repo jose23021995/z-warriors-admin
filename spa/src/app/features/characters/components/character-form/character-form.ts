@@ -2,8 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-
-// PrimeNG 18 Imports
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
@@ -16,9 +14,6 @@ import { ImageModule } from 'primeng/image';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
-
-import Swal from 'sweetalert2'
-
 // Interfaces
 import { Transformation, Detail, DetailEdit } from '../../../../shared/interfaces/models/character.model';
 
@@ -76,30 +71,19 @@ export class CharacterForm implements OnInit {
   }
 
   ngOnInit() {
-    // 1. Extraer datos del modal
     const { response: character, transformations: selectedTrans } = this.config.data;
-    
-    // 2. Inicializar el formulario
     this.initForm(character, selectedTrans);
   }
 
-  /**
-   * Limpia valores de Ki que vengan como String con formato (ej: "20.000")
-   * y los convierte en números puros para evitar el error NaN.
-   */
   private parseKi(val: any): number {
     if (val === null || val === undefined || val === '') return 0;
     if (typeof val === 'number') return val;
-
-    // Eliminamos cualquier caracter que no sea número (puntos, comas, espacios)
     const cleanVal = val.toString().replace(/[^0-9]/g, '');
     const num = Number(cleanVal);
-
     return isNaN(num) ? 0 : num;
   }
 
 initForm(data: Detail, selectedTrans?: Transformation) {
-  // 1. Traducción de Género Blindada (Maneja mayúsculas/minúsculas y espacios)
   const rawGender = (data.gender || '').trim().toLowerCase();
   let generoPrecargado = 'Masculino'; // Default
   
@@ -109,11 +93,8 @@ initForm(data: Detail, selectedTrans?: Transformation) {
     generoPrecargado = 'Masculino';
   }
 
-  // 2. Preparación de variables de imagen y nombre
   const displayName = selectedTrans ? selectedTrans.name : data.name;
   const displayImage = selectedTrans ? selectedTrans.image : data.image;
-  
-  // 3. Manejo robusto de la fecha (si falla la conversión, usa fecha actual)
   const rawDate = (data as any).date;
   const inicialFecha = rawDate ? new Date(rawDate) : new Date();
   const fechaValida = isNaN(inicialFecha.getTime()) ? new Date() : inicialFecha;
@@ -121,7 +102,6 @@ initForm(data: Detail, selectedTrans?: Transformation) {
   this.characterForm = this.fb.group({
     id: [data.id],
     name: [displayName, Validators.required],
-    // parseKi limpia septillones y evita NaN
     ki: [this.parseKi(data.ki), [Validators.required, Validators.min(0)]],
     maxKi: [this.parseKi(data.maxKi), [Validators.min(0)]],
     race: [data.race || ''],
@@ -168,38 +148,24 @@ initForm(data: Detail, selectedTrans?: Transformation) {
     this.transformationsArray.removeAt(index);
   }
 
-guardarCambios() {
-  // 1. Verificamos si el formulario es válido
-  if (this.characterForm.valid) {
-    const formValue = this.characterForm.value;
-    
-    // Construimos el objeto final
-    const finalObject: DetailEdit = {
-      ...formValue
-    };
+  guardarCambios() {
+    if (this.characterForm.valid) {
+      const formValue = this.characterForm.value;    
+      // Construimos el objeto final
+      const finalObject: DetailEdit = {
+        ...formValue
+      };
+      console.log('--- OBJETO A GUARDAR ---');
+      console.table(finalObject);
+      alert("¡Se guardó correctamente el personaje: " + finalObject.name + "!");
+      this.ref.close(finalObject);
 
-    // 2. Mostramos en consola EXACTAMENTE lo que se va a enviar
-    console.log('--- OBJETO A GUARDAR ---');
-    console.table(finalObject); // Esto crea una tabla visual muy clara en F12
-
-    // 3. Alert normal del navegador (Sincrónico)
-    alert("¡Se guardó correctamente el personaje: " + finalObject.name + "!");
-
-    // 4. Enviamos los datos y cerramos el modal
-    this.ref.close(finalObject);
-
-  } else {
-    // 5. Caso de error
-    console.error('El formulario tiene errores:', this.characterForm.errors);
-    
-    alert("¡Ups! Parece que hay un error. Por favor, revisa que todos los campos obligatorios estén llenos.");
-    
-    // Marcamos los campos en rojo para que el usuario los vea
-    this.characterForm.markAllAsTouched();
+    } else {
+      console.error('El formulario tiene errores:', this.characterForm.errors);
+      alert("¡Ups! Parece que hay un error. Por favor, revisa que todos los campos obligatorios estén llenos.");
+      this.characterForm.markAllAsTouched();
+    }
   }
-}
-
-
 
   onImageSelect(event: any) {
     const file = event.files[0];
@@ -218,7 +184,4 @@ guardarCambios() {
     this.ref.close();
   }
 
-  regresar() {
-    this.ref.close();
-  }
 }

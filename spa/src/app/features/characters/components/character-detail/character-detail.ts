@@ -94,7 +94,6 @@ export class CharacterDetailComponent implements OnInit {
     this.affiliation = affiliation;
     this.deletedAt = deletedAt;
     this.transformations = transformations || [];
-    // Asignación de variables del planeta
     this.idPlanet = idPl;
     this.deletedAtPlanet = delPl;
     this.descriptionPlanet = descPl;
@@ -102,7 +101,6 @@ export class CharacterDetailComponent implements OnInit {
     this.isDestroyed = isDest;
     this.namePlanet = namePl;
     this.characterForm = this.fb.group({});
-
   }
   onCancel() {
     this.ref.close();

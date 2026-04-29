@@ -14,7 +14,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { Character,ModalCharacter } from '../../../../shared/interfaces/models/character.model'
+import { Character } from '../../../../shared/interfaces/models/character.model'
 @Component({
   selector: 'app-character-table',
   standalone: true,
@@ -50,15 +50,11 @@ export class CharacterTable {
   
   @Output() onCharacterSelected = new EventEmitter<any>();
 
-
   loadCharactersLazy(event: TableLazyLoadEvent) {
     if (typeof event.rows === 'number') {
       this.rows.set(event.rows);
     }
-
-    // Calculamos página
     const page = (event.first ?? 0) / (this.rows()) + 1;
-    
     this.onLoadData.emit({ 
       page, 
       limit: this.rows(), 
@@ -70,16 +66,13 @@ triggerSearch() {
   this.onLoadData.emit({ 
     page: 1, 
     limit: this.rows(), 
-    search: this.searchQuery() // Enviamos lo que el usuario escribió
+    search: this.searchQuery()
   });
 }
 
 getKiPercentage(ki: string, maxKi: string): number {
-  // Limpiamos los puntos y convertimos a número
   const current = parseFloat(ki.replace(/\./g, ''));
   const max = parseFloat(maxKi.replace(/\./g, ''));
-
-  // Si no son números válidos (como "Unknown" o "Septillion"), devolvemos 0 o 100
   if (isNaN(current) || isNaN(max)) return 100; 
   
   return (current / max) * 100;
