@@ -1,4 +1,5 @@
 import { inject } from '@angular/core';
+//Utiliza el método inject() para obtener las dependencias sin necesidad de un constructor de clase.
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
@@ -10,3 +11,4 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
   return router.parseUrl('/login');
 };
+

@@ -15,7 +15,7 @@ import { CardModule } from 'primeng/card';
 import { ImageModule, Image } from 'primeng/image';
 
 // Interfaces
-import { Transformation, Detail } from '../../../../shared/interfaces/models/character.model';
+import { Transformation, Detail } from '../../interfaces/models/character.model';
 
 @Component({
   selector: 'app-character-detail',

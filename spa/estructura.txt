@@ -79,44 +79,45 @@
         │   │       ├── login.component.spec.ts
         │   │       └── login.component.ts
         │   │
-        │   ├── characters/
-        │   │   ├── character-list/
-        │   │   │   ├── character-list.component.html
-        │   │   │   ├── character-list.component.scss
-        │   │   │   ├── character-list.component.spec.ts
-        │   │   │   └── character-list.component.ts
-        │   │   │
-        │   │   └── components/
-        │   │       ├── character-detail/
-        │   │       │   ├── character-detail.html
-        │   │       │   ├── character-detail.scss
-        │   │       │   └── character-detail.ts
-        │   │       │
-        │   │       ├── character-form/
-        │   │       │   ├── character-form.html
-        │   │       │   ├── character-form.scss
-        │   │       │   ├── character-form.spec.ts
-        │   │       │   └── character-form.ts
-        │   │       │
-        │   │       └── character-table/
-        │   │           ├── character-table.html
-        │   │           ├── character-table.scss
-        │   │           └── character-table.ts
-        │   │
-        │   ├── dashboard/
-        │   │   └── dashboard-layout/
-        │   │       ├── dashboard-layout.component.html
-        │   │       ├── dashboard-layout.component.scss
-        │   │       ├── dashboard-layout.component.spec.ts
-        │   │       └── dashboard-layout.component.ts
-        │   │
-        │   └── stats/
-        │       ├── stats.html
-        │       ├── stats.scss
-        │       └── stats.ts
+        │   └── dashboard/
+        │       ├── dashboard-layout/
+        │       │   ├── dashboard-layout.component.html
+        │       │   ├── dashboard-layout.component.scss
+        │       │   ├── dashboard-layout.component.spec.ts
+        │       │   └── dashboard-layout.component.ts
+        │       │
+        │       └── children/
+        │           ├── characters/
+        │           │   ├── character-list/
+        │           │   │   ├── character-list.component.html
+        │           │   │   ├── character-list.component.scss
+        │           │   │   ├── character-list.component.spec.ts
+        │           │   │   └── character-list.component.ts
+        │           │   │
+        │           │   └── components/
+        │           │       ├── character-form/
+        │           │       │   ├── character-form.html
+        │           │       │   ├── character-form.scss
+        │           │       │   ├── character-form.spec.ts
+        │           │       │   └── character-form.ts
+        │           │       │
+        │           │       └── character-table/
+        │           │           ├── character-table.html
+        │           │           ├── character-table.scss
+        │           │           └── character-table.ts
+        │           │
+        │           └── stats/
+        │               ├── stats.html
+        │               ├── stats.scss
+        │               └── stats.ts
         │
         └── shared/
             ├── components/
+            │   ├── character-detail/
+            │   │   ├── character-detail.html
+            │   │   ├── character-detail.scss
+            │   │   └── character-detail.ts
+            │   │
             │   ├── dark-mode/
             │   │   ├── dark-mode.component.html
             │   │   ├── dark-mode.component.scss

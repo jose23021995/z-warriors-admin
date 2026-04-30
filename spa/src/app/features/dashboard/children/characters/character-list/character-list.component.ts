@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogService, DynamicDialogRef, DynamicDialogModule } from 'primeng/dynamicdialog'; // Añade DynamicDialogModule
-import { HeadersComponent } from '../../../shared/components/headers/headers';
-import { CharacterDetailComponent } from '../components/character-detail/character-detail'; 
+import { HeadersComponent } from '../../../../../shared/components/headers/headers';
+import { CharacterDetailComponent } from '../../../../../shared/components/character-detail/character-detail'; 
 import { CharacterForm } from '../components/character-form/character-form'; 
 import { CharacterTable } from '../components/character-table/character-table';
-import { CharacterService } from '../../../core/services/character.service';
-import { Detail } from '../../../shared/interfaces/models/character.model'
+import { CharacterService } from '../../../../../core/services/character.service';
+import { Detail } from '../../../../../shared/interfaces/models/character.model'
 import { ProgressBarModule } from 'primeng/progressbar';
 
 @Component({

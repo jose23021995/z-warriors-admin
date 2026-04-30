@@ -1,12 +1,12 @@
 import { Component, OnInit, inject, PLATFORM_ID, signal, computed } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
-import { HeadersComponent } from '../../shared/components/headers/headers';
+import { HeadersComponent } from '../../../../shared/components/headers/headers';
 import { CardModule } from 'primeng/card';
-import { CharacterService } from '../../core/services/character.service';
-import { Transformation, Detail } from '../../shared/interfaces/models/character.model';
+import { CharacterService } from '../../../../core/services/character.service';
+import { Transformation, Detail } from '../../../../shared/interfaces/models/character.model';
 import { DialogService, DynamicDialogRef, DynamicDialogModule } from 'primeng/dynamicdialog';
-import { CharacterDetailComponent } from '../characters/components/character-detail/character-detail';
+import { CharacterDetailComponent } from '../../../../shared/components/character-detail/character-detail';
 
 @Component({
   selector: 'app-stats',

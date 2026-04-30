@@ -14,7 +14,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { Character } from '../../../../shared/interfaces/models/character.model'
+import { Character } from '../../../../../../shared/interfaces/models/character.model'
 @Component({
   selector: 'app-character-table',
   standalone: true,

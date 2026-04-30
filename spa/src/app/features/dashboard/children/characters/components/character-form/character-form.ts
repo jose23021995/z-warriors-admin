@@ -18,7 +18,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
 // Interfaces
-import { Transformation, Detail, DetailEdit } from '../../../../shared/interfaces/models/character.model';
+import { Transformation, Detail, DetailEdit } from '../../../../../../shared/interfaces/models/character.model';
 
 @Component({
   selector: 'app-character-form',
