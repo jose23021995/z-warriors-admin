@@ -1,0 +1,134 @@
+Diagrama de flujo de datos de la aplicación Z-Warriors Admin:
+
+1. Inicio de la aplicación:
+   main.ts
+     ↓
+   AppComponent
+     ↓
+   app.routes.ts
+     ↓
+   /login → LoginComponent
+
+2. Flujo de autenticación:
+   Usuario ingresa credenciales
+     ↓
+   LoginComponent
+     ↓
+   AuthService.login(token)
+     ↓
+   localStorage.setItem('token')
+     ↓
+   AuthService._token signal actualiza
+     ↓
+   Router.navigate(['/dashboard'])
+     ↓
+   AuthGuard verifica token
+     ↓
+   /dashboard → DashboardLayoutComponent
+
+3. Dashboard y navegación:
+   DashboardLayoutComponent
+     ↓
+   <router-outlet>
+     ↙             ↘
+ /characters         /stats
+   ↓                   ↓
+CharacterListComponent  StatsComponent
+
+4. Flujo en /characters:
+   CharacterListComponent
+     ↓
+   handleLoadData({page, limit, search})
+     ↓
+   CharacterService.getCharacters()
+     ↓
+   HTTP GET → API externa
+     ↓
+   ErrorHandlerInterceptor captura fallos
+     ↓
+   Respuesta → CharacterListComponent
+     ↓
+   Signals: characters, totalCount, isLoading
+     ↓
+   CharacterTable (hijo)
+     ↓
+   Renderiza tabla
+
+5. Interacción en CharacterTable:
+   Usuario busca/pagina
+     ↓
+   CharacterTable.onLoadData.emit()
+     ↓
+   CharacterListComponent.handleLoadData()
+     ↓
+   CharacterService.getCharacters()
+
+   Usuario hace clic en "Detalles" o "Editar"
+     ↓
+   CharacterTable.onCharacterSelected.emit({character, type})
+     ↓
+   CharacterListComponent.handleCharacterUpdate()
+     ↓
+   CharacterService.getCharacter(id)
+     ↓
+   Response → Modal
+     ↓
+   type=false → CharacterDetailComponent
+   type=true  → CharacterForm
+
+6. Flujo en /stats:
+   StatsComponent
+     ↓
+   ngOnInit() → initChart()
+     ↓
+   handleLoadData()
+     ↓
+   CharacterService.getTransformations()
+     ↓
+   HTTP GET → API externa
+     ↓
+   ErrorHandlerInterceptor captura fallos
+     ↓
+   Respuesta → StatsComponent
+     ↓
+   parseKi(), sort, build data/options
+     ↓
+   Signals: sortedCharacters, data, options
+     ↓
+   p-chart renderiza gráfico
+
+7. Interacción en gráfico:
+   Usuario hace clic en barra
+     ↓
+   StatsComponent.onChartClick(event)
+     ↓
+   CharacterService.getCharacterTransformations(id)
+     ↓
+   CharacterService.getCharacter(character.id)
+     ↓
+   Datos combinados → modal
+     ↓
+   CharacterDetailComponent
+
+8. Manejo de errores globales:
+   CharacterService HTTP requests
+     ↓
+   ErrorHandlerInterceptor
+     ↓
+   MessageService.add() → <p-toast> muestra notificación
+
+9. Persistencia y estado:
+   AuthService carga token desde localStorage al iniciar
+     ↓
+   signal _token mantiene estado
+     ↓
+   Guards y componentes consumen authState
+
+10. Salida / Logout:
+   DashboardLayoutComponent.logout()
+     ↓
+   localStorage.removeItem('token')
+     ↓
+   Router.navigate(['/login'])
+     ↓
+   Usuario regresa a LoginComponent

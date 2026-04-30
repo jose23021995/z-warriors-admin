@@ -1,0 +1,39 @@
+Análisis de los servicios en `spa/src/app/core/services`:
+
+## 1. **Servicios disponibles:**
+   - **auth.service.ts**: Servicio de autenticación.
+   - **character.service.ts**: Servicio para gestionar datos de personajes y transformaciones.
+
+## 2. **Análisis de AuthService (auth.service.ts):**
+   - **Funcionalidad**: Maneja el estado de autenticación de la aplicación.
+     - `login(token)`: Guarda token en localStorage y actualiza signal, navega a dashboard.
+     - `logout()`: Borra token y navega a login.
+     - `isAuthenticated`: Signal computado que verifica presencia de token.
+     - `getToken()`: Retorna el token actual.
+   - **Dónde es invocado**:
+     - **LoginComponent**: En `onLogin()`, llama a `login()` para autenticar al usuario después de validación simulada.
+     - **AuthGuard**: En `canActivateFn`, usa `getToken()` para verificar autenticación antes de permitir acceso a rutas protegidas.
+     - **DashboardLayoutComponent**: En `logout()`, llama a `logout()` para cerrar sesión.
+   - **Por qué**: Centraliza la lógica de autenticación, permitiendo compartir estado entre componentes y guards. Usa signals para reactividad, evitando consultas repetidas a localStorage.
+
+## 3. **Análisis de CharacterService (character.service.ts):**
+   - **Funcionalidad**: Gestiona llamadas HTTP a la API externa de Dragon Ball para obtener datos de personajes.
+     - `getCharacters(page, limit, search)`: Lista paginada de personajes.
+     - `getCharacter(id)`: Detalles de un personaje específico.
+     - `getTransformations()`: Lista de transformaciones para estadísticas.
+     - `getCharacterTransformations(id)` y `getTransformations()`: Transformaciones por personaje.
+     - `getPrueba()`: Método de prueba que llama a URL inexistente para probar interceptor.
+   - **Dónde es invocado**:
+     - **StatsComponent**: Usa `getTransformations()` para cargar datos del gráfico, y `getCharacterTransformations()` + `getCharacter()` al hacer clic en barra.
+     - **CharacterListComponent**: Usa `getCharacters()` para paginación/búsqueda, y `getCharacter()` para detalles en modales.
+     - **DashboardLayoutComponent**: Usa `getPrueba()` en el botón "Prueba Interceptor" para simular error HTTP.
+   - **Por qué**: Abstrae las llamadas HTTP, permitiendo reutilización en múltiples componentes. Maneja observables con `firstValueFrom` para simplicidad. Incluye método de prueba para desarrollo.
+
+## 4. **Patrones comunes en los servicios:**
+   - **Inyección**: Ambos son `providedIn: 'root'`, disponibles globalmente.
+   - **Reutilización**: Diseñados para ser usados por múltiples componentes, evitando duplicación de código.
+   - **Separación de responsabilidades**: Los servicios manejan datos y lógica externa, mientras componentes se enfocan en UI.
+   - **Estado**: AuthService usa signals para estado reactivo; CharacterService es stateless (solo llamadas HTTP).
+
+## 5. **Conclusión:**
+   Estos servicios son el puente entre la UI y las APIs externas/autenticación. AuthService mantiene el estado de sesión, mientras CharacterService provee datos dinámicos. Son invocados en componentes clave del flujo de la app (login, dashboard, stats, lista de personajes), asegurando consistencia y mantenibilidad.

@@ -1,0 +1,89 @@
+Análisis global de la aplicación Angular Z-Warriors Admin:
+
+## 1. **Función general de la aplicación:**
+   La aplicación es un dashboard administrativo para gestionar personajes de Dragon Ball Z. Permite autenticación de usuarios, visualización de estadísticas de poder, listado y edición de personajes con sus transformaciones. Incluye modo oscuro, manejo de errores global y navegación protegida. Está construida con Angular 18, PrimeNG y señales reactivas.
+
+## 2. **Flujo general de la aplicación:**
+   1. **Inicio**: App arranca en `main.ts`, carga `AppComponent` con `app.routes.ts`.
+   2. **Login**: Usuario llega a `/login` (LoginComponent), ingresa credenciales.
+   3. **Autenticación**: LoginComponent valida y llama AuthService.login(), guarda token, navega a `/dashboard`.
+   4. **Dashboard**: DashboardLayoutComponent carga, muestra menú y router-outlet.
+   5. **Navegación**: Usuario elige "Personajes" o "Estadísticas".
+   6. **Personajes**: CharacterListComponent carga lista, CharacterTable muestra tabla.
+   7. **Interacción**: Clic en fila abre modal CharacterDetail o CharacterForm.
+   8. **Estadísticas**: StatsComponent carga gráfico, clic abre CharacterDetail.
+   9. **Logout**: DashboardLayoutComponent borra token, regresa a login.
+
+## 3. **Trayectoria de datos con flujo y estado:**
+   - **Inicio de la app:**
+     main.ts → AppComponent → app.routes.ts (default: /login) → LoginComponent carga
+   - **Flujo de login:**
+     Usuario ingresa datos → LoginComponent (usa interfaces LoginText via JSON) → Valida credenciales → AuthService.login() (servicio) → Guarda token en localStorage → Signal _token actualiza → Router.navigate('/dashboard') → AuthGuard (intercepta ruta) → Verifica token via AuthService.getToken() → Permite acceso
+   - **Carga del dashboard:**
+     DashboardLayoutComponent (componente padre) → router-outlet → Usuario elige ruta (/characters o /stats)
+   - **Flujo en /characters:**
+     CharacterListComponent (componente padre) → ngOnInit → CharacterService.getCharacters() (servicio) → HTTP GET a API → ErrorHandlerInterceptor (interceptor) captura posibles errores → Respuesta → Interfaces Character/Detail tipan datos → Signals characters/totalCount actualizan → CharacterTable (componente hijo) recibe props → Muestra tabla
+   - **Interacción en tabla:**
+     Usuario hace clic en fila → CharacterTable emite onCharacterSelected → CharacterListComponent recibe → CharacterService.getCharacter() (servicio) → HTTP GET → Interfaces Detail tipan → Modal CharacterDetailComponent abre → Recibe data via DynamicDialogConfig → Usa interfaces Transformation/Detail → Muestra info
+   - **Edición:**
+     CharacterTable emite onCharacterSelected (type: true) → CharacterListComponent → CharacterService.getCharacter() → Interfaces Detail → Modal CharacterForm abre → Usa interfaces DetailEdit/Transformation → Usuario edita → Form valida → Guarda simulado → MessageService (servicio) muestra toast → Modal cierra
+   - **Flujo en /stats:**
+     StatsComponent → ngOnInit → CharacterService.getTransformations() (servicio) → HTTP GET → Interfaces Transformation → Procesa/parsea Ki → Signals sortedCharacters/data/options → p-chart (componente PrimeNG) renderiza gráfico
+   - **Interacción en gráfico:**
+     Usuario hace clic en barra → StatsComponent.onChartClick() → CharacterService.getCharacterTransformations() + getCharacter() → Interfaces Detail/Transformation → Modal CharacterDetailComponent abre → Muestra datos combinados
+   - **Errores globales:**
+     Cualquier HTTP (CharacterService) → ErrorHandlerInterceptor (interceptor) → Captura HttpErrorResponse → MessageService (servicio) muestra toast → Re-throws error
+   - **Componentes compartidos:**
+     HeadersComponent (hijo en layouts) → Muestra títulos
+     DarkModeComponent (hijo en layouts) → Alterna tema → Actualiza CSS variables
+   - **Persistencia y estado:**
+     Token en localStorage → AuthService carga en signal al inicio → Sobrevive refrescos → Guards verifican
+     Signals en componentes → Cambios propagan → UI re-renderiza automáticamente
+   - **Fin del flujo:**
+     Usuario hace logout → DashboardLayoutComponent → AuthService.logout() → Borra token → Router.navigate('/login') → Ciclo reinicia
+
+## 4. **Componentes y cuándo se invocan:**
+   - **AppComponent**: Siempre, raíz de la app.
+   - **LoginComponent**: Al inicio o logout, ruta `/login`.
+   - **DashboardLayoutComponent**: Después login, ruta `/dashboard`.
+   - **CharacterListComponent**: En `/dashboard/characters`, carga lista de personajes.
+   - **CharacterTable**: Hijo de CharacterList, muestra tabla paginada.
+   - **CharacterForm**: Modal desde CharacterList, para editar personaje.
+   - **CharacterDetail**: Modal desde CharacterList/Stats, para ver detalles.
+   - **Stats**: En `/dashboard/stats`, muestra gráfico de transformaciones.
+   - **HeadersComponent**: En layouts, para títulos.
+   - **DarkModeComponent**: En layouts, para alternar tema.
+   - **Se invocan**: Por rutas (lazy loading), eventos de usuario (clics), o como hijos/modales.
+
+## 5. **Servicios y cuándo se usan:**
+   - **AuthService**: En login (guardar token), logout (borrar), guards (verificar token).
+   - **CharacterService**: En carga de datos (getCharacters, getTransformations), detalles (getCharacter), prueba interceptor.
+   - **MessageService**: En formularios y interceptor para toasts.
+   - **Se usan**: Cuando componentes necesitan datos externos o estado global, para centralizar lógica HTTP/autenticación.
+
+## 6. **Interfaces y su rol:**
+   - **Character.model.ts**: Tipa datos de personajes/transformaciones en componentes (Stats, CharacterList, etc.).
+   - **Login-text.interface.ts**: Define estructura de textos (usados vía JSON en LoginComponent).
+   - **Rol**: Proporcionan type safety, evitan errores, facilitan desarrollo con IntelliSense.
+
+## 7. **Interceptores y su función:**
+   - **ErrorHandlerInterceptor**: Intercepta todas las HTTP requests, captura errores, muestra toasts con mensajes amigables.
+   - **Se invoca**: Automáticamente en cada petición HTTP (CharacterService), para manejo global de errores.
+
+## 8. **Por qué se invocan:**
+   - **Componentes**: Para UI y lógica específica, activados por rutas o eventos.
+   - **Servicios**: Para datos externos y estado compartido, evitando duplicación.
+   - **Interfaces**: Para tipado fuerte y mantenibilidad.
+   - **Interceptores**: Para UX consistente en errores, sin código repetido.
+   - **Datos**: Fluyen según necesidades del usuario (navegación, edición), procesados reactivamente.
+
+## 9. **Arquitectura y patrones:**
+   - **Standalone components**: Independientes, con imports explícitos.
+   - **Signals**: Para estado reactivo, reemplazando observables en algunos casos.
+   - **Lazy loading**: Rutas cargadas on-demand para performance.
+   - **Guards**: Protegen rutas, verifican autenticación.
+   - **Modales dinámicos**: Para interacciones sin navegación.
+   - **Separación**: Servicios para lógica, componentes para UI, interfaces para tipos.
+
+## 10. **Conclusión:**
+   La app sigue un flujo claro: autenticación → dashboard → gestión de personajes/estadísticas. Datos viajan desde usuario → componentes → servicios → API → UI. Todo se invoca por necesidad (eventos, rutas), con énfasis en reutilización, reactividad y UX. Interceptores e interfaces mejoran robustez y desarrollo.

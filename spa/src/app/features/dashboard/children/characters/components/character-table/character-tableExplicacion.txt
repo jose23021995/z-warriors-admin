@@ -1,0 +1,63 @@
+Análisis completo del componente CharacterTable:
+
+## 1. Archivos del componente:
+   - `character-table.ts`: Lógica principal del componente.
+   - `character-table.html`: Plantilla de la tabla de personajes.
+   - `character-table.scss`: Estilos específicos para el buscador y botones.
+
+## 2. Funcionalidad general:
+   El componente CharacterTable renderiza una tabla interactiva de personajes con búsqueda, paginación lazy y acciones para ver detalles o editar un personaje. Es el componente hijo clave dentro de CharacterListComponent para presentar datos y emitir eventos de selección.
+
+## 3. Dónde es invocado:
+   - Se utiliza dentro de `CharacterListComponent` en `character-list.component.html`.
+   - `CharacterListComponent` le pasa los estados `characters`, `totalRecords` y `loading`.
+   - El componente es parte de la ruta `/dashboard/characters` a través de la jerarquía de Dashboard.
+
+## 4. Inputs y Outputs:
+   - Inputs declarados como `input`: `characters`, `totalRecords`, `loading`.
+   - Outputs declarados como `output`: `onLoadData` y `onCharacterSelected`.
+   - `onLoadData` emite consultas de carga cuando cambia la paginación o se ejecuta una búsqueda.
+   - `onCharacterSelected` emite el personaje y el tipo de acción (`true` para editar, `false` para detalles).
+
+## 5. Búsqueda y paginación:
+   - `searchQuery`: Signal que guarda el texto de búsqueda.
+   - `rows`: Signal que guarda el número de filas por página.
+   - `triggerSearch()`: Emite `onLoadData` con `page: 1`, `limit` actual y texto de búsqueda.
+   - `loadCharactersLazy(event)`: Convierte el evento lazy de PrimeNG a página y límite, luego emite `onLoadData`.
+   - Esto permite paginación suficiente para recibir datos de forma incremental desde el padre.
+
+## 6. Transformación de datos y presentación:
+   - `displayData` y `displayTotal` son `computed` derivadas de las props recibidas.
+   - `getKiPercentage(ki, maxKi)`: Convierte los valores de Ki a porcentaje para la barra de progreso.
+   - `getRaceSeverity(race)`: Devuelve severidad para el tag de raza según el tipo de personaje.
+   - La tabla muestra:
+     - Avatar con preview.
+     - Nombre.
+     - Raza con Tag de color.
+     - Género con icono y tooltip.
+     - Ki base/máx con barra de progreso.
+     - Afiliación.
+     - Botones de acción para editar y ver detalles.
+
+## 7. Interacciones y eventos:
+   - Los botones de acción llaman a `returnInformationModal(char, type)`.
+   - Ese método emite `onCharacterSelected` con `{ character, type }`.
+   - El padre `CharacterListComponent` recibe el evento y decide si abre `CharacterDetailComponent` o `CharacterForm`.
+
+## 8. Estilos y UX:
+   - Usa `p-table` de PrimeNG con estilo gridlines, striping y responsive.
+   - El buscador superior está estilizado como un campo con ícono y botón de búsqueda.
+   - Contiene `loading` para mostrar skeletons cuando la tabla está cargando.
+   - Opciones de filas por página: 5, 10, 50, 100.
+
+## 9. Conexión con CharacterListComponent:
+   - Es el componente que materializa la tabla de personajes dentro de la vista de lista.
+   - `CharacterListComponent` gestiona los datos y la lógica de carga; `CharacterTable` presenta y emite las acciones.
+   - Cualquier cambio de paginación o búsqueda en la tabla se propaga al servicio de personajes a través del padre.
+
+## 10. Observaciones relevantes:
+   - El componente no hace llamadas HTTP propias; depende completamente del padre para la fuente de datos.
+   - El  uso de `input` y `output` con la sintaxis de signals es consistente con un componente standalone.
+   - El método `getKiPercentage` protege contra valores no numéricos y devuelve 100% si la conversión falla.
+
+Este componente es la pieza de UI que concentra la interacción del usuario con la lista de personajes, delegando la lógica de datos al componente padre y permitiendo acciones rápidas de detalle y edición.

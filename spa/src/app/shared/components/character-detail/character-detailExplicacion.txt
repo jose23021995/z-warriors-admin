@@ -1,0 +1,57 @@
+Análisis completo del componente CharacterDetailComponent:
+
+## 1. **Archivos del componente:**
+   - **character-detail.ts**: Componente principal en TypeScript.
+   - **character-detail.html**: Plantilla HTML.
+   - **character-detail.scss**: Estilos CSS/SCSS.
+
+## 2. **Funcionalidad general:**
+   El componente CharacterDetailComponent es un componente compartido diseñado para mostrar información detallada de un personaje de Dragon Ball en un modal dinámico. Muestra datos como nombre, imagen, raza, género, poder (Ki), planeta de origen, biografía y transformaciones disponibles.
+
+## 3. **Uso de servicios:**
+   - No utiliza servicios directamente; recibe los datos a través de la configuración del modal (DynamicDialogConfig).
+   - Los datos provienen del componente Stats, que los obtiene usando CharacterService.
+
+## 4. **Procesamiento de datos:**
+   - **Recepción de datos**: En `ngOnInit()`, extrae `response` (datos del personaje) y `transformations` (datos de la transformación seleccionada) del `config.data`.
+   - **Asignación a signals**: Usa signals para almacenar propiedades como nombre, imagen, descripción, género, Ki, raza, afiliación, etc.
+   - **Planeta**: Si existe `originPlanet`, asigna datos del planeta (nombre, descripción, imagen, estado de destrucción).
+   - **Transformaciones**: Lista de transformaciones del personaje.
+
+## 5. **Interfaz de usuario:**
+   - **Header**: Imagen del personaje (con preview), nombre, tags (raza, género con íconos, afiliación), origen planetario.
+   - **Métricas**: Ki base y máximo.
+   - **Biografía**: Descripción del personaje.
+   - **Transformaciones**: Grid de cards con nombre, Ki e imagen (con zoom al hacer clic).
+   - **Botones**: Solo "Regresar" para cerrar el modal.
+
+## 6. **Conexión con el componente Stats:**
+   - **Invocación**: El componente Stats abre este modal usando `DialogService.open(CharacterDetailComponent, {...})` cuando el usuario hace clic en una barra del gráfico.
+   - **Datos pasados**: 
+     - `transformations`: La transformación seleccionada del gráfico (personaje con su Ki).
+     - `response`: Datos completos del personaje principal obtenidos con `getCharacter()`.
+   - **Propósito**: Proporciona una vista detallada del personaje seleccionado en el ranking de Stats, permitiendo explorar más información sin salir de la vista de estadísticas.
+   - **Interacción**: Al hacer clic en imágenes (personaje, planeta, transformaciones), se abre un zoom/preview usando PrimeNG Image.
+
+## 7. **Uso de Signals y estado reactivo:**
+   - **Signals utilizados**: Para cada propiedad del personaje y planeta (name, image, ki, etc.), y para la lista de transformations.
+   - **Computado**: `planetaEstado` que calcula si el planeta está destruido o vigente basado en `isDestroyed`.
+   - **Reactividad**: Los signals permiten actualizaciones en tiempo real si los datos cambian.
+
+## 8. **Estilos y diseño:**
+   - **SCSS**: Variables CSS para colores temáticos (naranja, amarillo, rojo), fondo oscuro, texto blanco.
+   - **Layout**: Flexbox para header, cards para métricas, grid para transformaciones.
+   - **Tema**: Alineado con Dragon Ball Z (colores vibrantes, íconos, efectos visuales).
+   - **Responsividad**: Diseño adaptable, aunque optimizado para modal.
+
+## 9. **Manejo de eventos:**
+   - **onCancel()**: Cierra el modal usando `ref.close()`.
+   - **abrirZoom(imgComponent)**: Activa el preview de imágenes de PrimeNG para zoom.
+
+## 10. **Flujo de uso:**
+   1. Usuario en Stats hace clic en barra del gráfico.
+   2. Stats obtiene datos adicionales y abre modal con CharacterDetailComponent.
+   3. CharacterDetailComponent recibe y muestra los datos en signals.
+   4. Usuario puede ver detalles, hacer zoom en imágenes, y cerrar el modal.
+
+Este componente es un complemento visual del componente Stats, proporcionando profundidad informativa y manteniendo la navegación fluida dentro de la aplicación.
