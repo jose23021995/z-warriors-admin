@@ -70,3 +70,6 @@ Análisis completo del componente CharacterForm:
    - **Servicios**: MessageService para notificaciones.
 
 Este componente proporciona una interfaz completa para edición de personajes, con gestión avanzada de datos y UI intuitiva.
+
+Diagrama de flujo:
+CharacterListComponent → DialogService.open(CharacterForm, data) → DynamicDialogConfig.data → CharacterForm.initForm(data) → Usuario edita formulario → guardarCambios() → MessageService.add() → ref.close(finalObject)

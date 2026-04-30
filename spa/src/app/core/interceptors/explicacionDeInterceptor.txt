@@ -33,3 +33,6 @@ Análisis del funcionamiento del Interceptor de Manejo de Errores:
    - Esto permite probar el interceptor en tiempo real: al fallar la petición (probablemente con un 404 Not Found), el interceptor captura el error, muestra un toast con el mensaje de error, y demuestra su funcionamiento sin afectar otras partes de la app.
 
 En resumen, este interceptor actúa como un "filtro" global para errores HTTP, capturándolos, notificando al usuario y permitiendo que la app continúe funcionando sin crashes inesperados.
+
+Diagrama de flujo:
+Petición HTTP → CharacterService → HttpClient → ErrorHandlerInterceptor → catchError → MessageService.add() → <p-toast> → Usuario

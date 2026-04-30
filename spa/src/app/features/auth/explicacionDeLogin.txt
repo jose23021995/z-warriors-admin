@@ -45,3 +45,6 @@ Resumen del flujo completo:
 - Token guardado en localStorage y signal → Navegación a /dashboard.
 - AuthGuard verifica token → Permite acceso.
 - Carga dashboard → Redirige a /dashboard/characters (página principal).
+
+Diagrama de flujo:
+Usuario → LoginComponent → AuthService.login() → localStorage → Router.navigate('/dashboard') → AuthGuard → DashboardLayoutComponent → /dashboard/characters

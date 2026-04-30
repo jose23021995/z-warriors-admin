@@ -55,3 +55,6 @@ Análisis completo del componente CharacterDetailComponent:
    4. Usuario puede ver detalles, hacer zoom en imágenes, y cerrar el modal.
 
 Este componente es un complemento visual del componente Stats, proporcionando profundidad informativa y manteniendo la navegación fluida dentro de la aplicación.
+
+Diagrama de flujo:
+StatsComponent → DialogService.open(CharacterDetailComponent, data) → DynamicDialogConfig.data → CharacterDetailComponent signals → Render UI → Usuario cierra modal

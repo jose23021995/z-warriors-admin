@@ -85,3 +85,6 @@ Análisis completo del componente Stats y sus archivos relacionados:
    6. Modal usa CharacterDetailComponent para mostrar info.
 
 Este componente demuestra integración de APIs externas, procesamiento de datos complejos, visualización interactiva y comunicación entre componentes en Angular.
+
+Diagrama de flujo:
+/ngOnInit → StatsComponent → CharacterService.getTransformations() → API → Response → parseKi() → sortedCharacters/data/options → p-chart → Usuario clic → onChartClick() → CharacterService.getCharacterTransformations() + getCharacter() → CharacterDetailComponent

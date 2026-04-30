@@ -65,3 +65,9 @@ Análisis completo del componente DashboardLayoutComponent:
    - El diseño es modular y reutilizable, permitiendo agregar más opciones al menú fácilmente.
 
 Este componente es el esqueleto del dashboard, proporcionando navegación y configuración mientras delega el contenido específico a sus rutas hijas.
+
+Diagrama de flujo:
+LoginComponent → AuthService.login() → Router.navigate('/dashboard') → DashboardLayoutComponent → menu routerLink → /dashboard/characters o /dashboard/stats → router-outlet → componente hijo
+
+Logout:
+DashboardLayoutComponent.logout() → localStorage.removeItem('token') → Router.navigate('/login')

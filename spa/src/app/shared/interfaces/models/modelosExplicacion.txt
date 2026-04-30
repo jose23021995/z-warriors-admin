@@ -39,3 +39,9 @@ Análisis de las interfaces en `spa/src/app/shared/interfaces/models`:
 
 ## 5. **Conclusión:**
    Estas interfaces son fundamentales para el tipado en la aplicación, siendo invocadas en componentes clave que manejan personajes y textos. `character.model.ts` es usado extensivamente en el dashboard para datos dinámicos, mientras `login-text.interface.ts` soporta textos estáticos. Mejoran la mantenibilidad y reducen errores en desarrollo.
+
+Diagrama de flujo:
+API response → CharacterService → data tipada con Character/Detail/Transformation → Componentes Stats / CharacterList / CharacterForm / CharacterDetail
+
+Textos:
+login-texts.json → LoginComponent / DarkModeComponent → UI dinámico

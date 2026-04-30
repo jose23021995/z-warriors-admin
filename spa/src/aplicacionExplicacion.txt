@@ -87,3 +87,10 @@ Análisis global de la aplicación Angular Z-Warriors Admin:
 
 ## 10. **Conclusión:**
    La app sigue un flujo claro: autenticación → dashboard → gestión de personajes/estadísticas. Datos viajan desde usuario → componentes → servicios → API → UI. Todo se invoca por necesidad (eventos, rutas), con énfasis en reutilización, reactividad y UX. Interceptores e interfaces mejoran robustez y desarrollo.
+
+Diagrama de flujo:
+Usuario → LoginComponent → AuthService → DashboardLayoutComponent → CharacterListComponent / StatsComponent → CharacterService → API → ErrorHandlerInterceptor → MessageService → <p-toast>
+
+Componentes hijos:
+CharacterListComponent → CharacterTable → onCharacterSelected → CharacterDetailComponent / CharacterForm
+StatsComponent → p-chart → onChartClick → CharacterDetailComponent

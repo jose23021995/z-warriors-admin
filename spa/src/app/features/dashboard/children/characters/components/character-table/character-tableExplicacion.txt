@@ -61,3 +61,12 @@ Análisis completo del componente CharacterTable:
    - El método `getKiPercentage` protege contra valores no numéricos y devuelve 100% si la conversión falla.
 
 Este componente es la pieza de UI que concentra la interacción del usuario con la lista de personajes, delegando la lógica de datos al componente padre y permitiendo acciones rápidas de detalle y edición.
+
+Diagrama de flujo:
+CharacterListComponent → props characters/totalRecords/loading → CharacterTable → Renderiza tabla
+
+Búsqueda/Paginación:
+Usuario → searchQuery → triggerSearch()/loadCharactersLazy() → onLoadData.emit() → CharacterListComponent
+
+Detalle/Edición:
+Usuario → returnInformationModal(char, type) → onCharacterSelected.emit() → CharacterListComponent

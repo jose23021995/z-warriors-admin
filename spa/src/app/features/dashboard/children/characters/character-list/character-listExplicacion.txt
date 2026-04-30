@@ -94,3 +94,9 @@ Análisis completo del componente CharacterListComponent:
    - **Servicios**: CharacterService para datos.
 
 Este componente es el núcleo de la gestión de personajes, proporcionando una interfaz completa para listar, buscar y gestionar personajes con integración de modales para acciones detalladas.
+
+Diagrama de flujo:
+CharacterListComponent → CharacterService.getCharacters() → API → Response → signals characters/totalCount → CharacterTable → Usuario busca/pagina → onLoadData → CharacterListComponent → CharacterService.getCharacters()
+
+Acción de selección:
+CharacterTable → onCharacterSelected(type) → CharacterListComponent → CharacterService.getCharacter(id) → Response → DialogService.open(CharacterDetailComponent o CharacterForm)

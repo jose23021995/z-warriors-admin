@@ -37,3 +37,10 @@ Análisis de los servicios en `spa/src/app/core/services`:
 
 ## 5. **Conclusión:**
    Estos servicios son el puente entre la UI y las APIs externas/autenticación. AuthService mantiene el estado de sesión, mientras CharacterService provee datos dinámicos. Son invocados en componentes clave del flujo de la app (login, dashboard, stats, lista de personajes), asegurando consistencia y mantenibilidad.
+
+Diagrama de flujo:
+LoginComponent → AuthService.login()
+AuthGuard → AuthService.getToken()
+DashboardLayoutComponent → CharacterService.getPrueba()
+CharacterListComponent → CharacterService.getCharacters() / getCharacter(id)
+StatsComponent → CharacterService.getTransformations() / getCharacterTransformations() / getCharacter(id)
