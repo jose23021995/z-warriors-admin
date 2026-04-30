@@ -9,16 +9,17 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       let errorMessage = 'La comunicación con el planeta Namek ha fallado';
-      if (error.status === 0 || !window.navigator.onLine) {
-        errorMessage = errorMessage;
-      } else {
-        errorMessage = `${}: ${error.message}`;
+
+      if (error.status !== 0 && window.navigator.onLine) {
+        // Accedemos al mensaje de error que viene del servidor o al status text
+        errorMessage = error.error?.message || error.statusText || 'Error inesperado';
       }
+
       messageService.add({
         severity: 'error',
-        summary: 'Error de Conexión',
+        summary: `Error ${error.status || ''}`,
         detail: errorMessage,
-        life: 5000 
+        life: 5000
       });
 
       return throwError(() => error);
