@@ -1,0 +1,47 @@
+Análisis del flujo de login en la aplicación Angular:
+
+1. **Inicio de la aplicación y rutas iniciales:**
+   - La aplicación se inicia en `main.ts`, que carga el módulo principal `AppComponent`.
+   - En `app.routes.ts`, la ruta por defecto ('') redirige a '/login', y cualquier ruta no encontrada ('**') también redirige a '/login'.
+   - Por lo tanto, al abrir la app, el usuario es dirigido automáticamente a la página de login.
+
+2. **Componente de Login (`login.component.ts` y `login.component.html`):**
+   - El componente `LoginComponent` es un componente standalone que utiliza formularios reactivos de Angular.
+   - El formulario tiene dos campos: `username` y `password`, con valores por defecto 'admin' y 'admin123'.
+   - En el template HTML, se renderiza un formulario con PrimeNG components (p-card, p-inputText, p-password, p-button).
+   - Al hacer submit del formulario, se llama al método `onLogin()`.
+
+3. **Método onLogin():**
+   - Se valida el formulario.
+   - Se verifica si el username es 'admin' y password es 'admin123' (autenticación simulada, no real).
+   - Si las credenciales son correctas, se llama a `authService.login('fake-jwt-token')`.
+   - Si no, se muestra una alerta y se detiene el proceso.
+
+4. **Servicio de Autenticación (`auth.service.ts`):**
+   - El `AuthService` utiliza signals de Angular para manejar el estado del token.
+   - El método `login(token: string)`:
+     - Guarda el token en `localStorage` con la clave 'token'.
+     - Actualiza el signal privado `_token` con el nuevo token.
+     - Navega al router hacia '/dashboard' usando `this.router.navigate(['/dashboard'])`.
+   - También tiene un signal computado `isAuthenticated` que verifica si hay un token presente.
+
+5. **Guard de Autenticación (`auth.guard.ts`):**
+   - El `authGuard` es una función guard que protege las rutas.
+   - Verifica si `authService.getToken()` retorna un token.
+   - Si hay token, permite el acceso (retorna `true`).
+   - Si no hay token, redirige al usuario a '/login' usando `router.parseUrl('/login')`.
+
+6. **Rutas protegidas y navegación posterior:**
+   - La ruta '/dashboard' está protegida por `authGuard`.
+   - Una vez logueado, el usuario es navegado a '/dashboard', que carga `DashboardLayoutComponent`.
+   - Dentro de '/dashboard', hay rutas hijas: 'characters' y 'stats'.
+   - La ruta vacía ('') dentro de dashboard redirige a 'characters' por defecto.
+   - Por lo tanto, después del login exitoso, el usuario entra en '/dashboard/characters'.
+
+Resumen del flujo completo:
+- Usuario accede a la app → Redirigido a /login.
+- Ingresa credenciales (admin/admin123) → Submit.
+- Validación simulada → Llama a authService.login().
+- Token guardado en localStorage y signal → Navegación a /dashboard.
+- AuthGuard verifica token → Permite acceso.
+- Carga dashboard → Redirige a /dashboard/characters (página principal).

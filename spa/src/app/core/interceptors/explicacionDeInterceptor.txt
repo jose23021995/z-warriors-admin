@@ -1,0 +1,35 @@
+Análisis del funcionamiento del Interceptor de Manejo de Errores:
+
+1. **¿Qué es un Interceptor en Angular?**
+   - Un interceptor en Angular es una función que se ejecuta automáticamente antes o después de que una petición HTTP sea enviada o recibida.
+   - Permite modificar las peticiones salientes o las respuestas entrantes de manera global, sin tener que hacerlo en cada servicio individual.
+
+2. **Funcionamiento del `errorHandlerInterceptor`:**
+   - Es un `HttpInterceptorFn`, que es la nueva forma funcional de interceptores en Angular (desde Angular 15+).
+   - Se ejecuta para todas las peticiones HTTP salientes de la aplicación.
+   - Utiliza el operador `catchError` de RxJS para interceptar errores en las respuestas HTTP.
+   - Si ocurre un error (`HttpErrorResponse`), extrae el mensaje de error:
+     - Si hay conexión a internet y el status no es 0, usa `error.error?.message` o `error.statusText`.
+     - Si no hay conexión o status es 0, muestra un mensaje personalizado: "La comunicación con el planeta Namek ha fallado" (tema de Dragon Ball Z).
+   - Muestra el error al usuario mediante un toast de PrimeNG usando `MessageService.add()`, con severidad 'error', un resumen con el código de status, el detalle del mensaje, y una duración de 5000ms. El componente `<p-toast>` en `app.html` actúa como el contenedor visual para estas notificaciones, permitiendo que aparezcan superpuestas en cualquier vista de la aplicación.
+   - Finalmente, re-lanza el error con `throwError(() => error)` para que pueda ser manejado en otros lugares si es necesario.
+
+3. **¿Dónde es llamado?**
+   - El interceptor se registra globalmente en `app.config.ts` dentro de los providers de la aplicación.
+   - Se configura con `provideHttpClient(withInterceptors([errorHandlerInterceptor]))`, lo que significa que se aplica a todas las peticiones HTTP realizadas por la app.
+   - No se llama manualmente en ningún componente o servicio; Angular lo invoca automáticamente para cada request.
+
+4. **¿Por qué se usa este interceptor?**
+   - **Manejo centralizado de errores:** En lugar de manejar errores en cada servicio HTTP individualmente, se hace de forma global.
+   - **Mejor experiencia de usuario:** Muestra mensajes de error amigables y consistentes a través de toasts, en lugar de errores técnicos o silenciosos.
+   - **Tolerancia a fallos:** Maneja casos como pérdida de conexión a internet o errores del servidor de manera elegante.
+   - **Separación de responsabilidades:** Los servicios se enfocan en la lógica de negocio, mientras que el interceptor maneja la presentación de errores.
+   - **Tema de la app:** El mensaje personalizado refleja el tema de Dragon Ball Z de la aplicación, haciendo la experiencia más inmersiva.
+
+5. **Ejemplo de prueba del interceptor en la aplicación:**
+   - En `dashboard-layout.component.ts`, hay un elemento de menú llamado "Prueba Interceptor" con un ícono de triángulo de exclamación.
+   - Al hacer clic, ejecuta el método `pruebaInterceptor()`, que llama a `charService.getPrueba()`.
+   - En `character.service.ts`, el método `getPrueba()` realiza una petición GET a la URL `https://dragonball-api.com/api/prueba`, que es una URL inexistente o mala diseñada para provocar un error HTTP.
+   - Esto permite probar el interceptor en tiempo real: al fallar la petición (probablemente con un 404 Not Found), el interceptor captura el error, muestra un toast con el mensaje de error, y demuestra su funcionamiento sin afectar otras partes de la app.
+
+En resumen, este interceptor actúa como un "filtro" global para errores HTTP, capturándolos, notificando al usuario y permitiendo que la app continúe funcionando sin crashes inesperados.
