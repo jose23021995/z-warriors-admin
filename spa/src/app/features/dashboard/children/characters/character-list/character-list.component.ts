@@ -8,7 +8,7 @@ import { CharacterDetailComponent } from '../../../../../shared/components/chara
 import { CharacterForm } from '../components/character-form/character-form'; 
 import { CharacterTable } from '../components/character-table/character-table';
 import { CharacterService } from '../../../../../core/services/character.service';
-import { Detail } from '../../../../../shared/interfaces/models/character.model'
+import { Detail,ModalCharacter } from '../../../../../shared/interfaces/models/character.model'
 import { ProgressBarModule } from 'primeng/progressbar';
 
 @Component({
@@ -43,14 +43,9 @@ export class CharacterListComponent implements OnInit {
     this.handleLoadData({ page: 1, limit: 10 });
   }
 
-  abrirEdicion(guerrero: any) {
+  abrirEdicion(guerrero: Detail) {
     console.log("guerrero",guerrero);
-    this.ref = this.dialogService.open(CharacterDetailComponent, {
-      header: `Informacion de ${guerrero.name}`,
-      width: '50%',
-      data: { id: guerrero.id, nombre: guerrero.name }
-    });
-
+    this.dialogModal(guerrero,true);
     if (this.ref) {
       this.ref.onClose.subscribe((jsonRetorno: any) => {
         if (jsonRetorno) {
@@ -88,26 +83,27 @@ export class CharacterListComponent implements OnInit {
     }
   }
 
-  async handleCharacterUpdate(data:any) {
+  async handleCharacterUpdate(data:ModalCharacter) {
     const {character,type}=data;
     const {id}=character;
     const response:Detail = await this.charService.getCharacter(id);
+    this.dialogModal(response,type);
+  }
+
+  dialogModal(character: Detail, type: Boolean) {
     if (!type) 
     {
       this.ref = this.dialogService.open(CharacterDetailComponent, {
-        header: `Informacion de ${response.name}`, 
+        header: `Informacion de ${character.name}`, 
         width: '60%',
-        data: {response}
+        data: {response: character}
       });  
     } else {
       this.ref = this.dialogService.open(CharacterForm, {
-        header: `Editar a ${response.name}`, 
+        header: `Editar a ${character.name}`, 
         width: '90%',
-        data: {response}
+        data: {response: character}
       });  
-    }
+    } 
   }
 }
-
-
-

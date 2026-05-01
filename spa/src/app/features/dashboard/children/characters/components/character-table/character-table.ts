@@ -14,7 +14,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { Character } from '../../../../../../shared/interfaces/models/character.model'
+import { Character,onLoadDataEvent } from '../../../../../../shared/interfaces/models/character.model'
 @Component({
   selector: 'app-character-table',
   standalone: true,
@@ -37,10 +37,10 @@ import { Character } from '../../../../../../shared/interfaces/models/character.
 })
 
 export class CharacterTable {
-  characters = input<any[]>([]); 
-  totalRecords = input<number>(0); 
-  loading = input<boolean>(false);
-  onLoadData = output<{ page: number, limit: number, search?: string }>();
+  characters = input<any[]>([]);   // Dato de entrada: para la lista de personajes
+  totalRecords = input<number>(0); // Dato de entrada: para el total de registros
+  loading = input<boolean>(false); // Dato de entrada: para controlar el estado de carga
+  onLoadData = output<{ page: number, limit: number, search?: string }>(); // Evento de salida: para cargar datos
   
   searchQuery = signal<string>('');
   rows = signal<number>(10);
@@ -52,22 +52,30 @@ export class CharacterTable {
 
   loadCharactersLazy(event: TableLazyLoadEvent) {
     if (typeof event.rows === 'number') {
-      this.rows.set(event.rows);
+      this.rows.set(event.rows); // Actualizar el número de filas por página
     }
-    const page = (event.first ?? 0) / (this.rows()) + 1;
-    this.onLoadData.emit({ 
-      page, 
+    console.log('Evento de carga perezosa:', event);
+    const page = (event.first ?? 0) / (this.rows()) + 1; // Calcular la página actual
+    console.log(`Cargando datos para la página ${page} con ${this.rows()} filas por página. Búsqueda: ${this.searchQuery()}`);
+    this.onLoadDataFunction(page);
+  }
+
+onLoadDataFunction(page?: number) {
+  console.log(`Cargando datos para la página ${page ?? 1} con ${this.rows()} filas por página. Búsqueda: ${this.searchQuery()}`);
+  this.onLoadData.emit({ 
+      page: page ?? 1, 
       limit: this.rows(), 
       search: this.searchQuery() 
     });
-  }
+}
+
 
 triggerSearch() {
-  this.onLoadData.emit({ 
-    page: 1, 
-    limit: this.rows(), 
-    search: this.searchQuery()
-  });
+  console.log(`
+  El texto de busqueda formado hasta el momento: ${this.searchQuery()}; \n 
+  Numero de filas por pagina: ${this.rows()}\n 
+  Pagina actual: 1`);
+  this.onLoadDataFunction();
 }
 
 getKiPercentage(ki: string, maxKi: string): number {
@@ -84,6 +92,7 @@ getKiPercentage(ki: string, maxKi: string): number {
     if (r === 'human') return 'info';
     if (r === 'namekian') return 'success';
     if (r === 'frieza race') return 'danger';
+    // Si no coincide con ninguna raza conocida, devuelve 'secondary' para un color neutro
     return 'secondary';
   }
 

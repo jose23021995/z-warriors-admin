@@ -12,7 +12,7 @@
 
   <!-- Tabla de Personajes -->
   <p-table [value]="displayData()" [lazy]="true" (onLazyLoad)="loadCharactersLazy($event)" [paginator]="true"
-    [rows]="rows()" [totalRecords]="displayTotal()" [loading]="loading()" [rowsPerPageOptions]="[5, 10, 50, 100]"
+    [rows]="rows()" [totalRecords]="displayTotal()" [loading]="loading()" [rowsPerPageOptions]="[5, 10, 50]"
     styleClass="p-datatable-gridlines p-datatable-striped" [tableStyle]="{ 'min-width': '60rem' }">
 
     <ng-template pTemplate="header">

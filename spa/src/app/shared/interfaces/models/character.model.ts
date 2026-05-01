@@ -67,4 +67,11 @@ export interface ModalCharacter
   
   character: Character;
   transformations?:Transformation[];
+  type?:any;
+}
+
+export interface onLoadDataEvent {
+  page: number;
+  limit: number;
+  search?: string;
 }
